@@ -56,8 +56,8 @@ public class X47BAPIHelper {
 	/**
 	 * Private Constructor.
 	 */
-	public X47BAPIHelper() {
-		_api = X47BPanicButtonClientAPIProvider.getDefaultApi();
+	public X47BAPIHelper(final X47BPanicButtonClientAPI api) {
+		_api = api;
 	}
 	/**
 	 * Return the API helper class.
@@ -73,8 +73,8 @@ public class X47BAPIHelper {
 //  BUSQUEDA
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Búsqueda del entidades por Organización
-	 * @param orgOid oid de la Organización {@link X47BOrganizationOID}
+	 * Bï¿½squeda del entidades por Organizaciï¿½n
+	 * @param orgOid oid de la Organizaciï¿½n {@link X47BOrganizationOID}
 	 * @return {@link SearchResults<X47BSearchFilterForEntityModelObject,
 	 *         X47BSearchResultItemForEntityModelObject>}
 	 */
@@ -95,7 +95,7 @@ public class X47BAPIHelper {
 														filter.toCriteriaString());
 		if (searchResults.hasData()) {
 			for (X47BSearchResultItemForPanicButtonOrganizationalEntity item : searchResults.getPageItems()) {
-				log.debug("\t> {} ({})",item.getHiearchyPath(),item.getModelObjectType());
+				log.debug("\t> {} ({})",item.getHierarchyPath(),item.getModelObjectType());
 
 
 				log.debug("-------------------------- RESULT NAME ES -------------" +  item.getWorkPlace().getName());
@@ -112,7 +112,7 @@ public class X47BAPIHelper {
 	}
 
 	/**
-	 * Obltiene una colleción de objetos {@link X47BAlarmEvent} de una entidad en un lapso de tiempo
+	 * Obltiene una colleciï¿½n de objetos {@link X47BAlarmEvent} de una entidad en un lapso de tiempo
 	 * @param resultItem
 	 * @return alarms
 	 */
@@ -120,7 +120,7 @@ public class X47BAPIHelper {
 
 		X47BAlarmEventSourceID alarmSourceID = null;
 
-		if (resultItem.getModelObjectType() == X47BWorkPlace.class) {
+		if (resultItem.getModelObjectType().equals(X47BWorkPlace.class)) {
 			alarmSourceID = resultItem.getWorkPlace().getId();
 		} else {
 			alarmSourceID = resultItem.getLocation().getId();
@@ -136,7 +136,7 @@ public class X47BAPIHelper {
 //  CARGA
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Carga de las organizaciónes
+	 * Carga de las organizaciï¿½nes
 	 * @return {@link Collection<X47BSummarizedOrganization>}
 	 */
 	public Collection<X47BSummarizedOrganization> loadOrganizations() {
@@ -146,7 +146,7 @@ public class X47BAPIHelper {
 		return orgSummaries;
 	}
 	/**
-	 * Carga de las localizaciones de una organización
+	 * Carga de las localizaciones de una organizaciï¿½n
 	 * @return {@link Collection<X47BSummarizedOrganization>}
 	 */
 	public Collection<X47BSummarizedOrgDivisionServiceLocation> loadLocations(final X47BOrganizationOID orgOID) {
@@ -165,7 +165,7 @@ public class X47BAPIHelper {
 	}
 
 	/**
-	 * Carga de los lugares de trabajo  de una localozación en una organización
+	 * Carga de los lugares de trabajo  de una localozaciï¿½n en una organizaciï¿½n
 	 * @return {@link Collection<X47BSummarizedOrganization>}
 	 */
 	public Collection<X47BSummarizedWorkPlace> loadWorkPlaces(final X47BOrgDivisionServiceLocationOID locOID) {
@@ -187,7 +187,7 @@ public class X47BAPIHelper {
 //  ORGANIZATIONS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Actualiza o crea una Organización
+	 * Actualiza o crea una Organizaciï¿½n
 	 * @param org {@link X47BOrganization} a guardar
 	 * @return {@link X47BOrganization}
 	 */
@@ -202,8 +202,8 @@ public class X47BAPIHelper {
 		}
 	}
 	/**
-	 * Carga una organización
-	 * @param orgOid oid de la Organización {@link X47BOrganizationOID}
+	 * Carga una organizaciï¿½n
+	 * @param orgOid oid de la Organizaciï¿½n {@link X47BOrganizationOID}
 	 * @return {@link X47BOrganization}
 	 */
 	public X47BOrganization loadOrganization(final X47BOrganizationOID orgOid) {
@@ -213,8 +213,8 @@ public class X47BAPIHelper {
 	}
 
 	/**
-	 * Elimina una organización
-	 * @param orgOid oid de la Organización {@link X47BOrganizationOID}
+	 * Elimina una organizaciï¿½n
+	 * @param orgOid oid de la Organizaciï¿½n {@link X47BOrganizationOID}
 	 * @return {@link X47BOrganization}
 	 */
 	public X47BOrganization deleteOrganization(final X47BOrganizationOID orgOid) {
@@ -229,8 +229,8 @@ public class X47BAPIHelper {
 	}
 
 	/**
-	 * Carga una organización por ID
-	 * @param orgID ID de la Organización {@link X47BOrganizationID}
+	 * Carga una organizaciï¿½n por ID
+	 * @param orgID ID de la Organizaciï¿½n {@link X47BOrganizationID}
 	 * @return {@link X47BOrganization}
 	 */
 	public X47BOrganization loadOrganizationByID(final X47BOrganizationID orgID) {
@@ -250,7 +250,7 @@ public class X47BAPIHelper {
 //  LOCATIONS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Carga de las organizaciónes
+	 * Carga de las organizaciï¿½nes
 	 * @return {@link Collection<X47BSummarizedOrganization>}
 	 */
 	public Collection<X47BSummarizedOrganization> loadLocations() {
@@ -277,8 +277,8 @@ public class X47BAPIHelper {
 	}
 
 	/**
-	 * Carga una localización
-	 * @param locOid oid de la Localización {@link X47BLocationOID}
+	 * Carga una localizaciï¿½n
+	 * @param locOid oid de la Localizaciï¿½n {@link X47BLocationOID}
 	 * @return {@link X47BLocationOID}
 	 */
 	public X47BOrgDivisionServiceLocation loadLocation(final X47BOrgDivisionServiceLocationOID locOid) {
@@ -293,8 +293,8 @@ public class X47BAPIHelper {
 	}
 
 	/**
-	 * Elimina una localización
-	 * @param locOid oid de la Organización {@link X47BLocationOID}
+	 * Elimina una localizaciï¿½n
+	 * @param locOid oid de la Organizaciï¿½n {@link X47BLocationOID}
 	 * @return {@link X47BLocationOID}
 	 */
 	public X47BOrgDivisionServiceLocation deleteLocation(final X47BOrgDivisionServiceLocationOID locOid) {
@@ -309,8 +309,8 @@ public class X47BAPIHelper {
 	}
 
 	/**
-	 * Carga una localización por ID
-	 * @param locationID ID de la localización {@link X47BLocationID}
+	 * Carga una localizaciï¿½n por ID
+	 * @param locationID ID de la localizaciï¿½n {@link X47BLocationID}
 	 * @return {@link X47BLocation}
 	 */
 	public X47BOrgDivisionServiceLocation loadLocationByID(final X47BOrgDivisionServiceLocationID locationID) {
@@ -353,7 +353,7 @@ public class X47BAPIHelper {
 	}
 	/**
 	 * Elimina una lugar de trabajo
-	 * @param workPlaceOid oid de la Organización {@link X47BWorkPlaceOID}
+	 * @param workPlaceOid oid de la Organizaciï¿½n {@link X47BWorkPlaceOID}
 	 * @return {@link X47BWorkPlaceOID}
 	 */
 	public X47BWorkPlace deleteWorkPlace(final X47BWorkPlaceOID workPlaceOid) {
@@ -369,12 +369,12 @@ public class X47BAPIHelper {
 
 	/**
 	 * Carga un lugar de trabajo por ID
-	 * @param workPlaceId ID de la Organización {@link X47BWorkPlaceID}
+	 * @param workPlaceId ID de la Organizaciï¿½n {@link X47BWorkPlaceID}
 	 * @return {@link X47BWorkPlace}
 	 */
 	public X47BWorkPlace loadWorkPlaceByID(final X47BWorkPlaceID workPlaceId) {
 		try {
-			return _api.workPlacesAPI()					
+			return _api.workPlacesAPI()
 							.getForCRUD()
 								.loadById(workPlaceId);
 

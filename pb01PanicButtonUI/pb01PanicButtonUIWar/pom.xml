@@ -49,7 +49,7 @@
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.ui.vaadin</groupId>
-			<artifactId>r01fVaadin8UIServerClasses</artifactId>
+			<artifactId>r01fVaadin7UIServerClasses</artifactId>
 			<version>${r01f.version}</version>
 		</dependency>
 		<!-- Filtering table addon -->

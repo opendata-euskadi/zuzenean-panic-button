@@ -8,14 +8,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Componente para introducir el ID de una Localización
+ * Componente para introducir el ID de una localizacio
  */
-public class X47BLocationIDComponent extends X47BOrganizationIDComponent {
-					
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3048492242471484175L;	
+public class X47BLocationIDComponent
+	 extends X47BOrganizationIDComponent {
+
+	private static final long serialVersionUID = 3048492242471484175L;
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Getter @Setter TextField locationId = new TextField();
 
 	public X47BLocationIDComponent(HorizontalLayout l) {
@@ -27,9 +28,9 @@ public class X47BLocationIDComponent extends X47BOrganizationIDComponent {
 		locationId.setRequired(true);
 		locationId.setData("ID");
 		l.addComponent(locationId);
-		
+
 	}
-	
-	
+
+
 
 }
