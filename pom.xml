@@ -23,6 +23,8 @@
 		<slf4j.version>1.7.25</slf4j.version>
 		<logback.verson>1.2.3</logback.verson>
 		<guice.version>4.2.1</guice.version>	<!-- TODO 4.2.2 version exists BUT somehow it cannot be loaded! -->
+
+		<pb01.version>0.0.1-SNAPSHOT</pb01.version>
 	</properties>
 
 <!-- ====================================================================== -->
@@ -38,7 +40,10 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-    </modules>
+    <module>pb01PanicButtonAPI</module>
+    <module>pb01PanicButtonCORE</module>
+    <module>pb01PanicButtonUI</module>
+  </modules>
 
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->

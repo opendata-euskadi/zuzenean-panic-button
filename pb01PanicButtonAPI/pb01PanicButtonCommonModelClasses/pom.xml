@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>pb01.api</groupId>
+		<artifactId>pb01PanicButtonAPI</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<groupId>pb01.api.common</groupId>
+	<name>pb01PanicButtonCommonModelClasses</name>
+	<artifactId>pb01PanicButtonCommonModelClasses</artifactId>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01F: BusinessServices                    -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.base</groupId>
+			<artifactId>r01fModelClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.properties</groupId>
+			<artifactId>r01fPropertiesInterfaceClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+	</dependencies>
+</project>

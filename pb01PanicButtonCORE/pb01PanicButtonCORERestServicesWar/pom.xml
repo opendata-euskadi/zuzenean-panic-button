@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>pb01.core</groupId>
+		<artifactId>pb01PanicButtonCORE</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>pb01PanicButtonCORERestServicesWar</name>
+	<artifactId>pb01PanicButtonCORERestServicesWar</artifactId>
+  	<packaging>war</packaging>
+
+	<url>/pb01PanicButtonCORERestServicesWar</url>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- PB01: CORE                                -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>pb01.core</groupId>
+			<artifactId>pb01PanicButtonCOREClasses</artifactId>
+			<version>${pb01.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- PB01: REST Services Common                -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>pb01.core.common</groupId>
+			<artifactId>pb01PanicButtonCORERestServicesCommonClasses</artifactId>
+			<version>${pb01.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01F: business services REST CORE         -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices.guice.core</groupId>
+			<artifactId>r01fBusinessRESTServicesCoreGuiceClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- ServletAPI                                -->
+		<!-- ///////////////////////////////////////// -->
+		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency,
+			 ... BUT it's SCOPE is PROVIDED so it has to be defined
+			     here again -->
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>3.1.0</version>
+		    <scope>provided</scope>		<!-- BEWARE!!! -->
+		</dependency>
+ 	</dependencies>
+
+<!-- ====================================================================== -->
+<!-- PLUGINS                                                                -->
+<!-- ====================================================================== -->
+  	<build>
+    	<finalName>pb01PanicButtonCORERestServicesWar</finalName>
+    	<pluginManagement>
+	     	<!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+	      	<plugins>
+	      		<!--
+	      			[0] - Clean
+	      			https://maven.apache.org/plugins/maven-clean-plugin/
+	      			The Clean Plugin is used when you want to remove files generated at build-time in a project's directory.
+	      		-->
+		        <plugin>
+		          	<artifactId>maven-clean-plugin</artifactId>
+		          	<version>3.1.0</version>
+		        </plugin>
+		        <!--
+		        	PHASES: see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging
+		        		[1] - process-resources
+		        		[2] - process-test-resources
+		        		[3] - test-compile
+		        		[4] - test
+		        		[5] - package
+		        		[6] - install
+		        		[7] - deploy
+		        -->
+	      		<!--
+	      			[1] - RESOURCES: https://maven.apache.org/plugins/maven-resources-plugin/
+	      				  The Resources Plugin handles the copying of project resources to the output directory
+	      			There are two different kinds of resources: main resources and test resources
+	      		-->
+		        <plugin>
+		          	<artifactId>maven-resources-plugin</artifactId>
+		          	<version>3.0.2</version>
+		        </plugin>
+	      		<!--
+	      			[2] - COMPILE: https://maven.apache.org/plugins/maven-compiler-plugin/
+	      				  The Compiler Plugin is used to compile the sources of your project.
+	      		-->
+		        <plugin>
+		          	<artifactId>maven-compiler-plugin</artifactId>
+		          	<version>3.8.0</version>
+		        </plugin>
+	      		<!--
+	      			[3] - TEST: https://maven.apache.org/surefire/maven-surefire-plugin/
+	      				  The Surefire Plugin is used during the test phase of the build lifecycle to execute the unit tests of an application
+	      		-->
+		        <plugin>
+		        	<artifactId>maven-surefire-plugin</artifactId>
+		          	<version>2.22.1</version>
+		        </plugin>
+	      		<!--
+	      			[4] - PACKAGE: https://maven.apache.org/plugins/maven-war-plugin/
+	      				  The WAR Plugin is responsible for collecting all artifact dependencies, classes and resources of the web application and packaging them into a web application archive
+	      		-->
+		        <plugin>
+		        	<artifactId>maven-war-plugin</artifactId>
+		          	<version>3.2.2</version>
+		        </plugin>
+	      		<!--
+	      			[5] - INSTALL: https://maven.apache.org/plugins/maven-war-plugin/
+	      				  The Install Plugin is used during the install phase to add artifact(s) to the local repository
+	      		-->
+		        <plugin>
+		        	<artifactId>maven-install-plugin</artifactId>
+		          	<version>2.5.2</version>
+		        </plugin>
+	      	</plugins>
+    	</pluginManagement>
+  	</build>
+</project>

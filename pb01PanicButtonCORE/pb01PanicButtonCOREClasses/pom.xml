@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>pb01.core</groupId>
+		<artifactId>pb01PanicButtonCORE</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>pb01PanicButtonCOREClasses</name>
+	<artifactId>pb01PanicButtonCOREClasses</artifactId>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- PB01: API                                 -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>pb01.api</groupId>
+			<artifactId>pb01PanicButtonClientAPIClasses</artifactId>
+			<version>${pb01.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: BusinessServices                     -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices.core.persistence.db</groupId>
+			<artifactId>r01fBusinessServicesCoreDBPersistenceGuiceClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.businessservices.guice.core</groupId>
+			<artifactId>r01fBusinessServicesCoreSearchPersistenceGuiceClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.businessservices.core.persistence.search</groupId>
+			<artifactId>r01fSearchDBClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: COREServices                         -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.coreservices.notifier</groupId>
+			<artifactId>r01fNotifierClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.coreservices.notifier</groupId>
+			<artifactId>r01fNotifierGuiceClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: EJIE > Latinia                       -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.ejie</groupId>
+			<artifactId>r01fLatiniaClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- Velocity                                  -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+		  	<artifactId>velocity-engine-core</artifactId>
+		  	<version>2.1</version>
+		</dependency>
+	</dependencies>
+</project>

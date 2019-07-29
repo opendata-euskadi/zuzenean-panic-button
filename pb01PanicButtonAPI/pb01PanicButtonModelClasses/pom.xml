@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>pb01.api</groupId>
+		<artifactId>pb01PanicButtonAPI</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<groupId>pb01.api</groupId>
+	<name>pb01PanicButtonModelClasses</name>
+	<artifactId>pb01PanicButtonModelClasses</artifactId>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- PB01: Common Model                        -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>pb01.api.common</groupId>
+			<artifactId>pb01PanicButtonCommonModelClasses</artifactId>
+			<version>${pb01.version}</version>
+		</dependency>
+	</dependencies>
+</project>
