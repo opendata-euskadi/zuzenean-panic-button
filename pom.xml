@@ -183,6 +183,24 @@
 			</snapshots>
 			<layout>default</layout>
 	    </repository>
+
+	    <!-- Vaadin addons repo -->
+	    <repository>
+			<id>VaadinAddOns</id>
+			<name>VaadinAddOns</name>
+			<url>http://vaadin.com/nexus/content/repositories/vaadin-addons/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>never</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
+			<layout>default</layout>
+	    </repository>
 	</repositories>
 
 

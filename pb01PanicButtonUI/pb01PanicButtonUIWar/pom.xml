@@ -52,6 +52,12 @@
 			<artifactId>r01fVaadin8UIServerClasses</artifactId>
 			<version>${r01f.version}</version>
 		</dependency>
+		<!-- Filtering table addon -->
+		<dependency>
+		    <groupId>org.vaadin.addons</groupId>
+		    <artifactId>filteringtable</artifactId>
+		    <version>1.0.0.v7</version>
+		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
 		<!-- ServletAPI                                -->
