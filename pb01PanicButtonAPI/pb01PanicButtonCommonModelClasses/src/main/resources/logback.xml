@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-	
+
 	<property name="appName" value="x47b" />
 	<jmxConfigurator contextName="x47b" />
 
 	<!-- Global -->
-	<include resource="r01fb/r01fbLogbackGlobal.xml"/>
-	<include resource="r01fb/r01fbLogback.xml"/>
+	<include resource="r01f/r01fLogbackGlobal.xml"/>
+	<include resource="r01f/r01fLogback.xml"/>
 
-	<!-- Specific -->	
-	<include resource="x47b/x47bLogback.xml"/>	
+	<!-- Specific -->
+	<include resource="x47b/x47bLogback.xml"/>
 </configuration>

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>pb01</groupId>
+		<artifactId>pb01PanicButton</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>pb01PanicButtonTestClasses</name>
+	<artifactId>pb01PanicButtonTestClasses</artifactId>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- PB01: API & CORE                          -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>pb01.api</groupId>
+			<artifactId>pb01PanicButtonClientAPIClasses</artifactId>
+			<version>${pb01.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>pb01.core</groupId>
+			<artifactId>pb01PanicButtonCOREClasses</artifactId>
+			<version>${pb01.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>pb01.core.config</groupId>
+			<artifactId>pb01PanicButtonConfig</artifactId>
+			<version>${pb01.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: TEST                                 -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices</groupId>
+			<artifactId>r01fBusinessServicesTestClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.config</groupId>
+			<artifactId>r01fConfig</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+	</dependencies>
+</project>

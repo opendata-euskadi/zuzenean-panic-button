@@ -23,5 +23,6 @@
   <module>pb01PanicButtonCOREClasses</module>
     <module>pb01PanicButtonCORERestServicesWar</module>
     <module>pb01PanicButtonCORERestServicesCommonClasses</module>
+    <module>pb01PanicButtonconfig</module>
   </modules>
 </project>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence unitType='DRIVER_MANAGER'>		<!-- The persistence unit to use -->
+
+	<!--
+	============================================================
+	PERSISTENCE UNIT
+	============================================================
+	-->
+	<!-- DriverManager DB connection -->
+	<unit type='DRIVER_MANAGER'
+		  targetDB='MySQL 5.6'>	<!-- The BBDD spec to use -->
+
+		<!-- Pool size: See more at: http://www.eclipse.org/eclipselink/documentation/2.5/jpa/extensions/p_connection_pool.htm -->
+		<!-- <connectionPool initial="1" min="16" max="16" /> -->
+		<connection vendor='MySQL'>
+			<javax.persistence.jdbc.user>pci</javax.persistence.jdbc.user>
+			<javax.persistence.jdbc.password>pci</javax.persistence.jdbc.password>
+			<javax.persistence.jdbc.driver>com.mysql.cj.jdbc.Driver</javax.persistence.jdbc.driver>
+			<javax.persistence.jdbc.url><![CDATA[jdbc:mysql://localhost:3306/pci?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC]]></javax.persistence.jdbc.url>
+		</connection>
+		<properties>
+			<!--
+				<eclipselink.weaving.changetracking>false</eclipselink.weaving.changetracking>
+				<eclipse.weaving>false</eclipse.weaving>
+			 -->
+		</properties>
+	</unit>
+
+	<!--
+	============================================================
+	SCHEMA GENERATION
+	============================================================
+	-->
+	<schema>
+		<generationMode>DROP_AND_CREATE_TABLES</generationMode>	<!-- NONE / DROP_AND_CREATE_TABLES / CREATE_OR_EXTEND_TABLES / DROP_TABLES / CREATE_TABLES -->
+																<!-- to manually delete the tables in mysql use:
+																			SET autocommit=0;
+    																		SET unique_checks=0;
+    																		SET foreign_key_checks=0;
+    																  before the drop table statements in order to tell mysql not to check the foreign key constraints -->
+    	<writeDDLScriptTo>d:/eclipse/temp_dev/{APPCODE}</writeDDLScriptTo>
+    	<properties vendor='MySQL'>
+			<!-- Enable full-text search in MySQL
+				 see
+				 	- MySQLPlatformExtension.java type
+				 	- http://wiki.eclipse.org/EclipseLink/UserGuide/JPA/Advanced_JPA_Development/Schema_Generation/Appending_strings_to_CREATE_TABLE_statements
+			 -->
+			<eclipselink.ddl-generation.table-creation-suffix>engine=InnoDB</eclipselink.ddl-generation.table-creation-suffix>
+    	</properties>
+	</schema>
+	<!--
+	==========================================================================
+	DEBUG: true = FINEST / false = INFO
+		   OFF / SEVERE / WARNING / INFO / CONFIG / FINE/ FINER / FINEST / ALL
+	==========================================================================
+	-->
+	<debugSQL>false</debugSQL>	<!-- trace of the jpa issued sql -->
+</persistence>

@@ -1,5 +1,7 @@
 package x47b.bootstrap.client;
 
+import javax.inject.Provider;
+
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 
@@ -16,18 +18,26 @@ import x47b.common.internal.X47BAppCodes;
 /**
  * Client-API bindings
  */
-public abstract class X47BClientBootstrapGuiceModuleBase 
+public abstract class X47BClientBootstrapGuiceModuleBase
  	          extends ServicesClientAPIBootstrapGuiceModuleBase 	// this is a client guice bindings module
            implements HasMoreBindings {
 /////////////////////////////////////////////////////////////////////////////////////////
+//	FIELDS
+/////////////////////////////////////////////////////////////////////////////////////////
+	private final Provider<SecurityContext> _securityContextProvider;
+
+/////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
-/////////////////////////////////////////////////////////////////////////////////////////	
-	protected X47BClientBootstrapGuiceModuleBase(final ServicesClientGuiceBootstrapConfig servicesClientBootstrapCfg) {
+/////////////////////////////////////////////////////////////////////////////////////////
+	protected X47BClientBootstrapGuiceModuleBase(final ServicesClientGuiceBootstrapConfig servicesClientBootstrapCfg,
+												 final Provider<SecurityContext> securityContextProvider) {
 		super(servicesClientBootstrapCfg);
+		_securityContextProvider = securityContextProvider != null ? securityContextProvider
+																   : new X47BMockSecurityContextProvider();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  GUICE MODULE
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void configureMoreBindings(final Binder binder) {
 		_bindModelObjectsMarshaller(binder);
@@ -59,7 +69,7 @@ public abstract class X47BClientBootstrapGuiceModuleBase
 //  MODEL EXTENSIONS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * @param binder 
+	 * @param binder
 	 * @return bindings for the model extensions
 	 */
 	private static void _bindModelObjectExtensionsModule(final Binder binder) {

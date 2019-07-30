@@ -43,6 +43,7 @@
     <module>pb01PanicButtonAPI</module>
     <module>pb01PanicButtonCORE</module>
     <module>pb01PanicButtonUI</module>
+	<module>pb01PanicButtonTestClasses</module>
   </modules>
 
 <!-- ====================================================================== -->
