@@ -2,13 +2,13 @@ package pb01.ui.vaadin.org;
 
 import lombok.experimental.Accessors;
 import r01f.locale.Language;
-import r01f.ui.vaadin.viewobject.VaadinViewObjectBase;
+import r01f.ui.viewobject.UIViewObjectBase;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.org.X47BOrganization;
 
 @Accessors(prefix="_")
 public class PB01UIViewOrganization
-	 extends VaadinViewObjectBase<X47BOrganization> {
+	 extends UIViewObjectBase<X47BOrganization> {
 
 	private static final long serialVersionUID = -2501624299666610701L;
 

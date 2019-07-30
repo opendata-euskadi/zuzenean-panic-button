@@ -81,8 +81,8 @@ public class PB01UIOrgDetailView
 		// bind view components' fields to view object's fields
 		// using @VaadinViewField annotation
 		VaadinViews.using(_binder,_i18n)
-					.bindComponentsOf(this)
-					.toViewObjectOfType(PB01UIViewOrganization.class);
+				   .bindComponentsOf(this)
+				   .toViewObjectOfType(PB01UIViewOrganization.class);
 
 		// read the bean
 		_binder.readBean(obj);

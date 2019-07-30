@@ -12,13 +12,11 @@ import pb01.ui.i18n.PB01UII18NManager;
 import pb01.ui.vaadin.PB01UIVaadinServlet;
 import pb01.ui.vaadin.PB01UIVaadinUIProvider;
 import pb01.ui.vaadin.PB01UIVaadinViewProvider;
+import pb01.ui.vaadin.view.PB01MainViewCOREMediator;
+import pb01.ui.vaadin.view.PB01MainViewPresenter;
 import r01f.bootstrap.services.config.core.ServicesCoreBootstrapConfigWhenServletExposed;
 import r01f.bootstrap.services.core.ServletImplementedServicesCoreBootstrapGuiceModuleBase;
 import r01f.ui.i18n.UII18NService;
-import r01ui.demo.vaadin.person.R01UIPersonCOREMediator;
-import r01ui.demo.vaadin.person.R01UIPersonDeleteConfirmPresenter;
-import r01ui.demo.vaadin.person.R01UIPersonDetailPresenter;
-import r01ui.demo.vaadin.person.R01UIPersonListPresenter;
 
 @Slf4j
 public class PB01UIWarBootstrapGuiceModule
@@ -72,17 +70,13 @@ public class PB01UIWarBootstrapGuiceModule
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	private void _bindCOREMediators(final Binder binder) {
-		// person
-		binder.bind(R01UIPersonCOREMediator.class)
+		// main
+		binder.bind(PB01MainViewCOREMediator.class)
 			  .in(Singleton.class);
 	}
 	private void _bindPresenters(final Binder binder) {
 		// person
-		binder.bind(R01UIPersonListPresenter.class)
-			  .in(Singleton.class);
-		binder.bind(R01UIPersonDetailPresenter.class)
-			  .in(Singleton.class);
-		binder.bind(R01UIPersonDeleteConfirmPresenter.class)
+		binder.bind(PB01MainViewPresenter.class)
 			  .in(Singleton.class);
 	}
 }

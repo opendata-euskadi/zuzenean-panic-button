@@ -6,7 +6,7 @@ import com.google.inject.Injector;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
 
-import pb01.ui.vaadin.org.PB01UIOrgDetailView;
+import pb01.ui.vaadin.view.PB01MainView;
 import r01f.util.types.Strings;
 
 public class PB01UIVaadinViewProvider
@@ -37,7 +37,7 @@ public class PB01UIVaadinViewProvider
 		View outView = null;
 		if ( Strings.isNullOrEmpty(viewName)
 		  || PB01UIVaadinViews.MAIN.is(viewName) ) {
-			outView = _injector.getInstance(PB01UIOrgDetailView.class);
+			outView = _injector.getInstance(PB01MainView.class);
 		}
 		else {
 			throw new IllegalArgumentException(viewName + " is NOT a vaadin view!");
