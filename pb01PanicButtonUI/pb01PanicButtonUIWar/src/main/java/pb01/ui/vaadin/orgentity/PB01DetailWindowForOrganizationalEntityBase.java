@@ -71,9 +71,11 @@ public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47B
 		_detailView = detailViewFactory.from(i18n);
 
 		// OK | CANCEL | DELETE
-		_btnAcepCancDelete = new PB01AcceptCancelDeleteButtonsLayout( i18n );
+		_btnAcepCancDelete = new PB01AcceptCancelDeleteButtonsLayout(i18n,
+																	 // check the [delete] puzzle
+																	 txt -> txt.equalsIgnoreCase(_viewObj.getId().asString()));
 		// - CANCEL
-		_btnAcepCancDelete.addCancelButtonClickListner(event -> PB01DetailWindowForOrganizationalEntityBase.this.close() );
+		_btnAcepCancDelete.addCancelButtonClickListner(event -> PB01DetailWindowForOrganizationalEntityBase.this.close());
 		// - OK
 		_btnAcepCancDelete.addAcceptButtonClickListner(event -> {
 																	// [1] - collect ui controls values into the view object
@@ -87,16 +89,10 @@ public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47B
 																	}
 																});
 		// - DELETE
-//		_btnAcepCancDelete.getDeleteButton()
-//					.addClickListener((event) -> {
-//													// set the delete confirm dialog obj oid
-//													_deleteConfirmDialog.setObjToBeDeletedOid(_viewObj.getOid(),
-//																							  _deleteSubscriber);
-//
-//													// show the dialog
-//													UI.getCurrent()
-//													  .addWindow( _deleteConfirmDialog );
-//												  });
+		_btnAcepCancDelete.addDeleteButtonClickListener(event -> {
+																		_detailViewPresenter.onDeleteRequested(_viewObj.getOid(),
+																											   _deleteSubscriber);
+																 });
 
 		// Layout
 		VerticalLayout layout = new VerticalLayout();

@@ -202,6 +202,7 @@ public class PB01MainView
 		_refreshOrgDivSrvcLocsCombo(null);
 	}
 	private void _refreshOrganizationsCombo() {
+		_selectedOrgRef = null;
 		_orgsCmb.setValue(null);
 
 		log.info("...refresh organizations combo");
@@ -223,15 +224,21 @@ public class PB01MainView
 		// close the popup
 		_orgDetailPopUp.close();
 	}
-	private void _onOrganizationSaveError(final Throwable th) {
-		log.error("Error while saving a new org: {}",
-		  		  th.getMessage(),th);
+	private void _onOrganizationDeleted(final PB01ViewObjForOrganization viewObj) {
+		// refresh the combos
+		_refreshOrganizationsCombo();
+		_refreshOrgDivsCombo(null);
+		_refreshOrgDivSrvcsCombo(null);
+		_refreshOrgDivSrvcLocsCombo(null);
+
+		// close the popup
+		_orgDetailPopUp.close();
 	}
 	private void _showOrganizationDetailViewForCreatingNewRecord() {
 		// after save at the detail view the action to be done is the same: refresh the list & close the detail view
 		_orgDetailPopUp.forCreating(// save subscriber: executed after save: refresh the organizations combo
 						 		    UIPresenterSubscriber.from(PB01MainView.this::_onOrganizationSaved,			// OK subscriber
-						 		    						   PB01MainView.this::_onOrganizationSaveError)); 	// Error subscriber
+						 		    						   PB01MainView.this::_onPersistenceError)); 	// Error subscriber
 		UI.getCurrent()
 		  .addWindow(_orgDetailPopUp);
 	}
@@ -242,10 +249,11 @@ public class PB01MainView
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
 		_orgDetailPopUp.forEditing(orgOid,
 						 		   // save subscriber: executed after save: refresh the organizations combo
-						 		   UIPresenterSubscriber.from(PB01MainView.this::_onOrganizationSaved,			// OK subscriber
-						 		    						  PB01MainView.this::_onOrganizationSaveError), 	// Error subscriber
+						 		   UIPresenterSubscriber.from(PB01MainView.this::_onOrganizationSaved,	// OK subscriber
+						 		    						  PB01MainView.this::_onPersistenceError), 	// Error subscriber
 						 		   // delete subscriber: executed after delete
-						 		   UIPresenterSubscriber.log(log));
+						 		   UIPresenterSubscriber.from(PB01MainView.this::_onOrganizationDeleted,// OK subscriber
+						 		    						  PB01MainView.this::_onPersistenceError));	// Error subscriber
 		UI.getCurrent()
 		  .addWindow(_orgDetailPopUp);
 	}
@@ -269,7 +277,9 @@ public class PB01MainView
 		_refreshOrgDivSrvcLocsCombo(null);
 	}
 	private void _refreshOrgDivsCombo(final X47BOrganizationOID orgOid) {
+		_selectedOrgDivRef = null;
 		_orgDivsCmb.setValue(null);
+
 		if (orgOid == null) {
 			_orgDivsCmb.setDataProvider(DataProvider.ofCollection(Lists.newArrayList()));
 		} else {
@@ -296,10 +306,15 @@ public class PB01MainView
 		// close the popup window
 		_orgDivDetailPopUp.close();
 	}
-	private void _onOrgDivSaveError(final Throwable th) {
-		log.error("Error while saving a new org division for org={}/{}: {}",
-				  _selectedOrgRef.getOid(),_selectedOrgRef.getId(),
-		  		  th.getMessage(),th);
+	private void _onOrgDivDeleted(final PB01ViewObjForOrgDivision viewObj) {
+		// refresh the org divisions combo
+		_refreshOrgDivsCombo(_selectedOrgRef.getOid());
+		_refreshOrgDivSrvcsCombo(null);
+		_refreshOrgDivSrvcLocsCombo(null);
+
+
+		// close the popup
+		_orgDivDetailPopUp.close();
 	}
 	private void _showOrgDivDetailViewForCreatingNewRecord() {
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
@@ -307,7 +322,7 @@ public class PB01MainView
 		_orgDivDetailPopUp.forCreating(_selectedOrgRef,
 							 		   // save subscriber: executed after save: refresh the organizations combo
 							 		   UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSaved,		// OK subscriber
-						 		    						      PB01MainView.this::_onOrgDivSaveError)); 	// Error subscriber,
+						 		    						      PB01MainView.this::_onPersistenceError)); 	// Error subscriber,
 		UI.getCurrent()
 		  .addWindow(_orgDivDetailPopUp);
 	}
@@ -318,10 +333,11 @@ public class PB01MainView
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
 		_orgDivDetailPopUp.forEditing(orgDivOid,
 							 		  // save subscriber: executed after save: refresh the organizations combo
-							 		  UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSaved,		// OK subscriber
-						 		    						     PB01MainView.this::_onOrgDivSaveError), 	// Error subscriber,
+							 		  UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSaved,			// OK subscriber
+						 		    						     PB01MainView.this::_onPersistenceError), 	// Error subscriber,
 							 		  // delete subscriber: executed after delete
-							 		  UIPresenterSubscriber.log(log));
+							 		  UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivDeleted,		// OK subscriber
+						 		    						     PB01MainView.this::_onPersistenceError)); 	// Error subscriber,
 		UI.getCurrent()
 		  .addWindow(_orgDivDetailPopUp);
 	}
@@ -343,7 +359,9 @@ public class PB01MainView
 		_refreshOrgDivSrvcLocsCombo(_selectedOrgDivSrvcRef != null ? _selectedOrgDivSrvcRef.getOid() : null);
 	}
 	private void _refreshOrgDivSrvcsCombo(final X47BOrgDivisionOID orgDivOid) {
+		_selectedOrgDivSrvcRef = null;
 		_orgDivSrvcsCmb.setValue(null);
+
 		if (orgDivOid == null) {
 			_orgDivSrvcsCmb.setDataProvider(DataProvider.ofCollection(Lists.newArrayList()));
 		} else {
@@ -370,11 +388,13 @@ public class PB01MainView
 		// close the popup window
 		_orgDivSrvcDetailPopUp.close();
 	}
-	private void _onOrgDivSrvcSaveError(final Throwable th) {
-		log.error("Error while saving a new org division service for org={}/{} division={}/{}: {}",
-				  _selectedOrgRef.getOid(),_selectedOrgRef.getId(),
-				  _selectedOrgDivRef.getOid(),_selectedOrgDivRef.getId(),
-		  		  th.getMessage(),th);
+	private void _onOrgDivSrvcDeleted(final PB01ViewObjForOrgDivisionService viewObj) {
+		// refresh the org division services combo
+		_refreshOrgDivSrvcsCombo(_selectedOrgDivRef.getOid());
+		_refreshOrgDivSrvcLocsCombo(null);
+
+		// close the popup
+		_orgDivSrvcDetailPopUp.close();
 	}
 	private void _showOrgDivSrvcDetailViewForCreatingNewRecord() {
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
@@ -383,7 +403,7 @@ public class PB01MainView
 		_orgDivSrvcDetailPopUp.forCreating(_selectedOrgRef,_selectedOrgDivRef,
 							 		   	   // save subscriber: executed after save: refresh the organizations combo
 							 		   	   UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSrvcSaved,		// OK subscriber
-						 		    						          PB01MainView.this::_onOrgDivSrvcSaveError)); 	// Error subscriber,
+						 		    						          PB01MainView.this::_onPersistenceError)); 	// Error subscriber
 		UI.getCurrent()
 		  .addWindow(_orgDivSrvcDetailPopUp);
 	}
@@ -395,9 +415,10 @@ public class PB01MainView
 		_orgDivSrvcDetailPopUp.forEditing(orgDivSrvcOid,
 							 		  	  // save subscriber: executed after save: refresh the organizations combo
 								 		  UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSrvcSaved,		// OK subscriber
-							 		    						     PB01MainView.this::_onOrgDivSrvcSaveError),// Error subscriber,
+							 		    						     PB01MainView.this::_onPersistenceError),// Error subscriber,
 								 		  // delete subscriber: executed after delete
-								 		  UIPresenterSubscriber.log(log));
+								 		  UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSrvcDeleted,	// OK subscriber
+						 		    						         PB01MainView.this::_onPersistenceError)); 	// Error subscriber
 		UI.getCurrent()
 		  .addWindow(_orgDivSrvcDetailPopUp);
 	}
@@ -414,7 +435,9 @@ public class PB01MainView
 		_orgDivSrvcLocEditButton.setEnabled(_selectedOrgDivSrvcLocRef != null);
 	}
 	private void _refreshOrgDivSrvcLocsCombo(final X47BOrgDivisionServiceOID orgDivSrvcOid) {
+		_selectedOrgDivSrvcLocRef = null;
 		_orgDivSrvcLocsCmb.setValue(null);
+
 		if (orgDivSrvcOid == null) {
 			_orgDivSrvcLocsCmb.setDataProvider(DataProvider.ofCollection(Lists.newArrayList()));
 		} else {
@@ -441,12 +464,12 @@ public class PB01MainView
 		// close the popup window
 		_orgDivSrvcLocDetailPopUp.close();
 	}
-	private void _onOrgDivSrvcLocSaveError(final Throwable th) {
-		log.error("Error while saving a new org division service location for org={}/{} division={}/{} service={}/{}: {}",
-				  _selectedOrgRef.getOid(),_selectedOrgRef.getId(),
-				  _selectedOrgDivRef.getOid(),_selectedOrgDivRef.getId(),
-				  _selectedOrgDivSrvcRef.getOid(),_selectedOrgDivSrvcRef.getId(),
-		  		  th.getMessage(),th);
+	private void _onOrgDivSrvcLocDeleted(final PB01ViewObjForOrgDivisionServiceLocation viewObj) {
+		// refresh the org division service location combo
+		_refreshOrgDivSrvcLocsCombo(_selectedOrgDivSrvcRef.getOid());
+
+		// close the popup
+		_orgDivSrvcLocDetailPopUp.close();
 	}
 	private void _showOrgDivSrvcLocDetailViewForCreatingNewRecord() {
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
@@ -456,7 +479,7 @@ public class PB01MainView
 		_orgDivSrvcLocDetailPopUp.forCreating(_selectedOrgRef,_selectedOrgDivRef,_selectedOrgDivSrvcRef,
 								 		   	  // save subscriber: executed after save: refresh the organizations combo
 								 		   	  UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSrvcLocSaved,		// OK subscriber
-							 		    						         PB01MainView.this::_onOrgDivSrvcLocSaveError));// Error subscriber,
+							 		    						         PB01MainView.this::_onPersistenceError));		// Error subscriber
 		UI.getCurrent()
 		  .addWindow(_orgDivSrvcLocDetailPopUp);
 	}
@@ -468,10 +491,18 @@ public class PB01MainView
 		_orgDivSrvcLocDetailPopUp.forEditing(orgDivSrvcLocOid,
 							 		  	  	 // save subscriber: executed after save: refresh the organizations combo
 								 		  	 UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSrvcLocSaved,		// OK subscriber
-							 		    						        PB01MainView.this::_onOrgDivSrvcLocSaveError),// Error subscriber,
+							 		    						        PB01MainView.this::_onPersistenceError),		// Error subscriber,
 								 		  	 // delete subscriber: executed after delete
-								 		  	 UIPresenterSubscriber.log(log));
+								 		  	 UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSrvcLocDeleted,		// OK subscriber
+							 		    						        PB01MainView.this::_onPersistenceError));		// Error subscriber
 		UI.getCurrent()
 		  .addWindow(_orgDivSrvcLocDetailPopUp);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+	private void _onPersistenceError(final Throwable th) {
+		log.error("Error while saving an entity: {}",
+		  		  th.getMessage(),th);
 	}
 }
