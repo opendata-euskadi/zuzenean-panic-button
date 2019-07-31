@@ -1,7 +1,6 @@
 package pb01.ui.vaadin.orgentity;
 
 import lombok.extern.slf4j.Slf4j;
-import r01f.patterns.Factory;
 import r01f.types.dirtytrack.DirtyTrackAdapter;
 import r01f.ui.coremediator.UICOREMediatorForPersistableObjectBase;
 import r01f.ui.coremediator.UICOREMediatorSubscriber;
@@ -14,16 +13,10 @@ public abstract class PB01COREMediatorForOrganizationalEntityBase<O extends X47B
 	 		  extends UICOREMediatorForPersistableObjectBase<O,M,
 	 		  												 X47BPanicButtonClientAPI> {
 /////////////////////////////////////////////////////////////////////////////////////////
-//	FIELDS
-/////////////////////////////////////////////////////////////////////////////////////////
-	private final Factory<M> _modelObjFactory;
-/////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	public PB01COREMediatorForOrganizationalEntityBase(final X47BPanicButtonClientAPI api,
-													   final Factory<M> modelObjFactory) {
+	public PB01COREMediatorForOrganizationalEntityBase(final X47BPanicButtonClientAPI api) {
 		super(api);
-		_modelObjFactory = modelObjFactory;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CRUD
@@ -31,16 +24,11 @@ public abstract class PB01COREMediatorForOrganizationalEntityBase<O extends X47B
 	@Override
 	public void load(final O oid,
 					 final UICOREMediatorSubscriber<M> subscriber) {
-		log.info("Load object with oid={} ({})",
-				 oid,
-				 oid == null ? "EXISTING" : "NEW");
+		log.info("Load object with oid={}",
+				 oid);
 		M loadedObj = null;
 		try {
-			if (oid == null) {
-				loadedObj = _modelObjFactory.create();	// just create a bare new obj
-			} else {
-				loadedObj = this.load(oid);				// load the required object
-			}
+			loadedObj = this.load(oid);				// load the required object
 			// return
 			subscriber.onSuccess(loadedObj);
 		} catch(Throwable th) {

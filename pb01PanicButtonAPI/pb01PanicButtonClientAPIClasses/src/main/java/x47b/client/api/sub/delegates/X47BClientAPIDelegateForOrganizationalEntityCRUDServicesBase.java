@@ -66,9 +66,7 @@ public class X47BClientAPIDelegateForOrganizationalEntityCRUDServicesBase<O exte
 		boolean newObj = DirtyTrackAdapter.adapt(record)
 										  .getTrackingStatus()
 										  .isThisNew();
-		if (newObj) {
-			if (record.getOid() != null) throw new IllegalStateException();
-
+		if (newObj && record.getOid() == null) {
 			// create a new oid for the object (this could also be done at the API or core side)
 			O newOid = _oidFactory.create();
 			record.setOid(newOid);

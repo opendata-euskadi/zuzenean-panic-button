@@ -15,7 +15,10 @@ import pb01.ui.vaadin.view.components.PB01VaadinComboItem;
 import r01f.locale.Language;
 import r01f.ui.presenter.UIPresenter;
 import r01f.ui.presenter.UIPresenterSubscriber;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
+import x47b.model.org.summaries.X47BSummarizedOrganizationalObject;
 
 @Singleton
 public class PB01MainViewPresenter
@@ -54,13 +57,7 @@ public class PB01MainViewPresenter
                                       final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
     	_coreMediatorForOrg.loadAllOrgs(lang,
     							  		// just transform the Collection<M> into a Collection<PB01VaadinComboItem>
-	    							    orgs -> {
-		    								  		Collection<PB01VaadinComboItem> cmbItems = FluentIterable.from(orgs)
-	    							  																.transform(org -> PB01VaadinComboItem.FROM_OBJ_SUMMARY.apply(org))
-	    							  																.toList();
-		    								  		// tell the view
-		    								  		presenterSubscriber.onSuccess(cmbItems);
-	    							  		  	});
+	    							    orgs -> _onSuccessLoadingOrgEntitySumms(orgs,presenterSubscriber));
     }
     public void onOrgDivisionsComboDataNeeded(final X47BOrganizationOID orgOid,
     										  final Language lang,
@@ -68,12 +65,33 @@ public class PB01MainViewPresenter
     	_coreMediatorForOrgDiv.loadOrgDivisions(orgOid,
     											lang,
     											// just transform the Collection<M> into a Collection<PB01VaadinComboItem>
-    											divs -> {
-				    								  		Collection<PB01VaadinComboItem> cmbItems = FluentIterable.from(divs)
-			    							  																.transform(div -> PB01VaadinComboItem.FROM_OBJ_SUMMARY.apply(div))
-			    							  																.toList();
-				    								  		// tell the view
-				    								  		presenterSubscriber.onSuccess(cmbItems);
-			    							  		  	 });
+    											divs -> _onSuccessLoadingOrgEntitySumms(divs,presenterSubscriber));
+    }
+    public void onOrgDivisionServicesComboDataNeeded(final X47BOrgDivisionOID orgDivOid,
+    										  		 final Language lang,
+    										  		 final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
+    	_coreMediatorForOrgDivSrvc.loadOrgDivisonServices(orgDivOid,
+    													  lang,
+		    											  // just transform the Collection<M> into a Collection<PB01VaadinComboItem>
+		    											  srvcs -> _onSuccessLoadingOrgEntitySumms(srvcs,presenterSubscriber));
+    }
+    public void onOrgDivisionServiceLocationsComboDataNeeded(final X47BOrgDivisionServiceOID orgDivSrvcOid,
+    										  		 		 final Language lang,
+    										  		 		 final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
+    	_coreMediatorForOrgDivSrvcLoc.loadOrgDivisionServiceLocations(orgDivSrvcOid,
+    													  			  lang,
+					    											  // just transform the Collection<M> into a Collection<PB01VaadinComboItem>
+					    											  locs -> _onSuccessLoadingOrgEntitySumms(locs,presenterSubscriber));
+    }
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+    private <S extends X47BSummarizedOrganizationalObject<?,?,?>> void _onSuccessLoadingOrgEntitySumms(final Collection<S> sums,
+    																								   final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
+		Collection<PB01VaadinComboItem> cmbItems = FluentIterable.from(sums)
+														.transform(srvc -> PB01VaadinComboItem.FROM_OBJ_SUMMARY.apply(srvc))
+														.toList();
+		// tell the view
+		presenterSubscriber.onSuccess(cmbItems);
     }
 }

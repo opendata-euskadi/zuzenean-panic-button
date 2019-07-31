@@ -73,21 +73,19 @@ public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47B
 		// OK | CANCEL | DELETE
 		_btnAcepCancDelete = new PB01AcceptCancelDeleteButtonsLayout( i18n );
 		// - CANCEL
-		_btnAcepCancDelete.getCancelButton()
-			.addClickListener(event -> PB01DetailWindowForOrganizationalEntityBase.this.close() );
+		_btnAcepCancDelete.addCancelButtonClickListner(event -> PB01DetailWindowForOrganizationalEntityBase.this.close() );
 		// - OK
-		_btnAcepCancDelete.getAcceptButton()
-			.addClickListener(event -> {
-											// [1] - collect ui controls values into the view object
-											if (_detailView.writeBeanIfValid(_viewObj)) {
-												// [2] - tell the presenter to save
-												M obj = _viewObj.getWrappedModelObject();
-												_detailViewPresenter.onSaveRequested(obj,
-																		   			 _saveSubscriber);
-											} else {
-												Notification.show( _i18n.getMessage("notification.empty.fields") );
-											}
-										});
+		_btnAcepCancDelete.addAcceptButtonClickListner(event -> {
+																	// [1] - collect ui controls values into the view object
+																	if (_detailView.writeBeanIfValid(_viewObj)) {
+																		// [2] - tell the presenter to save
+																		M obj = _viewObj.getWrappedModelObject();
+																		_detailViewPresenter.onSaveRequested(obj,
+																								   			 _saveSubscriber);
+																	} else {
+																		Notification.show(_i18n.getMessage("notification.empty.fields"));
+																	}
+																});
 		// - DELETE
 //		_btnAcepCancDelete.getDeleteButton()
 //					.addClickListener((event) -> {
@@ -111,9 +109,11 @@ public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47B
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	PUBLIC ENTRY POINT
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void goTo(final O oid,
-			  		 final UIPresenterSubscriber<V> saveSubscriber,			// what to do after saving
-			  		 final UIPresenterSubscriber<V> deleteSubscriber) {		// what to do after deleting
+	public void forEditing(final O oid,
+			  		 	   final UIPresenterSubscriber<V> saveSubscriber,			// what to do after saving
+			  		 	   final UIPresenterSubscriber<V> deleteSubscriber) {		// what to do after deleting
+		if (oid == null) throw new IllegalArgumentException("An oid is needed to edit a record!");
+
 		_saveSubscriber = saveSubscriber;
 		_deleteSubscriber = deleteSubscriber;
 
@@ -127,16 +127,10 @@ public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47B
 																	_viewObj = viewObj;		// store the view object
 
 																	// bind the view object to the view
-																	_detailView.bindViewTo(viewObj);
+																	_detailView.bindViewTo(_viewObj);
 
 																	// set the buttons status
-																	if ( viewObj.getOid() == null ) {
-																		_btnAcepCancDelete.getDeleteButton()
-																						  .setVisible( false );
-																	} else {
-																		_btnAcepCancDelete.getDeleteButton()
-																						  .setVisible( true );
-																	}
+																	_btnAcepCancDelete.setEditingExistingRecordStatus();
 												   				},
 												   	// on error
 												   	th -> {

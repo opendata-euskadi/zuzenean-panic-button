@@ -7,6 +7,7 @@ import r01f.ui.vaadin.view.VaadinViewMultiValueItem;
 import r01f.util.types.Strings;
 import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.org.X47BOrganizationalObjectRef;
 import x47b.model.org.X47BOrganizationalPersistableObject;
 import x47b.model.org.summaries.X47BSummarizedOrganizationalObject;
 
@@ -44,11 +45,17 @@ public class PB01VaadinComboItem
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public <O extends X47BPersistableObjectOID> O getOidAs(final FactoryFrom<String,O> factory) {
+	public <O extends X47BPersistableObjectOID> O getOidUsing(final FactoryFrom<String,O> factory) {
 		return factory.from(_id.split("#")[0]);
 	}
-	public <I extends X47BPersistableObjectID<?>> I getIdAs(final FactoryFrom<String,I> factory) {
+	public <I extends X47BPersistableObjectID<?>> I getIdUsing(final FactoryFrom<String,I> factory) {
 		return factory.from(_id.split("#")[1]);
+	}
+	public <O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>> X47BOrganizationalObjectRef<O,I> getOrgEntityRefUsing(final FactoryFrom<String,O> oidFactory,
+																																	 	   final FactoryFrom<String,I> idFactory) {
+		O oid = this.getOidUsing(oidFactory);
+		I id = this.getIdUsing(idFactory);
+		return new X47BOrganizationalObjectRef<O,I>(oid,id);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	TRANSFORMS AN ORGANIZATIONAL ENTITY SUMMARY INTO A Vaadin COMBO ITEM

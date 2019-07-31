@@ -24,8 +24,7 @@ public class PB01COREMediatorForOrgDivisionServiceLocation
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
 	public PB01COREMediatorForOrgDivisionServiceLocation(final X47BPanicButtonClientAPI api) {
-		super(api,
-			  () -> new X47BOrgDivisionServiceLocation());	// factory
+		super(api);	// factory
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
