@@ -7,12 +7,12 @@ import r01f.model.persistence.FindResultBuilder;
 import r01f.persistence.db.DBFindForModelObject;
 import r01f.securitycontext.SecurityContext;
 import x47b.api.interfaces.X47BFindServicesForOrganizationalModelObjectBase;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
-import x47b.model.org.X47BOrganizationalModelObject;
+import x47b.model.org.X47BOrganizationalPersistableObject;
 
 
-abstract class X47BFindServicesDelegateForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends X47BOrganizationalModelObject<O,ID>>
+abstract class X47BFindServicesDelegateForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends X47BOrganizationalPersistableObject<O,ID>>
 	   extends X47BFindServicesDelegateBase<O,ID,M>
     implements X47BFindServicesForOrganizationalModelObjectBase<O,ID,M> {
 

@@ -20,12 +20,12 @@ import r01f.ui.i18n.UIMessageBundle;
 import r01f.util.types.locale.Languages;
 import x47b.common.internal.X47BAppCodes;
 
-@Theme("demoStyles")	// see [WebContent]/VAADIN/themes/demoStyles
-						// check the styles.scss and ensure it's like:
-						//		.demoStyles {
-						// 			@include addons;
-  						//			@include demoStyles;
-						//		}
+@Theme("panicButtonStyles")	// see [WebContent]/VAADIN/themes/demoStyles
+							// check the styles.scss and ensure it's like:
+							//		.demoStyles {
+							// 			@include addons;
+  							//			@include demoStyles;
+							//		}
 @UIMessageBundle(basename={X47BAppCodes.UI_APPCODE_STR})	// loads i18n resource bundles from x47b.i18n
 public class PB01UIVaadinUI
 	 extends UI {

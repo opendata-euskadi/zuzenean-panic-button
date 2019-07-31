@@ -10,10 +10,10 @@ import r01f.model.persistence.FindResult;
 import r01f.rest.RESTOperationsResponseBuilder;
 import r01f.securitycontext.SecurityContext;
 import x47b.api.interfaces.X47BFindServicesForOrganizationalModelObjectBase;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 
-public class X47BRESTFindDelegateBaseForOrganizationalEntity<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,
+public class X47BRESTFindDelegateBaseForOrganizationalEntity<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,
 															 M extends PersistableModelObject<O>>
 	 extends X47BRESTFindDelegateBaseForEntity<O,ID,M> {
 /////////////////////////////////////////////////////////////////////////////////////////

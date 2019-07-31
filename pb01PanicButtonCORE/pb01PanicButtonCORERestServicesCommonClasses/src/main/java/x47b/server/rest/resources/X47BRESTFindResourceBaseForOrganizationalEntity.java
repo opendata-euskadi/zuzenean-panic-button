@@ -14,7 +14,7 @@ import r01f.model.PersistableModelObject;
 import r01f.model.persistence.PersistenceException;
 import r01f.rest.resources.delegates.RESTDelegate;
 import x47b.api.context.X47BSecurityContext;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 import x47b.server.rest.resources.delegates.X47BRESTFindDelegateBaseForOrganizationalEntity;
 
@@ -25,7 +25,7 @@ import x47b.server.rest.resources.delegates.X47BRESTFindDelegateBaseForOrganizat
  * Log: see web.xml
  */
 @Accessors(prefix="_")
-public class X47BRESTFindResourceBaseForOrganizationalEntity<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,
+public class X47BRESTFindResourceBaseForOrganizationalEntity<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,
 									  						 M extends PersistableModelObject<O>>
 	 extends X47BRESTFindResourceBaseForEntity<O,ID,M> {
 /////////////////////////////////////////////////////////////////////////////////////////

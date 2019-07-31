@@ -12,7 +12,7 @@ import r01f.model.search.SearchFilterForModelObjectBase;
 import r01f.model.search.query.BooleanQueryClause.QueryClauseOccur;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.collections.CollectionUtils;
-import x47b.model.X47BEntityObject;
+import x47b.model.X47BPersistableObject;
 import x47b.model.metadata.X47BHasFieldsMetaDataForHasOrgDivision;
 import x47b.model.metadata.X47BHasFieldsMetaDataForHasOrgDivisionService;
 import x47b.model.metadata.X47BHasFieldsMetaDataForHasOrgDivisionServiceLocation;
@@ -29,7 +29,7 @@ import x47b.model.org.X47BWorkPlace;
 
 
 /**
- * A search filter for a {@link X47BEntityObject} like {@link X47BOrganization}, {@link X47BLocation} or {@link X47BWorkPlace}
+ * A search filter for a {@link X47BPersistableObject} like {@link X47BOrganization}, {@link X47BLocation} or {@link X47BWorkPlace}
  * <pre class='brush:java'>
  * // Find all locations or work places with a certain name belonging to an organization
  * X47BSearchFilterForEntity filter = X47BSearchFilterForEntity.create()
@@ -126,7 +126,7 @@ public class X47BSearchFilterForPanicButtonOrganizationalEntity
 	private static boolean _checkModelObjType(final Collection<Class<? extends ModelObject>> modelObjTypes) {
 		boolean outOK = true;
 		for (Class<? extends ModelObject> modelObjType : modelObjTypes) {
-			if (modelObjType == X47BEntityObject.class
+			if (modelObjType == X47BPersistableObject.class
 			 || modelObjType == X47BOrganization.class
 			 || modelObjType == X47BOrgDivision.class
 			 || modelObjType == X47BOrgDivisionService.class

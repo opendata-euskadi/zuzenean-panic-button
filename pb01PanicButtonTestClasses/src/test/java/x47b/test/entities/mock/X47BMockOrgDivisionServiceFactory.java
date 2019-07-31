@@ -15,7 +15,7 @@ import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.org.X47BOrgDivision;
 import x47b.model.org.X47BOrgDivisionService;
 import x47b.model.org.X47BOrganization;
-import x47b.model.org.X47BOrganizationalModelObjectRef;
+import x47b.model.org.X47BOrganizationalObjectRef;
 
 @RequiredArgsConstructor
 public class X47BMockOrgDivisionServiceFactory 
@@ -44,8 +44,8 @@ public class X47BMockOrgDivisionServiceFactory
 		outService.setId(X47BOrgDivisionServiceID.forId(Strings.customized("{}/{}",
 																		   _division.getId(),	// organization/division
 																		   randomServiceId)));
-		outService.setOrgRef(new X47BOrganizationalModelObjectRef<X47BOrganizationOID,X47BOrganizationID>(_organization.getOid(),_organization.getId()));
-		outService.setOrgDivisionRef(new X47BOrganizationalModelObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>(_division.getOid(),_division.getId()));
+		outService.setOrgRef(new X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID>(_organization.getOid(),_organization.getId()));
+		outService.setOrgDivisionRef(new X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>(_division.getOid(),_division.getId()));
 		outService.setNameByLanguage(new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL)
 											     .add(Language.SPANISH,"TEST service " + randomServiceId)
 											     .add(Language.BASQUE,"[eu] TEST service " + randomServiceId));

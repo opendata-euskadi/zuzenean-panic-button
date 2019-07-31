@@ -20,7 +20,7 @@ import x47b.model.org.X47BOrgDivision;
 import x47b.model.org.X47BOrgDivisionService;
 import x47b.model.org.X47BOrgDivisionServiceLocation;
 import x47b.model.org.X47BOrganization;
-import x47b.model.org.X47BOrganizationalModelObjectRef;
+import x47b.model.org.X47BOrganizationalObjectRef;
 import x47b.model.org.X47BWorkPlace;
 import x47b.test.X47BMockEntityIDProvider;
 
@@ -53,10 +53,10 @@ public class X47BMockWorkPlaceFactory
 		outWorkPlace.setId(X47BWorkPlaceID.forId(Strings.customized("{}/{}",
 															_location.getId(),
 															randomWorkPlace)));
-		outWorkPlace.setOrgRef(new X47BOrganizationalModelObjectRef<X47BOrganizationOID,X47BOrganizationID>(_organization.getOid(),_organization.getId()));
-		outWorkPlace.setOrgDivisionRef(new X47BOrganizationalModelObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>(_division.getOid(),_division.getId()));
-		outWorkPlace.setOrgDivisionServiceRef(new X47BOrganizationalModelObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID>(_service.getOid(),_service.getId()));
-		outWorkPlace.setOrgDivisionServiceLocationRef(new X47BOrganizationalModelObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID>(_location.getOid(),_location.getId()));
+		outWorkPlace.setOrgRef(new X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID>(_organization.getOid(),_organization.getId()));
+		outWorkPlace.setOrgDivisionRef(new X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>(_division.getOid(),_division.getId()));
+		outWorkPlace.setOrgDivisionServiceRef(new X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID>(_service.getOid(),_service.getId()));
+		outWorkPlace.setOrgDivisionServiceLocationRef(new X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID>(_location.getOid(),_location.getId()));
 		outWorkPlace.setNameByLanguage(new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL)
 										     .add(Language.SPANISH,"TEST WorkPlace " + randomWorkPlace)
 										     .add(Language.BASQUE,"[eu] TEST WorkPlace " + randomWorkPlace));

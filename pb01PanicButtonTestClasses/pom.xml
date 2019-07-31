@@ -41,6 +41,11 @@
 			<artifactId>pb01PanicButtonConfig</artifactId>
 			<version>${pb01.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>r01.r01f.config</groupId>
+			<artifactId>r01fConfig</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
 		<!-- R01: TEST                                 -->
@@ -48,11 +53,6 @@
 		<dependency>
 			<groupId>r01.r01f.businessservices</groupId>
 			<artifactId>r01fBusinessServicesTestClasses</artifactId>
-			<version>${r01f.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>r01.r01f.config</groupId>
-			<artifactId>r01fConfig</artifactId>
 			<version>${r01f.version}</version>
 		</dependency>
 	</dependencies>

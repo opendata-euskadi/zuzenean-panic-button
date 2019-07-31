@@ -28,8 +28,8 @@
 		<!-- PB01: API                                 -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-			<groupId>pb01.api.common</groupId>
-			<artifactId>pb01PanicButtonCommonClientAPIClasses</artifactId>
+			<groupId>pb01.api</groupId>
+			<artifactId>pb01PanicButtonClientAPIClasses</artifactId>
 			<version>${pb01.version}</version>
 		</dependency>
 

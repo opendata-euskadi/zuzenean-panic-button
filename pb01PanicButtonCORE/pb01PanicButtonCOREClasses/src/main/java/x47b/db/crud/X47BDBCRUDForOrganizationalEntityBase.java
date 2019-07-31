@@ -12,14 +12,14 @@ import r01f.persistence.db.config.DBModuleConfig;
 import r01f.securitycontext.SecurityContext;
 import x47b.api.interfaces.X47BCRUDServicesForOrganizationalModelObjectBase;
 import x47b.db.entities.X47BDBEntityForOrganizationalEntityBase;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
-import x47b.model.org.X47BOrganizationalModelObject;
+import x47b.model.org.X47BOrganizationalPersistableObject;
 
 /**
  * Persistence layer
  */
-abstract class X47BDBCRUDForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends X47BOrganizationalModelObject<O,ID>,
+abstract class X47BDBCRUDForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends X47BOrganizationalPersistableObject<O,ID>,
 							  						 DB extends X47BDBEntityForOrganizationalEntityBase>
 	   extends X47BDBCRUDBase<O,ID,M,
 	 						  DB>

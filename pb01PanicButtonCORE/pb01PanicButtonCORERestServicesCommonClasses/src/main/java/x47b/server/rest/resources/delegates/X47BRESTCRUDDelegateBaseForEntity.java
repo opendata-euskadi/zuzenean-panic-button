@@ -12,10 +12,10 @@ import r01f.rest.resources.delegates.RESTCRUDDelegateBase;
 import x47b.api.context.X47BSecurityContext;
 import x47b.api.interfaces.X47BCRUDServicesBase;
 import x47b.api.interfaces.X47BCRUDServicesBaseForModelObject;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 
-public abstract class X47BRESTCRUDDelegateBaseForEntity<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends PersistableModelObject<O>>
+public abstract class X47BRESTCRUDDelegateBaseForEntity<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends PersistableModelObject<O>>
 	          extends RESTCRUDDelegateBase<O,M> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR

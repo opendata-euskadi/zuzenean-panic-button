@@ -4,11 +4,11 @@ import r01f.model.PersistableModelObject;
 import r01f.objectstreamer.Marshaller;
 import x47b.api.interfaces.X47BCRUDServicesForOrganizationalModelObjectBase;
 import x47b.client.servicesproxy.rest.X47BRESTServiceResourceUrlPathBuildersBases.X47BRESTServiceResourceUrlPathBuilderForEntityPersistenceBase;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 
 
-abstract class X47BRESTCRUDServicesProxyForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends PersistableModelObject<O>>
+abstract class X47BRESTCRUDServicesProxyForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends PersistableModelObject<O>>
 	   extends X47BRESTCRUDServicesProxyBase<O,ID,M>
     implements X47BCRUDServicesForOrganizationalModelObjectBase<O,ID,M>,
     		   X47BPanicButtonRESTProxy {

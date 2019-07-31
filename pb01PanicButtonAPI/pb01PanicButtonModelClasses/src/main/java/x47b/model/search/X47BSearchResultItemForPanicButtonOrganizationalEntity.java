@@ -18,7 +18,7 @@ import r01f.types.Path;
 import r01f.types.contact.EMail;
 import r01f.types.contact.Phone;
 import r01f.util.types.Paths;
-import x47b.model.X47BEntityObject;
+import x47b.model.X47BPersistableObject;
 import x47b.model.org.X47BOrganization;
 import x47b.model.org.X47BWorkPlace;
 import x47b.model.org.summaries.X47BSummarizedOrgDivision;
@@ -34,7 +34,7 @@ import x47b.model.org.summaries.X47BSummarizedWorkPlace;
 @Accessors(prefix="_")
 @NoArgsConstructor
 public class X47BSearchResultItemForPanicButtonOrganizationalEntity
-     extends SearchResultItemForModelObjectBase<X47BEntityObject<?,?>> {
+     extends SearchResultItemForModelObjectBase<X47BPersistableObject<?,?>> {
 
 	private static final long serialVersionUID = 4169587420774250028L;
 /////////////////////////////////////////////////////////////////////////////////////////

@@ -24,21 +24,73 @@
 <!-- ====================================================================== -->
 	<dependencies>
 		<!-- ///////////////////////////////////////// -->
-		<!-- PB01: Common API                          -->
-		<!-- ///////////////////////////////////////// -->
-		<dependency>
-			<groupId>pb01.api.common</groupId>
-			<artifactId>pb01PanicButtonCommonClientAPIClasses</artifactId>
-			<version>${pb01.version}</version>
-		</dependency>
-
-		<!-- ///////////////////////////////////////// -->
 		<!-- PB01: Model                               -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>pb01.api</groupId>
 			<artifactId>pb01PanicButtonModelClasses</artifactId>
 			<version>${pb01.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01f: BusinessServices                    -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices.guice</groupId>
+			<artifactId>r01fBusinessServicesGuiceClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.businessservices.guice.client</groupId>
+			<artifactId>r01fBusinessServicesClientGuiceClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.businessservices.client</groupId>
+			<artifactId>r01fBusinessRESTServicesClientClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: Locale                               -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.locale</groupId>
+			<artifactId>r01fLocaleClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: ObjectStreamer                       -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.objectstreamer</groupId>
+			<artifactId>r01fObjectStreamerClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: Aspects                              -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.aspect.dirtytrack</groupId>
+			<artifactId>r01fDirtyTrackAspectClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.aspect.freezable</groupId>
+			<artifactId>r01fFreezableAspectClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.aspect.lazyload</groupId>
+			<artifactId>r01fLazyLoadAspectClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.aspect.logging</groupId>
+			<artifactId>r01fLoggingAspectClasses</artifactId>
+			<version>${r01f.version}</version>
 		</dependency>
 	</dependencies>
 </project>

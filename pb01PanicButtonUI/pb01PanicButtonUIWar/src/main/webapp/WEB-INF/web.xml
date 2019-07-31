@@ -6,35 +6,20 @@
 
 	<display-name>pb01PanicButtonUIWar</display-name>
 
-	<context-param>
-		<description>Vaadin production mode</description>
-		<param-name>productionMode</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<servlet>
-		<servlet-name>X47BPanicButtonVaadinApp</servlet-name>
-		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
-		<init-param>
-			<description>Vaadin UI class to use</description>
-			<param-name>UI</param-name>
-			<param-value>x47b.application.X47BPanicButtonVaadinApp</param-value>
-		</init-param>
-		<init-param>
-			<description>Legacy mode to return the value of the property as a string from AbstractProperty.toString()</description>
-			<param-name>legacyPropertyToString</param-name>
-			<param-value>false</param-value>
-		</init-param>
-		<init-param>
-			<description>Widgetset</description>
-			<param-name>widgetset</param-name>
-			<param-value>x47b.widgetset.X47bpanicbuttonwarWidgetset</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>X47BPanicButtonVaadinApp</servlet-name>
-		<url-pattern>/*</url-pattern>
-	</servlet-mapping>
+	<filter>
+		<filter-name>guiceFilter</filter-name>
+		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>guiceFilter</filter-name>
+		<url-pattern>*</url-pattern>
+	</filter-mapping>
 	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>

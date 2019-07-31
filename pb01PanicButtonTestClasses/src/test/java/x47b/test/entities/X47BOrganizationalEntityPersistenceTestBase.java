@@ -13,16 +13,16 @@ import r01f.services.client.api.delegates.ClientAPIDelegateForModelObjectFindSer
 import r01f.test.persistence.ManagesTestMockModelObjsLifeCycle;
 import r01f.util.types.collections.CollectionUtils;
 import x47b.client.api.sub.delegates.X47BClientAPIDelegateForOrganizationalEntityFindServicesBase;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
-import x47b.model.org.X47BOrganizationalModelObject;
+import x47b.model.org.X47BOrganizationalPersistableObject;
 
 /**
  * JVM arguments:
  * -javaagent:D:/tools_workspaces/eclipse/local_libs/aspectj/lib/aspectjweaver.jar -Daj.weaving.verbose=true
  */
-abstract class X47BOrganizationalEntityPersistenceTestBase<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,
-								  						 	  M extends X47BOrganizationalModelObject<O,ID>> 
+abstract class X47BOrganizationalEntityPersistenceTestBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,
+								  						 	  M extends X47BOrganizationalPersistableObject<O,ID>> 
 	   extends X47BPanicButtonPersistablelObjectTestBase<O,ID,M> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTORS

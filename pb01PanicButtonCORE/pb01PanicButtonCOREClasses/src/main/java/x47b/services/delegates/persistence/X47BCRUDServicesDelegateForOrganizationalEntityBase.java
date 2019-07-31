@@ -10,15 +10,15 @@ import r01f.securitycontext.SecurityContext;
 import r01f.validation.ObjectValidationResult;
 import r01f.validation.ObjectValidationResultBuilder;
 import x47b.api.interfaces.X47BCRUDServicesForOrganizationalModelObjectBase;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
-import x47b.model.org.X47BOrganizationalModelObject;
-import x47b.model.org.X47BOrganizationalModelObjectBase;
+import x47b.model.org.X47BOrganizationalPersistableObject;
+import x47b.model.org.X47BOrganizationalPersistableObjectBase;
 
 /**
  * Service layer delegated type for CRUD (Create/Read/Update/Delete) operations
  */
-abstract class X47BCRUDServicesDelegateForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends X47BOrganizationalModelObject<O,ID>>
+abstract class X47BCRUDServicesDelegateForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends X47BOrganizationalPersistableObject<O,ID>>
 	   extends X47BCRUDServicesDelegateBase<O,ID,M>
     implements X47BCRUDServicesForOrganizationalModelObjectBase<O,ID,M> {
 
@@ -42,7 +42,7 @@ abstract class X47BCRUDServicesDelegateForOrganizationalEntityBase<O extends X47
 																	 	  final PersistenceRequestedOperation requestedOp,
 																	 	  final M entity) {
 		// Validate the model object
-		ObjectValidationResult<?> modelObjectValidation = ((X47BOrganizationalModelObjectBase<?,?,?>)entity).validate();
+		ObjectValidationResult<?> modelObjectValidation = ((X47BOrganizationalPersistableObjectBase<?,?,?>)entity).validate();
 		if (modelObjectValidation.isNOTValid()) {
 			return (ObjectValidationResult<M>)modelObjectValidation;
 		}

@@ -8,10 +8,10 @@ import r01f.objectstreamer.Marshaller;
 import r01f.securitycontext.SecurityContext;
 import r01f.services.client.api.delegates.ClientAPIDelegateForModelObjectCRUDServices;
 import x47b.api.interfaces.X47BCRUDServicesBase;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 
-public class X47BClientAPIDelegateForCRUDServicesBase<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends PersistableModelObject<O>>
+public class X47BClientAPIDelegateForCRUDServicesBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends PersistableModelObject<O>>
 	 extends ClientAPIDelegateForModelObjectCRUDServices<O,M> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR

@@ -1,14 +1,18 @@
 package pb01.ui.vaadin;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import com.google.inject.Injector;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
 
+import lombok.extern.slf4j.Slf4j;
 import pb01.ui.vaadin.view.PB01MainView;
 import r01f.util.types.Strings;
 
+@Slf4j
+@Singleton
 public class PB01UIVaadinViewProvider
   implements ViewProvider {
 
@@ -21,20 +25,21 @@ public class PB01UIVaadinViewProvider
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public PB01UIVaadinViewProvider( final Injector injector ) {
+	public PB01UIVaadinViewProvider(final Injector injector) {
 		_injector = injector;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public String getViewName( final String viewAndParameters ) {
+	public String getViewName(final String viewAndParameters) {
 		String[] splitViewAndParameters = viewAndParameters.split( "/" );
 		return splitViewAndParameters[0];
 	}
 	@Override
-	public View getView( final String viewName ) {
+	public View getView(final String viewName) {
 		View outView = null;
+		log.info("...going to [{}] view",viewName);
 		if ( Strings.isNullOrEmpty(viewName)
 		  || PB01UIVaadinViews.MAIN.is(viewName) ) {
 			outView = _injector.getInstance(PB01MainView.class);

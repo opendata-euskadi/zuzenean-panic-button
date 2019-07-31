@@ -20,8 +20,6 @@
 	<packaging>pom</packaging>
 
   <modules>
-    <module>pb01PanicButtonCommonModelClasses</module>
-    <module>pb01PanicButtonCommonClientAPIClasses</module>
     <module>pb01PanicButtonModelClasses</module>
     <module>pb01PanicButtonClientAPIClasses</module>
   </modules>

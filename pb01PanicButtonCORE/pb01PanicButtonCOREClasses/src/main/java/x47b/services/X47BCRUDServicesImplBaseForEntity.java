@@ -14,12 +14,12 @@ import r01f.securitycontext.SecurityContext;
 import r01f.services.persistence.CoreCRUDServicesForModelObjectBase;
 import r01f.xmlproperties.XMLPropertiesForAppComponent;
 import x47b.api.interfaces.X47BCRUDServicesBaseForModelObject;
-import x47b.model.X47BEntityObject;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.X47BPersistableObject;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 
 @Accessors(prefix="_")
-abstract class X47BCRUDServicesImplBaseForEntity<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends X47BEntityObject<O,ID>>
+abstract class X47BCRUDServicesImplBaseForEntity<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends X47BPersistableObject<O,ID>>
  	   extends CoreCRUDServicesForModelObjectBase<O,M>
     implements X47BCRUDServicesBaseForModelObject<O,ID,M>,
     		   X47BPanicButtonCoreServiceImpl {

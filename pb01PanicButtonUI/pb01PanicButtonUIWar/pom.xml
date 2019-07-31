@@ -27,12 +27,26 @@
 <!-- ====================================================================== -->
 	<dependencies>
 		<!-- ///////////////////////////////////////// -->
-		<!-- PB01: REST Services WebApp                -->
+		<!-- PB01: CORE                                -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>pb01.core</groupId>
 			<artifactId>pb01PanicButtonCOREClasses</artifactId>
 			<version>${pb01.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- PB01: CONFIG                              -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>pb01.core.config</groupId>
+			<artifactId>pb01PanicButtonConfig</artifactId>
+			<version>${pb01.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.config</groupId>
+			<artifactId>r01fConfig</artifactId>
+			<version>${r01f.version}</version>
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->

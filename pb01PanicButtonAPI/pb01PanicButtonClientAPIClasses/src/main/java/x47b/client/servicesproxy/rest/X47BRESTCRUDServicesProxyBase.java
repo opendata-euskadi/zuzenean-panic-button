@@ -11,11 +11,11 @@ import r01f.services.client.servicesproxy.rest.RESTServicesForDBCRUDProxyBase;
 import r01f.types.url.Url;
 import x47b.api.interfaces.X47BCRUDServicesBase;
 import x47b.client.servicesproxy.rest.X47BRESTServiceResourceUrlPathBuildersBases.X47BRESTServiceResourceUrlPathBuilderForEntityPersistenceBase;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 
 
-abstract class X47BRESTCRUDServicesProxyBase<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends PersistableModelObject<O>>
+abstract class X47BRESTCRUDServicesProxyBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends PersistableModelObject<O>>
 	   extends RESTServicesForDBCRUDProxyBase<O,M>
     implements X47BCRUDServicesBase<O,ID,M>,
     		   X47BPanicButtonRESTProxy {

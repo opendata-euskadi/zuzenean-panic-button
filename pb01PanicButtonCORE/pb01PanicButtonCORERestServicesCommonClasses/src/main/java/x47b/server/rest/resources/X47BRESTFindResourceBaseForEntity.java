@@ -13,7 +13,7 @@ import r01f.model.PersistableModelObject;
 import r01f.model.persistence.PersistenceException;
 import r01f.rest.resources.delegates.RESTDelegate;
 import x47b.api.context.X47BSecurityContext;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 import x47b.server.rest.resources.delegates.X47BRESTFindDelegateBaseForEntity;
 
@@ -23,7 +23,7 @@ import x47b.server.rest.resources.delegates.X47BRESTFindDelegateBaseForEntity;
  * @param <M>
  */
 @SuppressWarnings("unused")
-public abstract class X47BRESTFindResourceBaseForEntity<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends PersistableModelObject<O>>
+public abstract class X47BRESTFindResourceBaseForEntity<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends PersistableModelObject<O>>
 		      extends X47BRESTFindResourceBase<O,M> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR

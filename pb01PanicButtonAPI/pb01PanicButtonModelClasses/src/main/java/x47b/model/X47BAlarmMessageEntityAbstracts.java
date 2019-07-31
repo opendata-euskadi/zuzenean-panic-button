@@ -11,7 +11,7 @@ import r01f.model.PersistableModelObject;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
@@ -43,7 +43,7 @@ public class X47BAlarmMessageEntityAbstracts {
 	 * when handling the {@link X47BAlarmEvent} creation event from other model objects 
 	 */
 	@Accessors(prefix="_") @NoArgsConstructor @AllArgsConstructor
-	private static class X47BAlarmMessageEntityAbstract<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>> {
+	private static class X47BAlarmMessageEntityAbstract<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>> {
 		@MarshallField(as="oid",
 			   	       whenXml=@MarshallFieldAsXml(attr=true))
 		@Getter @Setter private O _entityOid;

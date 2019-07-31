@@ -14,14 +14,14 @@ import r01f.services.delegates.persistence.ValidatesModelObjectBeforeCreateOrUpd
 import r01f.validation.ObjectValidationResult;
 import r01f.validation.ObjectValidationResultBuilder;
 import x47b.api.interfaces.X47BCRUDServicesBase;
-import x47b.model.X47BEntityObject;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.X47BPersistableObject;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 
 /**
  * Service layer delegated type for CRUD (Create/Read/Update/Delete) operations
  */
-abstract class X47BCRUDServicesDelegateBase<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends X47BEntityObject<O,ID>>
+abstract class X47BCRUDServicesDelegateBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends X47BPersistableObject<O,ID>>
 	   extends CRUDServicesForModelObjectDelegateBase<O,M>
     implements X47BCRUDServicesBase<O,ID,M>,
     		   ValidatesModelObjectBeforeCreateOrUpdate<M>,

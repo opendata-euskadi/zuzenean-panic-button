@@ -19,7 +19,8 @@ public class X47BClientAPIDelegateForOrgDivisionServiceCRUDServices
 															 	  final X47BCRUDServicesForOrgDivisionService crudServicesProxy) {
 		super(securityContextProvider,
 			  modelObjectsMarshaller,
-			  crudServicesProxy);
+			  crudServicesProxy,
+			  () -> X47BOrgDivisionServiceOID.supply());	// oid factory
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //

@@ -7,16 +7,16 @@ import r01f.services.client.api.delegates.ClientAPIDelegateForModelObjectFindSer
 import r01f.test.persistence.ManagesTestMockModelObjsLifeCycle;
 import r01f.test.persistence.TestPersistableModelObjectBase;
 import x47b.client.api.sub.delegates.X47BClientAPIDelegateBaseForModelObjectCRUDServices;
-import x47b.model.X47BEntityObject;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.X47BPersistableObject;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 
 /**
  * JVM arguments:
  * -javaagent:D:/tools_workspaces/eclipse/local_libs/aspectj/lib/aspectjweaver.jar -Daj.weaving.verbose=true
  */
-public abstract class X47BPanicButtonPersistablelObjectTestBase<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,
-																	M extends X47BEntityObject<O,ID>> 
+public abstract class X47BPanicButtonPersistablelObjectTestBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,
+																	M extends X47BPersistableObject<O,ID>> 
 			  extends TestPersistableModelObjectBase<O,M> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTORS

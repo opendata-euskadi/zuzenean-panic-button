@@ -47,7 +47,8 @@ public class PB01UIServletContextListener
 		ServicesCoreBootstrapConfig uiBootstrapCfg = PB01UIServletServicesBootstrapConfigBuilder.buildCoreBootstrapConfig();
 
 		// build all
-		ServicesCoreModuleEventsConfig coreEventsCfg = ServicesCoreModuleEventsConfig.from(coreProps.forComponent(CoreModule.SERVICES));
+		ServicesCoreModuleEventsConfig coreEventsCfg = ServicesCoreModuleEventsConfig.from(coreProps.forComponent(CoreModule.compose(X47BAppCodes.PANICBUTTON_MOD,
+																																	 CoreModule.SERVICES)));
 		ServicesBootstrapConfig outBootstrapCfg = ServicesBootstrapConfigBuilder
 														.forClient(clientBootstrapCfg)
 														.ofCoreModules(persistenceCoreBootstrapCfg,

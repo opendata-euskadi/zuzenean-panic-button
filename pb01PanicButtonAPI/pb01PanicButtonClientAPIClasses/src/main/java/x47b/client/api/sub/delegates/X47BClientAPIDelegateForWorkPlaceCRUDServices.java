@@ -19,6 +19,7 @@ public class X47BClientAPIDelegateForWorkPlaceCRUDServices
 													     final X47BCRUDServicesForWorkPlace crudServicesProxy) {
 		super(securityContextProvider,
 			  modelObjectsMarshaller,
-			  crudServicesProxy);
+			  crudServicesProxy,
+			  () -> X47BWorkPlaceOID.supply());
 	}
 }

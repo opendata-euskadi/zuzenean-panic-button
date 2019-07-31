@@ -12,6 +12,8 @@ import pb01.ui.i18n.PB01UII18NManager;
 import pb01.ui.vaadin.PB01UIVaadinServlet;
 import pb01.ui.vaadin.PB01UIVaadinUIProvider;
 import pb01.ui.vaadin.PB01UIVaadinViewProvider;
+import pb01.ui.vaadin.orgentity.organization.PB01COREMediatorForOrganization;
+import pb01.ui.vaadin.orgentity.organization.PB01DetailPresenterForOrganization;
 import pb01.ui.vaadin.view.PB01MainViewCOREMediator;
 import pb01.ui.vaadin.view.PB01MainViewPresenter;
 import r01f.bootstrap.services.config.core.ServicesCoreBootstrapConfigWhenServletExposed;
@@ -73,10 +75,18 @@ public class PB01UIWarBootstrapGuiceModule
 		// main
 		binder.bind(PB01MainViewCOREMediator.class)
 			  .in(Singleton.class);
+
+		// organization
+		binder.bind(PB01COREMediatorForOrganization.class)
+			  .in(Singleton.class);
 	}
 	private void _bindPresenters(final Binder binder) {
 		// person
 		binder.bind(PB01MainViewPresenter.class)
+			  .in(Singleton.class);
+
+		// organization
+		binder.bind(PB01DetailPresenterForOrganization.class)
 			  .in(Singleton.class);
 	}
 }

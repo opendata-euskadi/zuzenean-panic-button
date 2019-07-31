@@ -16,7 +16,6 @@
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<groupId>pb01.api</groupId>
 	<name>pb01PanicButtonModelClasses</name>
 	<artifactId>pb01PanicButtonModelClasses</artifactId>
 
@@ -25,12 +24,17 @@
 <!-- ====================================================================== -->
 	<dependencies>
 		<!-- ///////////////////////////////////////// -->
-		<!-- PB01: Common Model                        -->
+		<!-- R01F: BusinessServices                    -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-			<groupId>pb01.api.common</groupId>
-			<artifactId>pb01PanicButtonCommonModelClasses</artifactId>
-			<version>${pb01.version}</version>
+			<groupId>r01.r01f.base</groupId>
+			<artifactId>r01fModelClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.properties</groupId>
+			<artifactId>r01fPropertiesInterfaceClasses</artifactId>
+			<version>${r01f.version}</version>
 		</dependency>
 	</dependencies>
 </project>

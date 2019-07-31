@@ -18,9 +18,9 @@ import x47b.model.org.X47BOrgDivision;
 import x47b.model.org.X47BOrgDivisionService;
 import x47b.model.org.X47BOrgDivisionServiceLocation;
 import x47b.model.org.X47BOrganization;
-import x47b.model.org.X47BOrganizationalModelObjectBase;
+import x47b.model.org.X47BOrganizationalPersistableObjectBase;
 import x47b.model.org.X47BWorkPlace;
-import x47b.model.org.summaries.X47BSummarizedModelObject;
+import x47b.model.org.summaries.X47BSummarizedObject;
 import x47b.model.org.summaries.X47BSummarizedOrgDivision;
 import x47b.model.org.summaries.X47BSummarizedOrgDivisionService;
 import x47b.model.org.summaries.X47BSummarizedOrgDivisionServiceLocation;
@@ -65,7 +65,7 @@ public class X47BDBEntityToSearchResultItemTransformerForPanicButtonOrganization
 																			   				 final Language lang) {
 		X47BSearchResultItemForPanicButtonOrganizationalEntity outItem = new X47BSearchResultItemForPanicButtonOrganizationalEntity();
 
-		Class<? extends X47BOrganizationalModelObjectBase<?,?,?>> modelObjType = null;
+		Class<? extends X47BOrganizationalPersistableObjectBase<?,?,?>> modelObjType = null;
 		
 		// [1] - object type & summaries
 		if (dbEntity instanceof X47BDBEntityForOrganization) {
@@ -117,7 +117,7 @@ public class X47BDBEntityToSearchResultItemTransformerForPanicButtonOrganization
 		outItem.setAlarmRaiseCount(dbEntity.getAlarmRaiseCount());
 		
 		// [4] - Phones & emails
-		X47BOrganizationalModelObjectBase<?,?,?> modelObj = _marshaller.forReading().fromXml(dbEntity.getDescriptor(),
+		X47BOrganizationalPersistableObjectBase<?,?,?> modelObj = _marshaller.forReading().fromXml(dbEntity.getDescriptor(),
 																							 modelObjType);
 		outItem.setPhones(modelObj.getPhones());
 		outItem.setEmails(modelObj.getEmails());
@@ -128,10 +128,10 @@ public class X47BDBEntityToSearchResultItemTransformerForPanicButtonOrganization
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("unchecked")
-	private <S extends X47BSummarizedModelObject<?,?,?>> S _orgModelObjectSummary(final X47BDBEntityForOrganizationalEntityBase dbEntity,
+	private <S extends X47BSummarizedObject<?,?,?>> S _orgModelObjectSummary(final X47BDBEntityForOrganizationalEntityBase dbEntity,
 										 			 							  final Language lang) {
 		// guess the model obj type
-		Class<? extends X47BOrganizationalModelObjectBase<?,?,?>> modelObjType = null;
+		Class<? extends X47BOrganizationalPersistableObjectBase<?,?,?>> modelObjType = null;
 		if (dbEntity instanceof X47BDBEntityForOrganization) {
 			modelObjType = X47BOrganization.class;
 		}
@@ -149,7 +149,7 @@ public class X47BDBEntityToSearchResultItemTransformerForPanicButtonOrganization
 		}
 		
 		// Create a summary from the dbEntity: transform it to a model object and get it summarized
-		X47BOrganizationalModelObjectBase<?,?,?> modelObject = _marshaller.forReading().fromXml(dbEntity.getDescriptor(),
+		X47BOrganizationalPersistableObjectBase<?,?,?> modelObject = _marshaller.forReading().fromXml(dbEntity.getDescriptor(),
 																						 		modelObjType);
 		return (S)modelObject.getSummarizedIn(lang);
 	}

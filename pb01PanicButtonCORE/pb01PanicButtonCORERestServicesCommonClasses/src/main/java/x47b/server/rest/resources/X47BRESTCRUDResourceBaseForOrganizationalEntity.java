@@ -2,7 +2,7 @@ package x47b.server.rest.resources;
 
 import lombok.experimental.Accessors;
 import r01f.model.PersistableModelObject;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 import x47b.server.rest.resources.delegates.X47BRESTCRUDDelegateBaseForOrganizationalEntity;
 
@@ -13,7 +13,7 @@ import x47b.server.rest.resources.delegates.X47BRESTCRUDDelegateBaseForOrganizat
  * Log: see web.xml
  */
 @Accessors(prefix="_")
-public abstract class X47BRESTCRUDResourceBaseForOrganizationalEntity<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,
+public abstract class X47BRESTCRUDResourceBaseForOrganizationalEntity<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,
 									  						 		  M extends PersistableModelObject<O>>
 	          extends X47BRESTCRUDResourceBaseForEntity<O,ID,M> {
 

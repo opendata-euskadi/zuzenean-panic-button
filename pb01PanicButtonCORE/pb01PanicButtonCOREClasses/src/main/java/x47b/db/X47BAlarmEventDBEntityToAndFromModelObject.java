@@ -16,7 +16,7 @@ import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.oids.X47BPanicButtonOIDs.X47BAlarmEventOID;
-import x47b.model.org.X47BOrganizationalModelObjectRef;
+import x47b.model.org.X47BOrganizationalObjectRef;
 
 public class X47BAlarmEventDBEntityToAndFromModelObject
   implements TransfersModelObjectStateToDBEntity<X47BAlarmEvent,X47BDBEntityForAlarmEvent>,
@@ -55,15 +55,15 @@ public class X47BAlarmEventDBEntityToAndFromModelObject
 		X47BAlarmEvent outAlarm = new X47BAlarmEvent();
 		
 		outAlarm.setOid(X47BAlarmEventOID.forId(dbAlarm.getOid()));
-		outAlarm.setOrganization(new X47BOrganizationalModelObjectRef<X47BOrganizationOID,X47BOrganizationID>(X47BOrganizationOID.forId(dbAlarm.getOrganizationOid()),
+		outAlarm.setOrganization(new X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID>(X47BOrganizationOID.forId(dbAlarm.getOrganizationOid()),
 																											  X47BOrganizationID.forId(dbAlarm.getOrganizationId())));
-		outAlarm.setDivision(new X47BOrganizationalModelObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>(X47BOrgDivisionOID.forId(dbAlarm.getDivisionOid()),
+		outAlarm.setDivision(new X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>(X47BOrgDivisionOID.forId(dbAlarm.getDivisionOid()),
 																									    X47BOrgDivisionID.forId(dbAlarm.getDivisionId())));
-		outAlarm.setService(new X47BOrganizationalModelObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID>(X47BOrgDivisionServiceOID.forId(dbAlarm.getServiceOid()),
+		outAlarm.setService(new X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID>(X47BOrgDivisionServiceOID.forId(dbAlarm.getServiceOid()),
 																									    			 X47BOrgDivisionServiceID.forId(dbAlarm.getServiceId())));
-		outAlarm.setLocation(new X47BOrganizationalModelObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID>(X47BOrgDivisionServiceLocationOID.forId(dbAlarm.getLocationOid()),
+		outAlarm.setLocation(new X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID>(X47BOrgDivisionServiceLocationOID.forId(dbAlarm.getLocationOid()),
 																									    			 				  X47BOrgDivisionServiceLocationID.forId(dbAlarm.getLocationId())));
-		outAlarm.setWorkPlace(new X47BOrganizationalModelObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID>(X47BWorkPlaceOID.forId(dbAlarm.getWorkPlaceOid()),
+		outAlarm.setWorkPlace(new X47BOrganizationalObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID>(X47BWorkPlaceOID.forId(dbAlarm.getWorkPlaceOid()),
 																						 			 X47BWorkPlaceID.forId(dbAlarm.getWorkPlaceId())));
 		
 		outAlarm.setTimeStamp(dbAlarm.getCreateTimeStamp());

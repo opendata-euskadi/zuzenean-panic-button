@@ -8,11 +8,11 @@ import r01f.securitycontext.SecurityContext;
 import r01f.types.url.Url;
 import x47b.api.interfaces.X47BFindServicesForOrganizationalModelObjectBase;
 import x47b.client.servicesproxy.rest.X47BRESTServiceResourceUrlPathBuildersBases.X47BRESTServiceResourceUrlPathBuilderForEntityPersistenceBase;
-import x47b.model.oids.X47BIDs.X47BModelObjectID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 
 
-abstract class X47BRESTFindServicesProxyForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BModelObjectID<O>,M extends PersistableModelObject<O>>
+abstract class X47BRESTFindServicesProxyForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends PersistableModelObject<O>>
 	   extends X47BRESTFindServicesProxyBase<O,ID,M>
     implements X47BFindServicesForOrganizationalModelObjectBase<O,ID,M> {
 /////////////////////////////////////////////////////////////////////////////////////////
