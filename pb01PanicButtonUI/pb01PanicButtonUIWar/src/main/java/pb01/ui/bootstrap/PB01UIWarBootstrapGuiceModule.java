@@ -14,6 +14,12 @@ import pb01.ui.vaadin.PB01UIVaadinUIProvider;
 import pb01.ui.vaadin.PB01UIVaadinViewProvider;
 import pb01.ui.vaadin.orgentity.organization.PB01COREMediatorForOrganization;
 import pb01.ui.vaadin.orgentity.organization.PB01DetailPresenterForOrganization;
+import pb01.ui.vaadin.orgentity.orgdivision.PB01COREMediatorForOrgDivision;
+import pb01.ui.vaadin.orgentity.orgdivision.PB01DetailPresenterForOrgDivision;
+import pb01.ui.vaadin.orgentity.orgdivisionservice.PB01COREMediatorForOrgDivisionService;
+import pb01.ui.vaadin.orgentity.orgdivisionservice.PB01DetailPresenterForOrgDivisionService;
+import pb01.ui.vaadin.orgentity.orgdivisionservicelocation.PB01COREMediatorForOrgDivisionServiceLocation;
+import pb01.ui.vaadin.orgentity.orgdivisionservicelocation.PB01DetailPresenterForOrgDivisionServiceLocation;
 import pb01.ui.vaadin.view.PB01MainViewCOREMediator;
 import pb01.ui.vaadin.view.PB01MainViewPresenter;
 import r01f.bootstrap.services.config.core.ServicesCoreBootstrapConfigWhenServletExposed;
@@ -76,8 +82,14 @@ public class PB01UIWarBootstrapGuiceModule
 		binder.bind(PB01MainViewCOREMediator.class)
 			  .in(Singleton.class);
 
-		// organization
+		// organizational entities
 		binder.bind(PB01COREMediatorForOrganization.class)
+			  .in(Singleton.class);
+		binder.bind(PB01COREMediatorForOrgDivision.class)
+			  .in(Singleton.class);
+		binder.bind(PB01COREMediatorForOrgDivisionService.class)
+			  .in(Singleton.class);
+		binder.bind(PB01COREMediatorForOrgDivisionServiceLocation.class)
 			  .in(Singleton.class);
 	}
 	private void _bindPresenters(final Binder binder) {
@@ -85,8 +97,14 @@ public class PB01UIWarBootstrapGuiceModule
 		binder.bind(PB01MainViewPresenter.class)
 			  .in(Singleton.class);
 
-		// organization
+		// organizational entities
 		binder.bind(PB01DetailPresenterForOrganization.class)
+			  .in(Singleton.class);
+		binder.bind(PB01DetailPresenterForOrgDivision.class)
+			  .in(Singleton.class);
+		binder.bind(PB01DetailPresenterForOrgDivisionService.class)
+			  .in(Singleton.class);
+		binder.bind(PB01DetailPresenterForOrgDivisionServiceLocation.class)
 			  .in(Singleton.class);
 	}
 }

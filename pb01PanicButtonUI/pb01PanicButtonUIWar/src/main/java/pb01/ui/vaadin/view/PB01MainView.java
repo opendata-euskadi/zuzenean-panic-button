@@ -7,8 +7,10 @@ import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -103,9 +105,11 @@ public class PB01MainView
 		_orgEditButton.setEnabled(false);
 		_orgEditButton.addClickListener(event ->_showOrganizationDetailViewForEditingExistingRecord());	// show the org detail dialog
 
-		this.addComponent(_orgsCmb);
-		this.addComponent(_orgCreateButton);
-		this.addComponent(_orgEditButton);
+		HorizontalLayout orgLayout = new HorizontalLayout(_orgsCmb,
+											   			  _orgCreateButton,_orgEditButton);
+		orgLayout.setComponentAlignment(_orgCreateButton,Alignment.BOTTOM_LEFT);
+		orgLayout.setComponentAlignment(_orgEditButton,Alignment.BOTTOM_LEFT);
+		this.addComponent(orgLayout);
 
 		///////// Org divisions
 		_orgDivDetailPopUp = orgDivDetailPopUpWin;
@@ -122,9 +126,11 @@ public class PB01MainView
 		_orgDivEditButton.setEnabled(false);
 		_orgDivEditButton.addClickListener(event -> _showOrgDivDetailViewForEditingExistingRecord());	// show the item detail dialog
 
-		this.addComponent(_orgDivsCmb);
-		this.addComponent(_orgDivCreateButton);
-		this.addComponent(_orgDivEditButton);
+		HorizontalLayout orgDivLayout = new HorizontalLayout(_orgDivsCmb,
+											   				 _orgDivCreateButton,_orgDivEditButton);
+		orgDivLayout.setComponentAlignment(_orgDivCreateButton,Alignment.BOTTOM_LEFT);
+		orgDivLayout.setComponentAlignment(_orgDivEditButton,Alignment.BOTTOM_LEFT);
+		this.addComponent(orgDivLayout);
 
 		///////// Org division services
 		_orgDivSrvcDetailPopUp = orgDivSrvcDetailPopUpWin;
@@ -141,9 +147,11 @@ public class PB01MainView
 		_orgDivSrvcEditButton.setEnabled(false);
 		_orgDivSrvcEditButton.addClickListener(event -> _showOrgDivSrvcDetailViewForEditingExistingRecord());	// show the item detail dialog
 
-		this.addComponent(_orgDivSrvcsCmb);
-		this.addComponent(_orgDivSrvcCreateButton);
-		this.addComponent(_orgDivSrvcEditButton);
+		HorizontalLayout orgDivSrvcLayout = new HorizontalLayout(_orgDivSrvcsCmb,
+											   					 _orgDivSrvcCreateButton,_orgDivSrvcEditButton);
+		orgDivSrvcLayout.setComponentAlignment(_orgDivSrvcCreateButton,Alignment.BOTTOM_LEFT);
+		orgDivSrvcLayout.setComponentAlignment(_orgDivSrvcEditButton,Alignment.BOTTOM_LEFT);
+		this.addComponent(orgDivSrvcLayout);
 
 		///////// Org division service locations
 		_orgDivSrvcLocDetailPopUp = orgDivSrvcLocDetailPopUpWin;
@@ -160,9 +168,11 @@ public class PB01MainView
 		_orgDivSrvcLocEditButton.setEnabled(false);
 		_orgDivSrvcLocEditButton.addClickListener(event -> _showOrgDivSrvcLocDetailViewForEditingExistingRecord());	// show the item detail dialog
 
-		this.addComponent(_orgDivSrvcLocsCmb);
-		this.addComponent(_orgDivSrvcLocCreateButton);
-		this.addComponent(_orgDivSrvcLocEditButton);
+		HorizontalLayout orgDivSrvcLocLayout = new HorizontalLayout(_orgDivSrvcLocsCmb,
+											   						_orgDivSrvcLocCreateButton,_orgDivSrvcLocEditButton);
+		orgDivSrvcLocLayout.setComponentAlignment(_orgDivSrvcLocCreateButton,Alignment.BOTTOM_LEFT);
+		orgDivSrvcLocLayout.setComponentAlignment(_orgDivSrvcLocEditButton,Alignment.BOTTOM_LEFT);
+		this.addComponent(orgDivSrvcLocLayout);
 
 		// Refresh
 		_refreshOrganizationsCombo();
