@@ -13,8 +13,8 @@ import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 
 @Accessors(prefix="_")
 @RequiredArgsConstructor(access=AccessLevel.MODULE)
-public abstract class X47BSummarizedModelObjectBase<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>,M extends X47BPersistableObject<O,I>,
-													SELF_TYPE extends X47BSummarizedModelObjectBase<O,I,M,SELF_TYPE>>
+public abstract class X47BSummarizedObjectBase<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>,M extends X47BPersistableObject<O,I>,
+											   SELF_TYPE extends X47BSummarizedObjectBase<O,I,M,SELF_TYPE>>
     	   implements X47BSummarizedObject<O,I,M> {
 
 	private static final long serialVersionUID = -8203773765925528330L;
@@ -23,14 +23,14 @@ public abstract class X47BSummarizedModelObjectBase<O extends X47BPersistableObj
 //  NON SERIALIZABLE FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Getter private final transient Class<M> _modelObjectType;
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SERIALIZABLE FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallField(as="oid",
-				   whenXml=@MarshallFieldAsXml(attr=true))	
+				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private O _oid;
-	
+
 	@MarshallField(as="id",
 			   	   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private I _id;

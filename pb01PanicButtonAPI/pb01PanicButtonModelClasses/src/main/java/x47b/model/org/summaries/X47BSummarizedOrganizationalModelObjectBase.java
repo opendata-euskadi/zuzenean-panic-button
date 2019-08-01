@@ -11,7 +11,7 @@ import x47b.model.org.X47BOrganizationalPersistableObject;
 @Accessors(prefix="_")
 public abstract class X47BSummarizedOrganizationalModelObjectBase<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>,M extends X47BOrganizationalPersistableObject<O,I>,
 														  				SELF_TYPE extends X47BSummarizedOrganizationalModelObjectBase<O,I,M,SELF_TYPE>>
-			  extends X47BSummarizedModelObjectBase<O,I,M,SELF_TYPE>
+			  extends X47BSummarizedObjectBase<O,I,M,SELF_TYPE>
     	   implements X47BSummarizedOrganizationalObject<O,I,M> {
 
 	private static final long serialVersionUID = 6718745572987398280L;
