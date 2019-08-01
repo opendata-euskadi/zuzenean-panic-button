@@ -129,7 +129,7 @@ public class X47BDBEntityToSearchResultItemTransformerForPanicButtonOrganization
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("unchecked")
 	private <S extends X47BSummarizedObject<?,?,?>> S _orgModelObjectSummary(final X47BDBEntityForOrganizationalEntityBase dbEntity,
-										 			 							  final Language lang) {
+										 			 						 final Language lang) {
 		// guess the model obj type
 		Class<? extends X47BOrganizationalPersistableObjectBase<?,?,?>> modelObjType = null;
 		if (dbEntity instanceof X47BDBEntityForOrganization) {
@@ -147,10 +147,13 @@ public class X47BDBEntityToSearchResultItemTransformerForPanicButtonOrganization
 		else if (dbEntity instanceof X47BDBEntityForWorkPlace) {
 			modelObjType = X47BWorkPlace.class;
 		}
+		else {
+			throw new IllegalArgumentException(dbEntity + " is NOT a supported db entity!");
+		}
 
 		// Create a summary from the dbEntity: transform it to a model object and get it summarized
 		final X47BOrganizationalPersistableObjectBase<?,?,?> modelObject = _marshaller.forReading().fromXml(dbEntity.getDescriptor(),
-																						 		modelObjType);
+																						 					modelObjType);
 		return (S)modelObject.getSummarizedIn(lang);
 	}
 	private X47BSummarizedOrganization _orgSummaryIn(final X47BDBEntityForOrganizationalEntityBase dbEntity,
@@ -167,9 +170,17 @@ public class X47BDBEntityToSearchResultItemTransformerForPanicButtonOrganization
 			final X47BDBEntityForOrgDivisionService dbService = dbEntity.as(X47BDBEntityForOrgDivisionService.class);
 			dbOrg = dbService.getOrganization();
 		}
+		else if (dbEntity instanceof X47BDBEntityForOrgDivisionServiceLocation) {
+			final X47BDBEntityForOrgDivisionServiceLocation dbServiceLoc = dbEntity.as(X47BDBEntityForOrgDivisionServiceLocation.class);
+			dbOrg = dbServiceLoc.getOrganization();
+		}
+		else if (dbEntity instanceof X47BDBEntityForWorkPlace) {
+			final X47BDBEntityForWorkPlace dbWorkPlace = dbEntity.as(X47BDBEntityForWorkPlace.class);
+			dbOrg = dbWorkPlace.getOrganization();
+		}
 		if (dbOrg == null) 	log.error("The {} DB entity with oid={} does NOT have {} info!",
 						  			  dbEntity.getClass(),dbEntity.getOid(),X47BDBEntityForOrganization.class);
-		return _orgModelObjectSummary(dbEntity,lang);
+		return _orgModelObjectSummary(dbOrg,lang);
 	}
 	private X47BSummarizedOrgDivision _divisionSummaryIn(final X47BDBEntityForOrganizationalEntityBase dbEntity,
 												 		 final Language lang) {
@@ -181,9 +192,17 @@ public class X47BDBEntityToSearchResultItemTransformerForPanicButtonOrganization
 			final X47BDBEntityForOrgDivisionService dbService = dbEntity.as(X47BDBEntityForOrgDivisionService.class);
 			dbDiv = dbService.getOrgDivision();
 		}
+		else if (dbEntity instanceof X47BDBEntityForOrgDivisionServiceLocation) {
+			final X47BDBEntityForOrgDivisionServiceLocation dbServiceLoc = dbEntity.as(X47BDBEntityForOrgDivisionServiceLocation.class);
+			dbDiv = dbServiceLoc.getOrgDivision();
+		}
+		else if (dbEntity instanceof X47BDBEntityForWorkPlace) {
+			final X47BDBEntityForWorkPlace dbWorkPlace = dbEntity.as(X47BDBEntityForWorkPlace.class);
+			dbDiv = dbWorkPlace.getOrgDivision();
+		}
 		if (dbDiv == null) 	log.error("The {} DB entity with oid={} does NOT have {} info!",
 						  			  dbEntity.getClass(),dbEntity.getOid(),X47BDBEntityForOrgDivision.class);
-		return _orgModelObjectSummary(dbEntity,lang);
+		return _orgModelObjectSummary(dbDiv,lang);
 	}
 	private X47BSummarizedOrgDivisionService _serviceSummaryIn(final X47BDBEntityForOrganizationalEntityBase dbEntity,
 										 					   final Language lang) {
@@ -191,9 +210,17 @@ public class X47BDBEntityToSearchResultItemTransformerForPanicButtonOrganization
 		if (dbEntity instanceof X47BDBEntityForOrgDivisionService) {
 			dbService = dbEntity.as(X47BDBEntityForOrgDivisionService.class);
 		}
+		else if (dbEntity instanceof X47BDBEntityForOrgDivisionServiceLocation) {
+			final X47BDBEntityForOrgDivisionServiceLocation dbServiceLoc = dbEntity.as(X47BDBEntityForOrgDivisionServiceLocation.class);
+			dbService = dbServiceLoc.getOrgDivisionService();
+		}
+		else if (dbEntity instanceof X47BDBEntityForWorkPlace) {
+			final X47BDBEntityForWorkPlace dbWorkPlace = dbEntity.as(X47BDBEntityForWorkPlace.class);
+			dbService = dbWorkPlace.getOrgDivisionService();
+		}
 		if (dbService == null) 	log.error("The {} DB entity with oid={} does NOT have {} info!",
 						  			      dbEntity.getClass(),dbEntity.getOid(),X47BDBEntityForOrgDivisionService.class);
-		return _orgModelObjectSummary(dbEntity,lang);
+		return _orgModelObjectSummary(dbService,lang);
 	}
 	private X47BSummarizedOrgDivisionServiceLocation _locationSummaryIn(final X47BDBEntityForOrganizationalEntityBase dbEntity,
 										 					   		    final Language lang) {
@@ -201,9 +228,13 @@ public class X47BDBEntityToSearchResultItemTransformerForPanicButtonOrganization
 		if (dbEntity instanceof X47BDBEntityForOrgDivisionServiceLocation) {
 			dbLocation = dbEntity.as(X47BDBEntityForOrgDivisionServiceLocation.class);
 		}
+		else if (dbEntity instanceof X47BDBEntityForWorkPlace) {
+			final X47BDBEntityForWorkPlace dbWorkPlace = dbEntity.as(X47BDBEntityForWorkPlace.class);
+			dbLocation = dbWorkPlace.getOrgDivisionServiceLocation();
+		}
 		if (dbLocation == null) 	log.error("The {} DB entity with oid={} does NOT have {} info!",
 						  			      	  dbEntity.getClass(),dbEntity.getOid(),X47BDBEntityForOrgDivisionServiceLocation.class);
-		return _orgModelObjectSummary(dbEntity,lang);
+		return _orgModelObjectSummary(dbLocation,lang);
 	}
 	private X47BSummarizedWorkPlace _workPlaceSummaryIn(final X47BDBEntityForOrganizationalEntityBase dbEntity,
 											    		final Language lang) {

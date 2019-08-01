@@ -17,10 +17,12 @@ import x47b.model.metadata.X47BHasFieldsMetaDataForHasOrgDivision;
 import x47b.model.metadata.X47BHasFieldsMetaDataForHasOrgDivisionService;
 import x47b.model.metadata.X47BHasFieldsMetaDataForHasOrgDivisionServiceLocation;
 import x47b.model.metadata.X47BHasFieldsMetaDataForHasOrganization;
+import x47b.model.metadata.X47BHasFieldsMetaDataForHasWorkPlace;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.org.X47BOrgDivision;
 import x47b.model.org.X47BOrgDivisionService;
 import x47b.model.org.X47BOrgDivisionServiceLocation;
@@ -40,7 +42,7 @@ import x47b.model.org.X47BWorkPlace;
  */
 @MarshallType(as="searchFilterForOrganizationalEntity")
 @Accessors(prefix="_")
-public class X47BSearchFilterForPanicButtonOrganizationalEntity 
+public class X47BSearchFilterForPanicButtonOrganizationalEntity
      extends SearchFilterForModelObjectBase<X47BSearchFilterForPanicButtonOrganizationalEntity> {
 
 	private static final long serialVersionUID = -7328506874819631272L;
@@ -57,6 +59,7 @@ public class X47BSearchFilterForPanicButtonOrganizationalEntity
 			  X47BOrgDivisionServiceLocation.class,
 			  X47BWorkPlace.class);
 	}
+	@SuppressWarnings("unchecked")
 	public X47BSearchFilterForPanicButtonOrganizationalEntity(final Class<? extends ModelObject>... modelObjectTypes) {
 		super(modelObjectTypes);
 	}
@@ -70,7 +73,7 @@ public class X47BSearchFilterForPanicButtonOrganizationalEntity
 	/**
 	 * Constructor used at REST services when a filter arrives as QueryParam:
 	 * <pre class='brush:java'>
-	 *		@GET 
+	 *		@GET
 	 *		public Response search(@HeaderParam("securityContext") final X47BUserContext securityContext,
 	 *							   @QueryParam("filter")	       final X47BSearchFilterForEntity filter) {
 	 *			...
@@ -101,8 +104,9 @@ public class X47BSearchFilterForPanicButtonOrganizationalEntity
 	 * @param modelObjectType
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public X47BSearchFilterForPanicButtonOrganizationalEntity filterBy(final Class<? extends ModelObject>... modelObjTypes) {
-		Collection<Class<? extends ModelObject>> modelObjTypesCol = CollectionUtils.of(modelObjTypes)
+		final Collection<Class<? extends ModelObject>> modelObjTypesCol = CollectionUtils.of(modelObjTypes)
 																				   .asSet();
 		return this.filterBy(modelObjTypesCol);
 	}
@@ -114,7 +118,7 @@ public class X47BSearchFilterForPanicButtonOrganizationalEntity
 	public X47BSearchFilterForPanicButtonOrganizationalEntity filterBy(final Collection<Class<? extends ModelObject>> modelObjTypesCol) {
 		Preconditions.checkArgument(CollectionUtils.hasData(modelObjTypesCol),"The modelObjectTypes cannot be null or empty");
 		Preconditions.checkArgument(_checkModelObjType(modelObjTypesCol),"One of the received model object types to filter by is NOT valid: {}",modelObjTypesCol);
-		
+
 		this.setModelObjectTypesToFilterBy(modelObjTypesCol);
 		return this;
 	}
@@ -125,7 +129,7 @@ public class X47BSearchFilterForPanicButtonOrganizationalEntity
 	 */
 	private static boolean _checkModelObjType(final Collection<Class<? extends ModelObject>> modelObjTypes) {
 		boolean outOK = true;
-		for (Class<? extends ModelObject> modelObjType : modelObjTypes) {
+		for (final Class<? extends ModelObject> modelObjType : modelObjTypes) {
 			if (modelObjType == X47BPersistableObject.class
 			 || modelObjType == X47BOrganization.class
 			 || modelObjType == X47BOrgDivision.class
@@ -141,57 +145,70 @@ public class X47BSearchFilterForPanicButtonOrganizationalEntity
 		return outOK;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public X47BSearchFilterForPanicButtonOrganizationalEntity belongingTo(final X47BOrganizationOID orgOid) {
 		Preconditions.checkArgument(orgOid != null,"The org oid cannot be null");
-		FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrganization.SEARCHABLE_METADATA.OID);
+		final FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrganization.SEARCHABLE_METADATA.OID);
 		return this.getModifierWrapper()
 						.addOrUpdateEqualsClause(fieldId,
 												 orgOid,
 												 QueryClauseOccur.MUST);
 	}
 	public X47BOrganizationOID getOrganizationOid() {
-		FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrganization.SEARCHABLE_METADATA.OID);
+		final FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrganization.SEARCHABLE_METADATA.OID);
 		return this.getAccessorWrapper().queryClauses()
 						.getValueOrNull(fieldId);
 	}
 	public X47BSearchFilterForPanicButtonOrganizationalEntity belongingTo(final X47BOrgDivisionOID orgDivisionOid) {
 		Preconditions.checkArgument(orgDivisionOid != null,"The division oid cannot be null");
-		FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivision.SEARCHABLE_METADATA.OID);
+		final FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivision.SEARCHABLE_METADATA.OID);
 		return this.getModifierWrapper()
 						.addOrUpdateEqualsClause(fieldId,
 												 orgDivisionOid,
 												 QueryClauseOccur.MUST);
 	}
 	public X47BOrgDivisionOID getOrgDivisionOid() {
-		FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivision.SEARCHABLE_METADATA.OID);
+		final FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivision.SEARCHABLE_METADATA.OID);
 		return this.getAccessorWrapper().queryClauses()
 						.getValueOrNull(fieldId);
 	}
 	public X47BSearchFilterForPanicButtonOrganizationalEntity belongingTo(final X47BOrgDivisionServiceOID orgDivisionServiceOid) {
 		Preconditions.checkArgument(orgDivisionServiceOid != null,"The service oid cannot be null");
-		FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivisionService.SEARCHABLE_METADATA.OID);
+		final FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivisionService.SEARCHABLE_METADATA.OID);
 		return this.getModifierWrapper()
 						.addOrUpdateEqualsClause(fieldId,
 												 orgDivisionServiceOid,
 												 QueryClauseOccur.MUST);
 	}
-	public X47BOrgDivisionOID getOrgDivisionServiceOid() {
-		FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivisionService.SEARCHABLE_METADATA.OID);
+	public X47BOrgDivisionServiceOID getOrgDivisionServiceOid() {
+		final FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivisionService.SEARCHABLE_METADATA.OID);
 		return this.getAccessorWrapper().queryClauses()
 						.getValueOrNull(fieldId);
 	}
 	public X47BSearchFilterForPanicButtonOrganizationalEntity belongingTo(final X47BOrgDivisionServiceLocationOID locOid) {
 		Preconditions.checkArgument(locOid != null,"The loc oid cannot be null");
-		FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivisionServiceLocation.SEARCHABLE_METADATA.OID);
+		final FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivisionServiceLocation.SEARCHABLE_METADATA.OID);
 		return this.getModifierWrapper()
 						.addOrUpdateEqualsClause(fieldId,
 									    		 locOid,
 									    		 QueryClauseOccur.MUST);
 	}
-	public X47BOrgDivisionServiceLocationOID getLocationOid() {
-		FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivisionServiceLocation.SEARCHABLE_METADATA.OID);
+	public X47BOrgDivisionServiceLocationOID getOrgDivisionServiceLocationOid() {
+		final FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasOrgDivisionServiceLocation.SEARCHABLE_METADATA.OID);
+		return this.getAccessorWrapper().queryClauses()
+						.getValueOrNull(fieldId);
+	}
+	public X47BSearchFilterForPanicButtonOrganizationalEntity belongingTo(final X47BWorkPlaceOID workPlaceOid) {
+		Preconditions.checkArgument(workPlaceOid != null,"The workplace oid cannot be null");
+		final FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasWorkPlace.SEARCHABLE_METADATA.OID);
+		return this.getModifierWrapper()
+						.addOrUpdateEqualsClause(fieldId,
+									    		 workPlaceOid,
+									    		 QueryClauseOccur.MUST);
+	}
+	public X47BWorkPlaceOID getWorkPlaceOid() {
+		final FieldID fieldId = FieldID.from(X47BHasFieldsMetaDataForHasWorkPlace.SEARCHABLE_METADATA.OID);
 		return this.getAccessorWrapper().queryClauses()
 						.getValueOrNull(fieldId);
 	}

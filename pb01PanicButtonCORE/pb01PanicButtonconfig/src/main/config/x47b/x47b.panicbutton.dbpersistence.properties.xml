@@ -32,7 +32,7 @@
 	============================================================
 	-->
 	<schema>
-		<generationMode>DROP_AND_CREATE_TABLES</generationMode>	<!-- NONE / DROP_AND_CREATE_TABLES / CREATE_OR_EXTEND_TABLES / DROP_TABLES / CREATE_TABLES -->
+		<generationMode>NONE</generationMode>	<!-- NONE / DROP_AND_CREATE_TABLES / CREATE_OR_EXTEND_TABLES / DROP_TABLES / CREATE_TABLES -->
 																<!-- to manually delete the tables in mysql use:
 																			SET autocommit=0;
     																		SET unique_checks=0;
