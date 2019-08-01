@@ -6,6 +6,7 @@ import java.util.Date;
 import r01f.types.Path;
 import r01f.types.contact.EMail;
 import r01f.types.contact.Phone;
+import r01f.ui.i18n.UII18NService;
 import r01f.ui.viewobject.UIViewObjectBase;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
@@ -59,6 +60,9 @@ public class PB01ViewObjForSearchResultItem
     public String getOrganizationName() {
         return this.getOrganization() != null ? this.getOrganization().getName() : null;
     }
+    public String getOrganizationHint() {
+    	return this.getOrganizationId() != null ? this.getOrganizationId().asString() : null;
+    }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ORG DIVISION
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -74,6 +78,9 @@ public class PB01ViewObjForSearchResultItem
     }
     public String getOrgDivisionName() {
         return this.getOrgDivision() != null ? this.getOrgDivision().getName() : null;
+    }
+    public String getOrgDivisionHint() {
+    	return this.getOrgDivisionId() != null ? this.getOrgDivisionId().asString() : null;
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ORG DIVISION SERVICE
@@ -91,6 +98,9 @@ public class PB01ViewObjForSearchResultItem
     public String getOrgDivisionServiceName() {
         return this.getOrgDivisionService() != null ? this.getOrgDivisionService().getName() : null;
     }
+    public String getOrgDivisionServiceHint() {
+    	return this.getOrgDivisionServiceId() != null ? this.getOrgDivisionServiceId().asString() : null;
+    }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ORG DIVISION SERVICE LOCATION
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -107,6 +117,9 @@ public class PB01ViewObjForSearchResultItem
     public String getOrgDivisionServiceLocationName() {
         return this.getOrgDivisionServiceLocation() != null ? this.getOrgDivisionServiceLocation().getName() : null;
     }
+    public String getOrgDivisionServiceLocationHint() {
+    	return this.getOrgDivisionServiceLocationId() != null ? this.getOrgDivisionServiceLocationId().asString() : null;
+    }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	WORKPLACE
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -121,6 +134,9 @@ public class PB01ViewObjForSearchResultItem
         return this.getWorkPlace() != null ? this.getWorkPlace().getId() : null;    }
     public String getWorkPlaceName() {
         return this.getWorkPlace() != null ? this.getWorkPlace().getName() : null;
+    }
+    public String getWorkPlaceHint() {
+    	return this.getWorkPlaceId() != null ? this.getWorkPlaceId().asString() : null;
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	HIERARCHY
@@ -139,6 +155,17 @@ public class PB01ViewObjForSearchResultItem
     public Date getLastAlarmRaiseDate() {
         return this.getWrappedModelObject()
                    .getLastAlarmRaiseDate();
+    }
+    public String getAlarmRaiseCountAsString() {
+    	return Long.toString(this.getAlarmRaiseCount());
+    }
+    public String getAlarmLastRaiseDateExplained(final UII18NService i18n) {
+    	if (this.getAlarmRaiseCount() == 0) return i18n.getMessage("pb01.view.noAlarmsRaised");
+    	// return something like:
+    	//		"x alarms raised; last was at 2019/05/01-12:00"
+    	return i18n.getMessage("pb01.view.lastAlarmRaised",
+    						   this.getAlarmRaiseCount(),
+    						   this.getLastAlarmRaiseDate());
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONTACT

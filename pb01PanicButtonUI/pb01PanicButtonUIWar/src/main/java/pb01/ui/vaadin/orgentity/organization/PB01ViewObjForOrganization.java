@@ -19,7 +19,7 @@ public class PB01ViewObjForOrganization
 		super(obj);
 	}
 	public static final PB01ViewObjForOrganization from(final X47BOrganization obj) {
-		PB01ViewObjForOrganization viewObj = new PB01ViewObjForOrganization(obj);
+		final PB01ViewObjForOrganization viewObj = new PB01ViewObjForOrganization(obj);
 		return viewObj;
 	}
 }

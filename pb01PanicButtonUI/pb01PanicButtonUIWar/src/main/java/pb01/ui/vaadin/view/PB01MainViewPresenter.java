@@ -17,17 +17,13 @@ import pb01.ui.vaadin.view.components.PB01VaadinComboItem;
 import r01f.locale.Language;
 import r01f.ui.presenter.UIPresenter;
 import r01f.ui.presenter.UIPresenterSubscriber;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
+import r01f.util.types.collections.CollectionUtils;
+import r01f.util.types.collections.Lists;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
-import x47b.model.org.X47BOrganizationalObjectRef;
 import x47b.model.org.summaries.X47BSummarizedOrganizationalObject;
 import x47b.model.search.X47BSearchFilterForPanicButtonOrganizationalEntity;
 
@@ -68,39 +64,45 @@ public class PB01MainViewPresenter
 /////////////////////////////////////////////////////////////////////////////////////////
 //	GRID
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void onGridDataNeeded(final X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> selectedOrg,
-								 final X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> selectedOrgDiv,
-								 final X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> selectedOrgDivSrvc,
-								 final X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> selectedOrgDivSrvcLoc,
-								 final X47BOrganizationalObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> selectedWorkPlace,
+	public void onGridDataNeeded(final X47BOrganizationOID orgOid,
+								 final X47BOrgDivisionOID orgDivOid,
+								 final X47BOrgDivisionServiceOID orgDivSrvcOid,
+								 final X47BOrgDivisionServiceLocationOID orgDivSrvcLocOid,
+								 final X47BWorkPlaceOID workPlaceOid,
 								 final int firstItemNum,final int numberOfItems,
 								 final UIPresenterSubscriber<Collection<PB01ViewObjForSearchResultItem>> presenterSubscriber) {
 		// [1] - Create the filter
 		final X47BSearchFilterForPanicButtonOrganizationalEntity filter = new X47BSearchFilterForPanicButtonOrganizationalEntity();
 		filter.setUILanguage(Language.SPANISH);
-		if (selectedOrg != null) 			filter.belongingTo(selectedOrg.getOid());
-		if (selectedOrgDiv != null)			filter.belongingTo(selectedOrgDiv.getOid());
-		if (selectedOrgDivSrvc != null)		filter.belongingTo(selectedOrgDivSrvc.getOid());
-		if (selectedOrgDivSrvcLoc != null)	filter.belongingTo(selectedOrgDivSrvcLoc.getOid());
-		if (selectedWorkPlace != null)		filter.belongingTo(selectedWorkPlace.getOid());
+		if (orgOid != null) 			filter.belongingTo(orgOid);
+		if (orgDivOid != null)			filter.belongingTo(orgDivOid);
+		if (orgDivSrvcOid != null)		filter.belongingTo(orgDivSrvcOid);
+		if (orgDivSrvcLocOid != null)	filter.belongingTo(orgDivSrvcLocOid);
+		if (workPlaceOid != null)		filter.belongingTo(workPlaceOid);
 
 		// [2] - Load the object list using the api
 		_coreMediator.search(filter,
 							 firstItemNum,numberOfItems,
 							 searchResults -> {
-													log.info("...returned {} search result items from a total of {} starting at item at {}",
-															 searchResults.getPageItems().size(),
-															 searchResults.getTotalItemsCount(),
-															 searchResults.getStartPosition());
+													if (searchResults != null
+													 && CollectionUtils.hasData(searchResults.getPageItems())) {
+									 					log.info("...returned {} search result items from a total of {} starting at item at {}",
+																 searchResults.getPageItems().size(),
+																 searchResults.getTotalItemsCount(),
+																 searchResults.getStartPosition());
 
-													// [2] - Transform into a view object
-													Collection<PB01ViewObjForSearchResultItem> viewObjs = null;
-													viewObjs = FluentIterable.from(searchResults.getPageItems())
-																	 .transform(item -> new PB01ViewObjForSearchResultItem(item))
-																	 .toList();
+														// [2] - Transform into a view object
+														Collection<PB01ViewObjForSearchResultItem> viewObjs = null;
+														viewObjs = FluentIterable.from(searchResults.getPageItems())
+																		 .transform(item -> new PB01ViewObjForSearchResultItem(item))
+																		 .toList();
 
-													//  [2] - Hand objects to the view
-													presenterSubscriber.onSuccess(viewObjs);
+														//  [2] - Hand objects to the view
+														presenterSubscriber.onSuccess(viewObjs);
+													} else {
+														log.info("NO search results returned!");
+														presenterSubscriber.onSuccess(Lists.newArrayList());	// no search results
+													}
 							 				  });
 	}
 /////////////////////////////////////////////////////////////////////////////////////////

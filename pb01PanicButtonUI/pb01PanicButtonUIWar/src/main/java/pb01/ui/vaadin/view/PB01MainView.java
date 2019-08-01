@@ -83,11 +83,14 @@ public class PB01MainView
 	private final Button _workPlaceCreateButton;
 	private final Button _workPlaceEditButton;
 
-	private X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> _selectedOrgRef;
-	private X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _selectedOrgDivRef;
-	private X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> _selectedOrgDivSrvcRef;
-	private X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> _selectedOrgDivSrvcLocRef;
-	private X47BOrganizationalObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> _selectedWorkPlaceRef;
+	// The combo selected organizational entities
+	private X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> _cmbSelectedOrgRef;
+	private X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _cmbSelectedOrgDivRef;
+	private X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> _cmbSelectedOrgDivSrvcRef;
+	private X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> _cmbSelectedOrgDivSrvcLocRef;
+	private X47BOrganizationalObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> _cmbSelectedWorkPlaceRef;
+
+	// The pop-up window being edited organizational entities
 
 	// Grid
 	private final PB01MainGridView _gridView;
@@ -210,6 +213,17 @@ public class PB01MainView
 		workPlaceLayout.setComponentAlignment(_workPlaceEditButton,Alignment.BOTTOM_LEFT);
 		this.addComponent(workPlaceLayout);
 
+		// Grid
+		_gridView = new PB01MainGridView(i18n,
+										 presenter,
+										 // what happens when an org entity is clicked on the grid
+										 orgClickedEvent -> _showOrganizationDetailViewForEditingExistingRecord(orgClickedEvent.getObjRef()),
+										 orgDivClickedEvent -> _showOrgDivDetailViewForEditingExistingRecord(orgDivClickedEvent.getObjRef()),
+										 orgDivSrvcClickedEvent -> _showOrgDivSrvcDetailViewForEditingExistingRecord(orgDivSrvcClickedEvent.getObjRef()),
+										 orgDivSrvcLocClickedEvent -> _showOrgDivSrvcLocDetailViewForEditingExistingRecord(orgDivSrvcLocClickedEvent.getObjRef()),
+										 workPlaceClickedEvent -> _showWorkPlaceDetailViewForEditingExistingRecord(workPlaceClickedEvent.getObjRef()));
+		this.addComponent(_gridView);
+
 		// Refresh
 		_refreshOrganizationsCombo();
 		_refreshOrgDivsCombo(null);
@@ -217,43 +231,49 @@ public class PB01MainView
 		_refreshOrgDivSrvcLocsCombo(null);
 		_refreshWorkPlacesCombo(null);
 
-		// Grid
-		_gridView = new PB01MainGridView(i18n,
-										 presenter);
-		this.addComponent(_gridView);
+		_gridView.setVisible(false);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Uses the combo selected values to refresh the grid
+	 */
+	private void _refreshGridUsingComboValues() {
+		_gridView.refresh(_cmbSelectedOrgRef,
+						  _cmbSelectedOrgDivRef,
+						  _cmbSelectedOrgDivSrvcRef,
+						  _cmbSelectedOrgDivSrvcLocRef,
+						  _cmbSelectedWorkPlaceRef);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ORGANIZATIONS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private void _onOrgsComboValueChanged(final ValueChangeEvent<PB01VaadinComboItem> event) {
 		// store the selected org ref
-		_selectedOrgRef = _orgsCmb.getValue() != null ? _orgsCmb.getValue()
+		_cmbSelectedOrgRef = _orgsCmb.getValue() != null ? _orgsCmb.getValue()
 												     		   .getOrgEntityRefUsing(X47BOrganizationOID::forId,
 												     						         X47BOrganizationID::forId)
 												     : null;
-		_selectedOrgDivRef = null;
-		_selectedOrgDivSrvcRef = null;
-		_selectedOrgDivSrvcLocRef = null;
-		_selectedWorkPlaceRef = null;
+		_cmbSelectedOrgDivRef = null;
+		_cmbSelectedOrgDivSrvcRef = null;
+		_cmbSelectedOrgDivSrvcLocRef = null;
+		_cmbSelectedWorkPlaceRef = null;
 
-		_orgEditButton.setEnabled(_selectedOrgRef != null);		// can edit orgs
-		_orgDivCreateButton.setEnabled(_selectedOrgRef != null);// can create divs
+		_orgEditButton.setEnabled(_cmbSelectedOrgRef != null);		// can edit orgs
+		_orgDivCreateButton.setEnabled(_cmbSelectedOrgRef != null);// can create divs
 
 		// refresh the underlying combos
-		_refreshOrgDivsCombo(_selectedOrgRef != null ? _selectedOrgRef.getOid() : null);
+		_refreshOrgDivsCombo(_cmbSelectedOrgRef != null ? _cmbSelectedOrgRef.getOid() : null);
 		_refreshOrgDivSrvcsCombo(null);
 		_refreshOrgDivSrvcLocsCombo(null);
 		_refreshWorkPlacesCombo(null);
 
 		// refresh the grid
-		_gridView.refresh(_selectedOrgRef,
-						  _selectedOrgDivRef,
-						  _selectedOrgDivSrvcRef,
-						  _selectedOrgDivSrvcLocRef,
-						  _selectedWorkPlaceRef);
+		_refreshGridUsingComboValues();
 	}
 	private void _refreshOrganizationsCombo() {
-		_selectedOrgRef = null;
+		_cmbSelectedOrgRef = null;
 		_orgsCmb.setValue(null);
 
 		log.info("...refresh organizations combo");
@@ -269,7 +289,7 @@ public class PB01MainView
 
 		// select the saved record
 		final PB01VaadinComboItem cmbItem = PB01VaadinComboItem.FROM_VIEW_OBJ.apply(viewObj,
-																			  _i18n.getCurrentLanguage());
+																			  		_i18n.getCurrentLanguage());
 		_orgsCmb.setValue(cmbItem);
 
 		// close the popup
@@ -295,11 +315,12 @@ public class PB01MainView
 		  .addWindow(_orgDetailPopUp);
 	}
 	private void _showOrganizationDetailViewForEditingExistingRecord() {
-		if (_selectedOrgRef == null) throw new IllegalStateException("NO organization selected!");
-		final X47BOrganizationOID orgOid = _selectedOrgRef.getOid();
-
+		_showOrganizationDetailViewForEditingExistingRecord(_cmbSelectedOrgRef);
+	}
+	private void _showOrganizationDetailViewForEditingExistingRecord(final X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef) {
+		if (orgRef == null) throw new IllegalStateException("NO organization to be edited!");
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
-		_orgDetailPopUp.forEditing(orgOid,
+		_orgDetailPopUp.forEditing(orgRef.getOid(),
 						 		   // save subscriber: executed after save: refresh the combo
 						 		   UIPresenterSubscriber.from(PB01MainView.this::_onOrganizationSaved,	// OK subscriber
 						 		    						  PB01MainView.this::_onPersistenceError), 	// Error subscriber
@@ -314,31 +335,27 @@ public class PB01MainView
 /////////////////////////////////////////////////////////////////////////////////////////
 	private void _onOrgDivsComboValueChanged(final ValueChangeEvent<PB01VaadinComboItem> event) {
 		// store the selected object ref
-		_selectedOrgDivRef = _orgDivsCmb.getValue() != null ? _orgDivsCmb.getValue()
+		_cmbSelectedOrgDivRef = _orgDivsCmb.getValue() != null ? _orgDivsCmb.getValue()
 													     			    .getOrgEntityRefUsing(X47BOrgDivisionOID::forId,
 													     					   		          X47BOrgDivisionID::forId)
 													       : null;
-		_selectedOrgDivSrvcRef = null;
-		_selectedOrgDivSrvcLocRef = null;
-		_selectedWorkPlaceRef = null;
+		_cmbSelectedOrgDivSrvcRef = null;
+		_cmbSelectedOrgDivSrvcLocRef = null;
+		_cmbSelectedWorkPlaceRef = null;
 
-		_orgDivEditButton.setEnabled(_selectedOrgDivRef != null);		// can edit divs
-		_orgDivSrvcCreateButton.setEnabled(_selectedOrgDivRef != null);	// can create srvcs
+		_orgDivEditButton.setEnabled(_cmbSelectedOrgDivRef != null);		// can edit divs
+		_orgDivSrvcCreateButton.setEnabled(_cmbSelectedOrgDivRef != null);	// can create srvcs
 
 		 // refresh the underlying combos
-		_refreshOrgDivSrvcsCombo(_selectedOrgDivRef != null ? _selectedOrgDivRef.getOid() : null);
+		_refreshOrgDivSrvcsCombo(_cmbSelectedOrgDivRef != null ? _cmbSelectedOrgDivRef.getOid() : null);
 		_refreshOrgDivSrvcLocsCombo(null);
 		_refreshWorkPlacesCombo(null);
 
 		// refresh the grid
-		_gridView.refresh(_selectedOrgRef,
-						  _selectedOrgDivRef,
-						  _selectedOrgDivSrvcRef,
-						  _selectedOrgDivSrvcLocRef,
-						  _selectedWorkPlaceRef);
+		_refreshGridUsingComboValues();
 	}
 	private void _refreshOrgDivsCombo(final X47BOrganizationOID orgOid) {
-		_selectedOrgDivRef = null;
+		_cmbSelectedOrgDivRef = null;
 		_orgDivsCmb.setValue(null);
 
 		if (orgOid == null) {
@@ -354,34 +371,41 @@ public class PB01MainView
 		}
 	}
 	private void _onOrgDivSaved(final PB01ViewObjForOrgDivision viewObj) {
-		if (_selectedOrgRef == null) throw new IllegalStateException("NO organization selected!");
-
 		// refresh the combo
-		_refreshOrgDivsCombo(_selectedOrgRef.getOid());
+		if (_cmbSelectedOrgRef != null) {
+			_refreshOrgDivsCombo(viewObj.getWrappedModelObject()
+										.getOrgRef().getOid());		// parent object
 
-		// select the saved object
-		final PB01VaadinComboItem cmbItem = PB01VaadinComboItem.FROM_VIEW_OBJ.apply(viewObj,
-																		 	  _i18n.getCurrentLanguage());
-		_orgDivsCmb.setValue(cmbItem);
+			// select the saved object
+			final PB01VaadinComboItem cmbItem = PB01VaadinComboItem.FROM_VIEW_OBJ.apply(viewObj,
+																			 	  _i18n.getCurrentLanguage());
+			_orgDivsCmb.setValue(cmbItem);
+		}
+		// Refresh the grid
+		_refreshGridUsingComboValues();
 
 		// close the popup window
 		_orgDivDetailPopUp.close();
 	}
 	private void _onOrgDivDeleted(final PB01ViewObjForOrgDivision viewObj) {
 		// refresh the combo
-		_refreshOrgDivsCombo(_selectedOrgRef.getOid());
-		_refreshOrgDivSrvcsCombo(null);
-		_refreshOrgDivSrvcLocsCombo(null);
-		_refreshWorkPlacesCombo(null);
-
+		if (_cmbSelectedOrgRef != null) {
+			_refreshOrgDivsCombo(viewObj.getWrappedModelObject()
+										.getOrgRef().getOid());		// parent object
+			_refreshOrgDivSrvcsCombo(null);
+			_refreshOrgDivSrvcLocsCombo(null);
+			_refreshWorkPlacesCombo(null);
+		}
+		// refresh the grid
+		_refreshGridUsingComboValues();
 
 		// close the popup
 		_orgDivDetailPopUp.close();
 	}
 	private void _showOrgDivDetailViewForCreatingNewRecord() {
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
-		if (_selectedOrgRef == null) throw new IllegalStateException("NO organization selected!");
-		_orgDivDetailPopUp.forCreating(_selectedOrgRef,
+		if (_cmbSelectedOrgRef == null) throw new IllegalStateException("NO organization selected!");
+		_orgDivDetailPopUp.forCreating(_cmbSelectedOrgRef,
 							 		   // save subscriber: executed after save: refresh the organizations combo
 							 		   UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSaved,		// OK subscriber
 						 		    						      PB01MainView.this::_onPersistenceError)); // Error subscriber,
@@ -389,11 +413,12 @@ public class PB01MainView
 		  .addWindow(_orgDivDetailPopUp);
 	}
 	private void _showOrgDivDetailViewForEditingExistingRecord() {
-		if (_selectedOrgDivRef == null) throw new IllegalStateException("NO org division selected!");
-		final X47BOrgDivisionOID orgDivOid = _selectedOrgDivRef.getOid();
-
+		_showOrgDivDetailViewForEditingExistingRecord(_cmbSelectedOrgDivRef);
+	}
+	private void _showOrgDivDetailViewForEditingExistingRecord(final X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef) {
+		if (orgDivRef == null) throw new IllegalStateException("NO org division to be edited!");
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
-		_orgDivDetailPopUp.forEditing(orgDivOid,
+		_orgDivDetailPopUp.forEditing(orgDivRef.getOid(),
 							 		  // save subscriber: executed after save: refresh the combo
 							 		  UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSaved,			// OK subscriber
 						 		    						     PB01MainView.this::_onPersistenceError), 	// Error subscriber,
@@ -408,29 +433,25 @@ public class PB01MainView
 /////////////////////////////////////////////////////////////////////////////////////////
 	private void _onOrgDivSrvcsComboValueChanged(final ValueChangeEvent<PB01VaadinComboItem> event) {
 		// store the selected object
-		_selectedOrgDivSrvcRef = _orgDivSrvcsCmb.getValue() != null ? _orgDivSrvcsCmb.getValue()
-														     			    .getOrgEntityRefUsing(X47BOrgDivisionServiceOID::forId,
-														     					   		          X47BOrgDivisionServiceID::forId)
+		_cmbSelectedOrgDivSrvcRef = _orgDivSrvcsCmb.getValue() != null ? _orgDivSrvcsCmb.getValue()
+															     			    .getOrgEntityRefUsing(X47BOrgDivisionServiceOID::forId,
+															     					   		          X47BOrgDivisionServiceID::forId)
 														     	    : null;
-		_selectedOrgDivSrvcLocRef = null;
-		_selectedWorkPlaceRef = null;
+		_cmbSelectedOrgDivSrvcLocRef = null;
+		_cmbSelectedWorkPlaceRef = null;
 
-		_orgDivSrvcEditButton.setEnabled(_selectedOrgDivSrvcRef != null);		// can edit srvc
-		_orgDivSrvcLocCreateButton.setEnabled(_selectedOrgDivSrvcRef != null);	// can create locs
+		_orgDivSrvcEditButton.setEnabled(_cmbSelectedOrgDivSrvcRef != null);		// can edit srvc
+		_orgDivSrvcLocCreateButton.setEnabled(_cmbSelectedOrgDivSrvcRef != null);	// can create locs
 
 		// refresh the underlying combos
-		_refreshOrgDivSrvcLocsCombo(_selectedOrgDivSrvcRef != null ? _selectedOrgDivSrvcRef.getOid() : null);
+		_refreshOrgDivSrvcLocsCombo(_cmbSelectedOrgDivSrvcRef != null ? _cmbSelectedOrgDivSrvcRef.getOid() : null);
 		_refreshWorkPlacesCombo(null);
 
 		// refresh the grid
-		_gridView.refresh(_selectedOrgRef,
-						  _selectedOrgDivRef,
-						  _selectedOrgDivSrvcRef,
-						  _selectedOrgDivSrvcLocRef,
-						  _selectedWorkPlaceRef);
+		_refreshGridUsingComboValues();
 	}
 	private void _refreshOrgDivSrvcsCombo(final X47BOrgDivisionOID orgDivOid) {
-		_selectedOrgDivSrvcRef = null;
+		_cmbSelectedOrgDivSrvcRef = null;
 		_orgDivSrvcsCmb.setValue(null);
 
 		if (orgDivOid == null) {
@@ -446,33 +467,41 @@ public class PB01MainView
 		}
 	}
 	private void _onOrgDivSrvcSaved(final PB01ViewObjForOrgDivisionService viewObj) {
-		if (_selectedOrgDivRef == null) throw new IllegalStateException("NO org division selected!");
-
 		// refresh the combo
-		_refreshOrgDivSrvcsCombo(_selectedOrgDivRef.getOid());
+		if (_cmbSelectedOrgDivRef != null) {
+			_refreshOrgDivSrvcsCombo(viewObj.getWrappedModelObject()
+											.getOrgDivisionRef().getOid());		// parent object
 
-		// select the saved object
-		final PB01VaadinComboItem cmbItem = PB01VaadinComboItem.FROM_VIEW_OBJ.apply(viewObj,
-																		 	  _i18n.getCurrentLanguage());
-		_orgDivSrvcsCmb.setValue(cmbItem);
+			// select the saved object
+			final PB01VaadinComboItem cmbItem = PB01VaadinComboItem.FROM_VIEW_OBJ.apply(viewObj,
+																			 	  		_i18n.getCurrentLanguage());
+			_orgDivSrvcsCmb.setValue(cmbItem);
+		}
+		// refresh the grid using combo values
+		_refreshGridUsingComboValues();
 
 		// close the popup window
 		_orgDivSrvcDetailPopUp.close();
 	}
 	private void _onOrgDivSrvcDeleted(final PB01ViewObjForOrgDivisionService viewObj) {
 		// refresh the combo
-		_refreshOrgDivSrvcsCombo(_selectedOrgDivRef.getOid());
-		_refreshOrgDivSrvcLocsCombo(null);
-		_refreshOrgDivSrvcsCombo(null);
+		if (_cmbSelectedOrgDivRef != null) {
+			_refreshOrgDivSrvcsCombo(viewObj.getWrappedModelObject()
+											.getOrgDivisionRef().getOid());		// parent object
+			_refreshOrgDivSrvcLocsCombo(null);
+			_refreshOrgDivSrvcsCombo(null);
+		}
+		// refresh the grid using combo values
+		_refreshGridUsingComboValues();
 
 		// close the popup
 		_orgDivSrvcDetailPopUp.close();
 	}
 	private void _showOrgDivSrvcDetailViewForCreatingNewRecord() {
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
-		if (_selectedOrgRef == null) throw new IllegalStateException("NO org selected!");
-		if (_selectedOrgDivRef == null) throw new IllegalStateException("NO org division selected!");
-		_orgDivSrvcDetailPopUp.forCreating(_selectedOrgRef,_selectedOrgDivRef,
+		if (_cmbSelectedOrgRef == null) throw new IllegalStateException("NO org selected!");
+		if (_cmbSelectedOrgDivRef == null) throw new IllegalStateException("NO org division selected!");
+		_orgDivSrvcDetailPopUp.forCreating(_cmbSelectedOrgRef,_cmbSelectedOrgDivRef,
 							 		   	   // save subscriber: executed after save: refresh the combo
 							 		   	   UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSrvcSaved,		// OK subscriber
 						 		    						          PB01MainView.this::_onPersistenceError)); 	// Error subscriber
@@ -480,11 +509,12 @@ public class PB01MainView
 		  .addWindow(_orgDivSrvcDetailPopUp);
 	}
 	private void _showOrgDivSrvcDetailViewForEditingExistingRecord() {
-		if (_selectedOrgDivSrvcRef == null) throw new IllegalStateException("NO org division service selected!");
-		final X47BOrgDivisionServiceOID orgDivSrvcOid = _selectedOrgDivSrvcRef.getOid();
-
+		_showOrgDivSrvcDetailViewForEditingExistingRecord(_cmbSelectedOrgDivSrvcRef);
+	}
+	private void _showOrgDivSrvcDetailViewForEditingExistingRecord(final X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef) {
+		if (orgDivSrvcRef == null) throw new IllegalStateException("NO org division service to be edited!");
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
-		_orgDivSrvcDetailPopUp.forEditing(orgDivSrvcOid,
+		_orgDivSrvcDetailPopUp.forEditing(orgDivSrvcRef.getOid(),
 							 		  	  // save subscriber: executed after save: refresh the combo
 								 		  UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSrvcSaved,		// OK subscriber
 							 		    						     PB01MainView.this::_onPersistenceError),// Error subscriber,
@@ -499,27 +529,23 @@ public class PB01MainView
 /////////////////////////////////////////////////////////////////////////////////////////
 	private void _onOrgDivSrvcLocsComboValueChanged(final ValueChangeEvent<PB01VaadinComboItem> event) {
 		// store the object ref
-		_selectedOrgDivSrvcLocRef = _orgDivSrvcLocsCmb.getValue() != null ? _orgDivSrvcLocsCmb.getValue()
+		_cmbSelectedOrgDivSrvcLocRef = _orgDivSrvcLocsCmb.getValue() != null ? _orgDivSrvcLocsCmb.getValue()
 															     			    .getOrgEntityRefUsing(X47BOrgDivisionServiceLocationOID::forId,
 															     					   		          X47BOrgDivisionServiceLocationID::forId)
 															     		  : null;
-		_selectedWorkPlaceRef = null;
+		_cmbSelectedWorkPlaceRef = null;
 
-		_orgDivSrvcLocEditButton.setEnabled(_selectedOrgDivSrvcLocRef != null);	// can edit locs
-		_workPlaceCreateButton.setEnabled(_selectedOrgDivSrvcLocRef != null);	// can create workplaces
+		_orgDivSrvcLocEditButton.setEnabled(_cmbSelectedOrgDivSrvcLocRef != null);	// can edit locs
+		_workPlaceCreateButton.setEnabled(_cmbSelectedOrgDivSrvcLocRef != null);	// can create workplaces
 
 		// refresh the underlying combos
-		_refreshWorkPlacesCombo(_selectedOrgDivSrvcLocRef != null ? _selectedOrgDivSrvcLocRef.getOid() : null);
+		_refreshWorkPlacesCombo(_cmbSelectedOrgDivSrvcLocRef != null ? _cmbSelectedOrgDivSrvcLocRef.getOid() : null);
 
 		// refresh the grid
-		_gridView.refresh(_selectedOrgRef,
-						  _selectedOrgDivRef,
-						  _selectedOrgDivSrvcRef,
-						  _selectedOrgDivSrvcLocRef,
-						  _selectedWorkPlaceRef);
+		_refreshGridUsingComboValues();
 	}
 	private void _refreshOrgDivSrvcLocsCombo(final X47BOrgDivisionServiceOID orgDivSrvcOid) {
-		_selectedOrgDivSrvcLocRef = null;
+		_cmbSelectedOrgDivSrvcLocRef = null;
 		_orgDivSrvcLocsCmb.setValue(null);
 
 		if (orgDivSrvcOid == null) {
@@ -535,33 +561,41 @@ public class PB01MainView
 		}
 	}
 	private void _onOrgDivSrvcLocSaved(final PB01ViewObjForOrgDivisionServiceLocation viewObj) {
-		if (_selectedOrgDivSrvcRef == null) throw new IllegalStateException("NO org division service selected!");
-
 		// refresh the combo
-		_refreshOrgDivSrvcLocsCombo(_selectedOrgDivSrvcRef.getOid());
+		if (_cmbSelectedOrgDivSrvcRef != null) {
+			_refreshOrgDivSrvcLocsCombo(viewObj.getWrappedModelObject()
+											   .getOrgDivisionServiceRef().getOid());	// parent object
 
-		// select the saved object
-		final PB01VaadinComboItem cmbItem = PB01VaadinComboItem.FROM_VIEW_OBJ.apply(viewObj,
-																		 	  _i18n.getCurrentLanguage());
-		_orgDivSrvcLocsCmb.setValue(cmbItem);
+			// select the saved object
+			final PB01VaadinComboItem cmbItem = PB01VaadinComboItem.FROM_VIEW_OBJ.apply(viewObj,
+																			 	  		_i18n.getCurrentLanguage());
+			_orgDivSrvcLocsCmb.setValue(cmbItem);
+		}
+		// refresh the grid
+		_refreshGridUsingComboValues();
 
 		// close the popup window
 		_orgDivSrvcLocDetailPopUp.close();
 	}
 	private void _onOrgDivSrvcLocDeleted(final PB01ViewObjForOrgDivisionServiceLocation viewObj) {
 		// refresh the combo
-		_refreshOrgDivSrvcLocsCombo(_selectedOrgDivSrvcRef.getOid());
-		_refreshOrgDivSrvcsCombo(null);
+		if (_cmbSelectedOrgDivSrvcRef != null) {
+			_refreshOrgDivSrvcLocsCombo(viewObj.getWrappedModelObject()
+											   .getOrgDivisionServiceRef().getOid());	// parent object
+			_refreshOrgDivSrvcsCombo(null);
+		}
+		// refresh the grid
+		_refreshGridUsingComboValues();
 
 		// close the popup
 		_orgDivSrvcLocDetailPopUp.close();
 	}
 	private void _showOrgDivSrvcLocDetailViewForCreatingNewRecord() {
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
-		if (_selectedOrgRef == null) throw new IllegalStateException("NO org selected!");
-		if (_selectedOrgDivRef == null) throw new IllegalStateException("NO org division selected!");
-		if (_selectedOrgDivSrvcRef == null) throw new IllegalStateException("NO org division service selected!");
-		_orgDivSrvcLocDetailPopUp.forCreating(_selectedOrgRef,_selectedOrgDivRef,_selectedOrgDivSrvcRef,
+		if (_cmbSelectedOrgRef == null) throw new IllegalStateException("NO org selected!");
+		if (_cmbSelectedOrgDivRef == null) throw new IllegalStateException("NO org division selected!");
+		if (_cmbSelectedOrgDivSrvcRef == null) throw new IllegalStateException("NO org division service selected!");
+		_orgDivSrvcLocDetailPopUp.forCreating(_cmbSelectedOrgRef,_cmbSelectedOrgDivRef,_cmbSelectedOrgDivSrvcRef,
 								 		   	  // save subscriber: executed after save: refresh the combo
 								 		   	  UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSrvcLocSaved,		// OK subscriber
 							 		    						         PB01MainView.this::_onPersistenceError));		// Error subscriber
@@ -569,11 +603,12 @@ public class PB01MainView
 		  .addWindow(_orgDivSrvcLocDetailPopUp);
 	}
 	private void _showOrgDivSrvcLocDetailViewForEditingExistingRecord() {
-		if (_selectedOrgDivSrvcLocRef == null) throw new IllegalStateException("NO org division service location selected!");
-		final X47BOrgDivisionServiceLocationOID orgDivSrvcLocOid = _selectedOrgDivSrvcLocRef.getOid();
-
+		_showOrgDivSrvcLocDetailViewForEditingExistingRecord(_cmbSelectedOrgDivSrvcLocRef);
+	}
+	private void _showOrgDivSrvcLocDetailViewForEditingExistingRecord(final X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocRef) {
+		if (orgDivSrvcLocRef == null) throw new IllegalStateException("NO org division service location to be edited!");
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
-		_orgDivSrvcLocDetailPopUp.forEditing(orgDivSrvcLocOid,
+		_orgDivSrvcLocDetailPopUp.forEditing(orgDivSrvcLocRef.getOid(),
 							 		  	  	 // save subscriber: executed after save: refresh the combo
 								 		  	 UIPresenterSubscriber.from(PB01MainView.this::_onOrgDivSrvcLocSaved,		// OK subscriber
 							 		    						        PB01MainView.this::_onPersistenceError),		// Error subscriber,
@@ -588,22 +623,18 @@ public class PB01MainView
 /////////////////////////////////////////////////////////////////////////////////////////
 	private void _onWorkPlacesComboValueChanged(final ValueChangeEvent<PB01VaadinComboItem> event) {
 		// store the selected object ref
-		_selectedWorkPlaceRef = _workPlacesCmb.getValue() != null ? _workPlacesCmb.getValue()
+		_cmbSelectedWorkPlaceRef = _workPlacesCmb.getValue() != null ? _workPlacesCmb.getValue()
 															     			    .getOrgEntityRefUsing(X47BWorkPlaceOID::forId,
 															     					   		          X47BWorkPlaceID::forId)
 															     		  : null;
 		// set edit button status
-		_workPlaceEditButton.setEnabled(_selectedWorkPlaceRef != null);
+		_workPlaceEditButton.setEnabled(_cmbSelectedWorkPlaceRef != null);
 
 		// refresh the grid
-		_gridView.refresh(_selectedOrgRef,
-						  _selectedOrgDivRef,
-						  _selectedOrgDivSrvcRef,
-						  _selectedOrgDivSrvcLocRef,
-						  _selectedWorkPlaceRef);
+		_refreshGridUsingComboValues();
 	}
 	private void _refreshWorkPlacesCombo(final X47BOrgDivisionServiceLocationOID locOid) {
-		_selectedWorkPlaceRef = null;
+		_cmbSelectedWorkPlaceRef = null;
 		_workPlacesCmb.setValue(null);
 
 		if (locOid == null) {
@@ -619,33 +650,41 @@ public class PB01MainView
 		}
 	}
 	private void _onWorkPlaceSaved(final PB01ViewObjForWorkPlace viewObj) {
-		if (_selectedOrgDivSrvcLocRef == null) throw new IllegalStateException("NO org division service location selected!");
-
 		// refresh the combo
-		_refreshWorkPlacesCombo(_selectedOrgDivSrvcLocRef.getOid());
+		if (_cmbSelectedOrgDivSrvcLocRef != null) {
+			_refreshWorkPlacesCombo(viewObj.getWrappedModelObject()
+										   .getOrgDivisionServiceLocationRef().getOid());	// parent object
 
-		// select the saved org division service
-		final PB01VaadinComboItem cmbItem = PB01VaadinComboItem.FROM_VIEW_OBJ.apply(viewObj,
-																		 	  		_i18n.getCurrentLanguage());
-		_workPlacesCmb.setValue(cmbItem);
+			// select the saved org division service
+			final PB01VaadinComboItem cmbItem = PB01VaadinComboItem.FROM_VIEW_OBJ.apply(viewObj,
+																			 	  		_i18n.getCurrentLanguage());
+			_workPlacesCmb.setValue(cmbItem);
+		}
+		// refresh the grid
+		_refreshGridUsingComboValues();
 
 		// close the popup window
 		_workPlaceDetailPopUp.close();
 	}
 	private void _onWorkPlaceDeleted(final PB01ViewObjForWorkPlace viewObj) {
 		// refresh the combo
-		_refreshWorkPlacesCombo(_selectedOrgDivSrvcLocRef.getOid());
+		if (_cmbSelectedOrgDivSrvcLocRef != null) {
+			_refreshWorkPlacesCombo(viewObj.getWrappedModelObject()
+										   .getOrgDivisionServiceLocationRef().getOid());	// parent object
+		}
+		// refresh the grid
+		_refreshGridUsingComboValues();
 
 		// close the popup
 		_workPlaceDetailPopUp.close();
 	}
 	private void _showWorkPlaceDetailViewForCreatingNewRecord() {
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
-		if (_selectedOrgRef == null) throw new IllegalStateException("NO org selected!");
-		if (_selectedOrgDivRef == null) throw new IllegalStateException("NO org division selected!");
-		if (_selectedOrgDivSrvcRef == null) throw new IllegalStateException("NO org division service selected!");
-		if (_selectedOrgDivSrvcLocRef == null) throw new IllegalStateException("NO org division service location selected!");
-		_workPlaceDetailPopUp.forCreating(_selectedOrgRef,_selectedOrgDivRef,_selectedOrgDivSrvcRef,_selectedOrgDivSrvcLocRef,
+		if (_cmbSelectedOrgRef == null) throw new IllegalStateException("NO org selected!");
+		if (_cmbSelectedOrgDivRef == null) throw new IllegalStateException("NO org division selected!");
+		if (_cmbSelectedOrgDivSrvcRef == null) throw new IllegalStateException("NO org division service selected!");
+		if (_cmbSelectedOrgDivSrvcLocRef == null) throw new IllegalStateException("NO org division service location selected!");
+		_workPlaceDetailPopUp.forCreating(_cmbSelectedOrgRef,_cmbSelectedOrgDivRef,_cmbSelectedOrgDivSrvcRef,_cmbSelectedOrgDivSrvcLocRef,
 								 		  // save subscriber: executed after save: refresh the combo
 								 		  UIPresenterSubscriber.from(PB01MainView.this::_onWorkPlaceSaved,		// OK subscriber
 							 		    						     PB01MainView.this::_onPersistenceError));	// Error subscriber
@@ -653,11 +692,12 @@ public class PB01MainView
 		  .addWindow(_workPlaceDetailPopUp);
 	}
 	private void _showWorkPlaceDetailViewForEditingExistingRecord() {
-		if (_selectedWorkPlaceRef == null) throw new IllegalStateException("NO workplace selected!");
-		final X47BWorkPlaceOID workPlaceOid = _selectedWorkPlaceRef.getOid();
-
+		_showWorkPlaceDetailViewForEditingExistingRecord(_cmbSelectedWorkPlaceRef);
+	}
+	private void _showWorkPlaceDetailViewForEditingExistingRecord(final X47BOrganizationalObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceRef) {
+		if (workPlaceRef == null) throw new IllegalStateException("NO workplace to be edited!");
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
-		_workPlaceDetailPopUp.forEditing(workPlaceOid,
+		_workPlaceDetailPopUp.forEditing(workPlaceRef.getOid(),
 							 		  	 // save subscriber: executed after save: refresh the combo
 								 		 UIPresenterSubscriber.from(PB01MainView.this::_onWorkPlaceSaved,		// OK subscriber
 							 		    						    PB01MainView.this::_onPersistenceError),	// Error subscriber,
