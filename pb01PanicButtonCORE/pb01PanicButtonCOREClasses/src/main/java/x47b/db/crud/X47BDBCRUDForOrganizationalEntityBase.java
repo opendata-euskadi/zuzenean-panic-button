@@ -37,7 +37,7 @@ abstract class X47BDBCRUDForOrganizationalEntityBase<O extends X47BPersistableOb
 			  marshaller);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void setDBEntityFieldsFromModelObject(final SecurityContext securityContext,
@@ -45,7 +45,7 @@ abstract class X47BDBCRUDForOrganizationalEntityBase<O extends X47BPersistableOb
 		// Oid
 		dbEntity.setOid(modelObj.getOid().asString());
 		dbEntity.setId(modelObj.getId().asString());
-		
+
 		// Name
 		if (modelObj.getName() != null) {
 			dbEntity.setNameSpanish(modelObj.getName().getInOrDefault(Language.SPANISH,
@@ -53,12 +53,15 @@ abstract class X47BDBCRUDForOrganizationalEntityBase<O extends X47BPersistableOb
 			dbEntity.setNameBasque(modelObj.getName().getInOrDefault(Language.BASQUE,
 																	 "NO name in BASQUE"));
 		}
-		
+
+		// Alarm raise count
+		dbEntity.setAlarmRaiseCount(modelObj.getAlarmRaiseCount());
+
 		// Descriptor
 		dbEntity.setDescriptor(_modelObjectsMarshaller.forWriting().toXml(modelObj));
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public CRUDResult<M> loadById(final SecurityContext securityContext,
@@ -76,5 +79,5 @@ abstract class X47BDBCRUDForOrganizationalEntityBase<O extends X47BPersistableOb
 															 id,
 															 dbEntities);
 		return outResult;
-	}	
+	}
 }

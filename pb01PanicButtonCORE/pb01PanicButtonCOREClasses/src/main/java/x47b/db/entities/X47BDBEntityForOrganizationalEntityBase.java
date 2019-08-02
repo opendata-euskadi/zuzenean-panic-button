@@ -56,7 +56,7 @@ import x47b.model.org.X47BOrganization;
 	@NamedQuery(name = "X47BDBOrganizationalEntityById",
 				query = "SELECT entity " +
 						  "FROM X47BDBEntityForOrganizationalEntityBase entity " +
-						 "WHERE TYPE(entity) = :dbType " + 
+						 "WHERE TYPE(entity) = :dbType " +
 						   "AND entity._id = :id "),
 	// Find all organizations
 	@NamedQuery(name = "X47BDBEntitiesForOrganization",
@@ -73,19 +73,19 @@ import x47b.model.org.X47BOrganization;
 	@NamedQuery(name = "X47BDBEntitiesForServicesByDivision",
 				query = "SELECT entity " +
 						  "FROM X47BDBEntityForOrganizationalEntityBase entity " +
-						 "WHERE TYPE(entity) = X47BDBEntityForOrgDivisionService " + 
+						 "WHERE TYPE(entity) = X47BDBEntityForOrgDivisionService " +
 						   "AND entity._orgDivisionOid = :division"),
 	// Find all service's location
 	@NamedQuery(name = "X47BDBEntitiesForLocationsByService",
 				query = "SELECT entity " +
 						  "FROM X47BDBEntityForOrganizationalEntityBase entity " +
-						 "WHERE TYPE(entity) = X47BDBEntityForOrgDivisionServiceLocation " + 
+						 "WHERE TYPE(entity) = X47BDBEntityForOrgDivisionServiceLocation " +
 						   "AND entity._orgDivisionServiceOid = :service"),
 	// Find all location's workplaces
 	@NamedQuery(name = "X47BDBEntitiesForWorkPlacesByLocation",
 				query = "SELECT entity " +
 						  "FROM X47BDBEntityForOrganizationalEntityBase entity " +
-						 "WHERE TYPE(entity) = X47BDBEntityForWorkPlace " + 
+						 "WHERE TYPE(entity) = X47BDBEntityForWorkPlace " +
 						   "AND entity._orgDivisionServiceLocationOid = :loc"),
 })
 
@@ -102,64 +102,64 @@ public abstract class X47BDBEntityForOrganizationalEntityBase
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Id @Column(name="OID",length=OID.OID_LENGTH,nullable=false) @Basic
-    @Getter @Setter protected String _oid;	
-	
-	@Column(name="ID",length=OID.OID_LENGTH * 3,nullable=false) @Basic
-    @Getter @Setter protected String _id;				
-	
+    @Getter @Setter protected String _oid;
 
-	
+	@Column(name="ID",length=OID.OID_LENGTH * 3,nullable=false) @Basic
+    @Getter @Setter protected String _id;
+
+
+
 	@Column(name="ORGANIZATION_OID",length=OID.OID_LENGTH) @Basic
     @Getter @Setter protected String _organizationOid;
 
 	@Column(name="DIVISION_OID",length=OID.OID_LENGTH) @Basic
     @Getter @Setter protected String _orgDivisionOid;
-	
+
 	@Column(name="SERVICE_OID",length=OID.OID_LENGTH) @Basic
     @Getter @Setter protected String _orgDivisionServiceOid;
-	
+
 	@Column(name="LOCATION_OID",length=OID.OID_LENGTH) @Basic
     @Getter @Setter protected String _orgDivisionServiceLocationOid;
-	
-	
-	
+
+
+
 	@Column(name="ORGANIZATION_ID",length=OID.OID_LENGTH) @Basic
     @Getter @Setter protected String _organizationId;				// full hierarchy id of the organization
 
 	@Column(name="DIVISION_ID",length=OID.OID_LENGTH) @Basic
     @Getter @Setter protected String _orgDivisionId;				// full hierarchy id of the division
-	
+
 	@Column(name="SERVICE_ID",length=OID.OID_LENGTH) @Basic
     @Getter @Setter protected String _orgDivisionServiceId;			// full hierarchy id of the division
-	
+
 	@Column(name="LOCATION_ID",length=OID.OID_LENGTH) @Basic
     @Getter @Setter protected String _orgDivisionServiceLocationId;	// full hierarchy id of the division
 
-	
+
 
 	@Column(name="DEEPTH") @Basic
 	@Getter @Setter protected int _hierarchyLevel;		// used to return ordered results when searching (see X47BDBSearcherForEntityModelObject)
 
-	
-	
+
+
 	@Column(name="NAME_ES",length=200,nullable=false) @Basic
 	@Getter @Setter protected String _nameSpanish;
 
 	@Column(name="NAME_EU",length=200,nullable=false) @Basic
 	@Getter @Setter protected String _nameBasque;
-	
-	
-	
+
+
+
 	@Column(name="LAST_RAISE_DATE",
-			insertable=false,updatable=true) @Temporal(TemporalType.TIMESTAMP) 
+			insertable=false,updatable=true) @Temporal(TemporalType.TIMESTAMP)
 	@Getter @Setter protected Calendar _lastAlarmRaiseDate;		// http://www.developerscrappad.com/228/java/java-ee/ejb3-jpa-dealing-with-date-time-and-timestamp/
-	
-	@Column(name="ALARM_RAISE_COUNT") @Basic 
-	@Getter @Setter protected long _alarmRaiseCount;		
-	
-	
-	
-	@Column(name="DESCRIPTOR") @Lob @Basic(fetch=FetchType.EAGER) 
+
+	@Column(name="ALARM_RAISE_COUNT") @Basic
+	@Getter @Setter protected long _alarmRaiseCount;
+
+
+
+	@Column(name="DESCRIPTOR") @Lob @Basic(fetch=FetchType.EAGER)
 	@Getter @Setter protected String _descriptor;
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -197,7 +197,7 @@ public abstract class X47BDBEntityForOrganizationalEntityBase
 			if (!dbOrg.containsOrgDivision(dbDivision)) {
 				dbOrg.addOrgDivision(dbDivision);		// update the other side of the relationship
 			}
-		} 
+		}
 		_organization = dbOrg;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
