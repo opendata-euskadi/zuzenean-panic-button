@@ -25,15 +25,13 @@ import pb01.ui.vaadin.view.PB01CascadedComboEvents.PB01ComboValueChangedEventLis
 import pb01.ui.vaadin.view.components.PB01VaadinComboItem;
 import r01f.locale.Language;
 import r01f.patterns.FactoryFrom;
+import r01f.patterns.OnErrorSubscriber;
+import r01f.patterns.OnSuccessSubscriber;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import r01f.util.types.collections.CollectionUtils;
 import r01f.util.types.collections.Lists;
 import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.org.X47BOrgObjectRef;
 import x47b.model.org.X47BOrgObjectType;
 
@@ -47,15 +45,11 @@ import x47b.model.org.X47BOrgObjectType;
  *    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  * @param <O>
  * @param <I>
- * @param <V>
- * @param <W>
  */
 @Slf4j
 @Accessors(prefix="_")
-abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>,
-							     V extends PB01ViewObjForOrganizationalEntityBase<O,I,?>,
-							     W extends Window & PB01DetailWindowForOrgEntity>
-	 extends HorizontalLayout {
+abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>
+	   extends HorizontalLayout {
 
 	private static final long serialVersionUID = -8987361238414099521L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +61,7 @@ abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X4
 	private final Language _lang;
 
 	// the prop up window where the [org entity] details are edited
-	private final W _detailPopUp;
+	private final PB01DetailWindowForOrgEntity _detailPopUp;
 
 	// oid & id from string factories (used to create the [org entity ref]
 	private final FactoryFrom<String,O> _oidFactory;
@@ -82,8 +76,8 @@ abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X4
 	private X47BOrgObjectRef<O,I> _selectedOrgEntityRef;
 
 	// The parent & child combo (can be null)
-	private PB01CascadedCombo<?,?,?,?> _parentCombo;
-	private Collection<PB01CascadedCombo<?,?,?,?>> _childCombos;
+	private PB01CascadedCombo<?,?> _parentCombo;
+	private Collection<PB01CascadedCombo<?,?>> _childCombos;
 
 	private PB01ComboValueChangedEventListener<O,I> _valueChangeEventListener;
 
@@ -92,7 +86,7 @@ abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X4
 /////////////////////////////////////////////////////////////////////////////////////////
 	public PB01CascadedCombo(final PB01MainViewPresenter presenter,
 							 final String caption,final Language lang,
-							 final W popupWin,
+							 final PB01DetailWindowForOrgEntity popupWin,
 							 final Class<O> oidType,final Class<I> idType) {
 		_presenter = presenter;
 
@@ -146,18 +140,31 @@ abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X4
 	public PB01VaadinComboItem getSelectedComboItem() {
 		return _combo.getValue();
 	}
-	public PB01CascadedCombo<?,?,?,?> getParentCombo() {
+	public PB01CascadedCombo<?,?> getParentCombo() {
 		return _parentCombo;
 	}
-	public Collection<PB01CascadedCombo<?,?,?,?>> getChildCombos() {
+	public Collection<PB01CascadedCombo<?,?>> getChildCombos() {
 		return _childCombos;
 	}
-	public void setParentCombo(final PB01CascadedCombo<?,?,?,?> parentCombo) {
+	public void setParentCombo(final PB01CascadedCombo<?,?> parentCombo) {
 		_parentCombo = parentCombo;
 	}
-	public void setChildCombos(final PB01CascadedCombo<?,?,?,?>... childCombos) {
+	public void setChildCombos(final PB01CascadedCombo<?,?>... childCombos) {
 		_childCombos = CollectionUtils.hasData(childCombos) ? Lists.newArrayList(childCombos)
 															: null;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	EDIT POPUP
+/////////////////////////////////////////////////////////////////////////////////////////
+	private Window _getDetailEditPopUpWindow() {
+		return (Window)_detailPopUp;
+	}
+	private void _openDetailEditPopUp() {
+		UI.getCurrent()
+		  .addWindow(_getDetailEditPopUpWindow());
+	}
+	private void _closeDetailEditPopUp() {
+		_getDetailEditPopUpWindow().close();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	EVENT
@@ -168,7 +175,7 @@ abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X4
 /////////////////////////////////////////////////////////////////////////////////////////
 //	REFRESH
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void refreshAndSelect(final V viewObj) {
+	public <V extends PB01ViewObjForOrganizationalEntityBase<O,I,?>> void refreshAndSelect(final V viewObj) {
 		final PB01VaadinComboItem cmbItem = viewObj != null ? PB01VaadinComboItem.FROM_VIEW_OBJ.apply(viewObj,
 																		 	  						  _lang)
 															: null;
@@ -191,39 +198,13 @@ abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X4
 		} else {
 			final X47BOrgObjectRef<?,?> parentOrgEntityRef = _parentCombo.getSelectedOrgEntityRef();
 			if (parentOrgEntityRef == null) {
+				// if the parent combo does NOT have a selected item, the combo must be empty
 				_combo.setDataProvider(DataProvider.ofCollection(Lists.newArrayList()));
 			} else {
-				// use the parent combo oid to guess the object type
-				X47BPersistableObjectOID parentObjOid = parentOrgEntityRef.getOid();
-				final X47BOrgObjectType parentObjType = X47BOrgObjectType.ofOIDType(parentObjOid.getClass());
-
-				// call the correct presenter method depending on the object type
-				switch(parentObjType) {
-				case ORGANIZATION:
-					_presenter.onOrgDivisionsComboDataNeeded((X47BOrganizationOID)parentObjOid,
-													 		 _lang,
-													 		 this::_setComboItems);			// when loaded the combo data, just refresh the combo
-					break;
-				case ORG_DIVISION:
-					_presenter.onOrgDivisionServicesComboDataNeeded((X47BOrgDivisionOID)parentObjOid,
-													 		 		_lang,
-													 		 		this::_setComboItems);	// when loaded the combo data, just refresh the combo
-					break;
-				case ORG_DIVISION_SERVICE:
-					_presenter.onOrgDivisionServiceLocationsComboDataNeeded((X47BOrgDivisionServiceOID)parentObjOid,
-													 		 				_lang,
-													 		 				this::_setComboItems);	// when loaded the combo data, just refresh the combo
-					break;
-				case ORG_DIVISION_SERVICE_LOCATION:
-					_presenter.onWorkPlacesComboDataNeeded((X47BOrgDivisionServiceLocationOID)parentObjOid,
-													 	   _lang,
-													 	   this::_setComboItems);	// when loaded the combo data, just refresh the combo
-					break;
-				case WORKPLACE:
-					throw new IllegalStateException();
-				default:
-					throw new IllegalStateException();
-				}
+				// tell the presenter to load the items filtering by the parent combo item
+				_presenter.onOrgEntityComboDataNeeded(parentOrgEntityRef,
+													  _lang,
+													  this::_setComboItems);
 			}
 		}
 
@@ -257,7 +238,7 @@ abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X4
 		// child combos
 		if (CollectionUtils.hasData(_childCombos)) {
 			log.debug("[CascadedCombo]: Refresh {} child combos",_childCombos.size());
-			for (PB01CascadedCombo<?,?,?,?> childCmb : _childCombos) {
+			for (PB01CascadedCombo<?,?> childCmb : _childCombos) {
 				childCmb.refresh();				// reload content
 				childCmb.clearSelected();		// reset the selected element the underlying combos
 			}
@@ -278,13 +259,12 @@ abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X4
 		final PB01OrgEntityDetailWinForCreateVisitor createVisitor =
 					new PB01OrgEntityDetailWinForCreateVisitor(_orgEntityRefChain(),
 												 		  	   // save subscriber: executed after save: refresh combos & grid
-													 		   UIPresenterSubscriber.from(this::_onOrgEntitySaved,		// OK subscriber
-												 		    						      this::_onPersistenceError));	// Error subscriber,
+													 		   UIPresenterSubscriber.from(new PB01CascadedComboOnSaveSuccessSuscriber(),	// OK subscriber
+												 		    						      new PB01CascadedComboOnErrorsSuscriber()));						// Error subscriber,
 		_detailPopUp.openForCreating(createVisitor);
 
 		// show the window
-		UI.getCurrent()
-		  .addWindow(_detailPopUp);
+		_openDetailEditPopUp();
 	}
 	private void _showOrgEntityDetailViewForEditingExistingRecord() {
 		_showOrgEntityDetailViewForEditingExistingRecord(_selectedOrgEntityRef);
@@ -296,37 +276,47 @@ abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X4
 		final PB01OrgEntityDetailWinForEditVisitor editVisitor =
 					new PB01OrgEntityDetailWinForEditVisitor(orgEntityRef,
 												 		  	 // save subscriber: executed after save: refresh combos & grid
-													 		 UIPresenterSubscriber.from(this::_onOrgEntitySaved,	// OK subscriber
-												 		    						    this::_onPersistenceError),	// Error subscriber,
-													 		 // delete subscriber: executed after delete
-													 		 UIPresenterSubscriber.from(this::_onOrgEntityDeleted,	// OK subscriber
-											 		    						        this::_onPersistenceError));// Error subscriber
+													 		 UIPresenterSubscriber.from(new PB01CascadedComboOnSaveSuccessSuscriber(),		// OK subscriber
+												 		    						    new PB01CascadedComboOnErrorsSuscriber()),
+													 		 UIPresenterSubscriber.from(new PB01CascadedComboOnDeleteSuccessSuscriber(),	// OK subscriber
+											 		    						        new PB01CascadedComboOnErrorsSuscriber()));// Error subscriber
 		_detailPopUp.openForEdit(editVisitor);
 
 		// show the window
-		UI.getCurrent()
-		  .addWindow(_detailPopUp);
+		_openDetailEditPopUp();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	AFTER SAVE or DELETE ON DETAIL POPUP WIN
 /////////////////////////////////////////////////////////////////////////////////////////
-	private void _onOrgEntitySaved(final V viewObj) {
-		// refresh the combo
-		this.refreshAndSelect(viewObj);
+	private class PB01CascadedComboOnSaveSuccessSuscriber
+	   implements OnSuccessSubscriber<PB01ViewObjForOrganizationalEntityBase<O,I,?>> {
+		@Override
+		public void onSuccess(final PB01ViewObjForOrganizationalEntityBase<O,I,?> viewObj) {
+			// refresh the combo
+			PB01CascadedCombo.this.refreshAndSelect(viewObj);
 
-		// close the popup window
-		_detailPopUp.close();
+			// close the popup window
+			_closeDetailEditPopUp();
+		}
 	}
-	private void _onOrgEntityDeleted(final V viewObj) {
-		// refresh the combo
-		refresh();
+	private class PB01CascadedComboOnDeleteSuccessSuscriber
+	   implements OnSuccessSubscriber<PB01ViewObjForOrganizationalEntityBase<O,I,?>> {
+		@Override
+		public void onSuccess(final PB01ViewObjForOrganizationalEntityBase<O,I,?> viewObj) {
+			// refresh the combo
+			refresh();
 
-		// close the popup
-		_detailPopUp.close();
+			// close the popup
+			_closeDetailEditPopUp();
+		}
 	}
-	private void _onPersistenceError(final Throwable th) {
-		log.error("Error while saving an entity: {}",
-		  		  th.getMessage(),th);
+	private class PB01CascadedComboOnErrorsSuscriber
+	   implements OnErrorSubscriber {
+		@Override
+		public void onError(final Throwable th) {
+			log.error("Error while saving an entity: {}",
+			  		  th.getMessage(),th);
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -360,7 +350,7 @@ abstract class PB01CascadedCombo<O extends X47BPersistableObjectOID,I extends X4
 		return chain;
 	}
 	private void _recurseOrgEntityRefChain(final List<X47BOrgObjectRef<?,?>> chain,
-										   final PB01CascadedCombo<?,?,?,?> currCombo) {
+										   final PB01CascadedCombo<?,?> currCombo) {
 		if (currCombo == null) return;
 		final X47BOrgObjectRef<?,?> parentRef = currCombo.getParentCombo() != null ? currCombo.getParentCombo().getSelectedOrgEntityRef()
 																						 	  : null;

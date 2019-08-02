@@ -8,6 +8,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import lombok.extern.slf4j.Slf4j;
+import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrganizationalEntityBase;
 import pb01.ui.vaadin.orgentity.organization.PB01DetailWindowForOrganization;
 import pb01.ui.vaadin.orgentity.orgdivision.PB01DetailWindowForOrgDivision;
 import pb01.ui.vaadin.orgentity.orgdivisionservice.PB01DetailWindowForOrgDivisionService;
@@ -24,16 +25,6 @@ import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.org.X47BOrgObjectRef;
 
 @Slf4j
@@ -141,11 +132,21 @@ public class PB01MainView
 		_gridView = new PB01MainGridView(i18n,
 										 presenter,
 										 // what happens when an org entity is clicked on the grid
-										 orgClickedEvent -> _showOrganizationDetailViewForEditingExistingRecord(orgClickedEvent.getObjRef()),
-										 orgDivClickedEvent -> _showOrgDivDetailViewForEditingExistingRecord(orgDivClickedEvent.getObjRef()),
-										 orgDivSrvcClickedEvent -> _showOrgDivSrvcDetailViewForEditingExistingRecord(orgDivSrvcClickedEvent.getObjRef()),
-										 orgDivSrvcLocClickedEvent -> _showOrgDivSrvcLocDetailViewForEditingExistingRecord(orgDivSrvcLocClickedEvent.getObjRef()),
-										 workPlaceClickedEvent -> _showWorkPlaceDetailViewForEditingExistingRecord(workPlaceClickedEvent.getObjRef()));
+										 orgClickedEvent -> _showDetailViewForEditingExistingRecord(orgClickedEvent.getObjRef(),
+												 												 	_orgDetailPopUp,
+												 												 	_orgCmb),
+										 orgDivClickedEvent -> _showDetailViewForEditingExistingRecord(orgDivClickedEvent.getObjRef(),
+												 													   _orgDivDetailPopUp,
+												 													   _orgDivCmb),
+										 orgDivSrvcClickedEvent -> _showDetailViewForEditingExistingRecord(orgDivSrvcClickedEvent.getObjRef(),
+												 														   _orgDivSrvcDetailPopUp,
+												 														   _orgDivSrvcCmb),
+										 orgDivSrvcLocClickedEvent -> _showDetailViewForEditingExistingRecord(orgDivSrvcLocClickedEvent.getObjRef(),
+												 															  _orgDivSrvcLocDetailPopUp,
+												 															  _orgDivSrvcLocCmb),
+										 workPlaceClickedEvent -> _showDetailViewForEditingExistingRecord(workPlaceClickedEvent.getObjRef(),
+												 														  _workPlaceDetailPopUp,
+												 														  _workPlaceCmb));
 		this.addComponent(_gridView);
 		_gridView.setVisible(false);	// by default nothing is selected
 
@@ -176,80 +177,27 @@ public class PB01MainView
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	private void _showOrganizationDetailViewForEditingExistingRecord(final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef) {
-		// after save or delete at the detail view the action to be done is the same: refresh the combos/grid & close the detail view
-		_orgDetailPopUp.forEditing(orgRef.getOid(),
-						 		   // save subscriber: executed after save: refresh the combo
-						 		   UIPresenterSubscriber.from(viewObj -> _onOrgEntitySavedFromGrid(_orgCmb,
-						 				   														   _orgDetailPopUp),
-						 		    						  this::_onPersistenceError), 	// Error subscriber
-						 		   // delete subscriber: executed after delete
-						 		   UIPresenterSubscriber.from(viewObj -> _onOrgEntityDeletedFromGrid(_orgCmb,
-						 				   															 _orgDetailPopUp),
-						 		    						  this::_onPersistenceError));	// Error subscriber
-		UI.getCurrent()
-		  .addWindow(_orgDetailPopUp);
-	}
-	private void _showOrgDivDetailViewForEditingExistingRecord(final X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef) {
-		// after save or delete at the detail view the action to be done is the same: refresh the combos/grid & close the detail view
-		_orgDivDetailPopUp.forEditing(orgDivRef.getOid(),
-						 		      // save subscriber: executed after save: refresh the combo
-						 		      UIPresenterSubscriber.from(viewObj -> _onOrgEntitySavedFromGrid(_orgDivCmb,
-						 				   														   	  _orgDivDetailPopUp),
-						 		    						     this::_onPersistenceError), 	// Error subscriber
-						 		      // delete subscriber: executed after delete
-						 		      UIPresenterSubscriber.from(viewObj -> _onOrgEntityDeletedFromGrid(_orgDivCmb,
-						 				   															    _orgDivDetailPopUp),
-						 		    						  this::_onPersistenceError));	// Error subscriber
-		UI.getCurrent()
-		  .addWindow(_orgDivDetailPopUp);
-	}
-	private void _showOrgDivSrvcDetailViewForEditingExistingRecord(final X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef) {
-		// after save or delete at the detail view the action to be done is the same: refresh the combos/grid & close the detail view
-		_orgDivSrvcDetailPopUp.forEditing(orgDivSrvcRef.getOid(),
-						 		      	  // save subscriber: executed after save: refresh the combo
-						 		      	  UIPresenterSubscriber.from(viewObj -> _onOrgEntitySavedFromGrid(_orgDivSrvcCmb,
-						 				   														   		  _orgDivSrvcDetailPopUp),
-						 		    						     	  this::_onPersistenceError), 	// Error subscriber
-								 		   // delete subscriber: executed after delete
-								 		   UIPresenterSubscriber.from(viewObj -> _onOrgEntityDeletedFromGrid(_orgDivSrvcCmb,
-						 				   															    	 _orgDivSrvcDetailPopUp),
-								 		    						  this::_onPersistenceError));	// Error subscriber
-		UI.getCurrent()
-		  .addWindow(_orgDivSrvcDetailPopUp);
-	}
-	private void _showOrgDivSrvcLocDetailViewForEditingExistingRecord(final X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocRef) {
-		// after save or delete at the detail view the action to be done is the same: refresh the combos/grid & close the detail view
-		_orgDivSrvcLocDetailPopUp.forEditing(orgDivSrvcLocRef.getOid(),
-						 		      	  	 // save subscriber: executed after save: refresh the combo
-						 		      	  	 UIPresenterSubscriber.from(viewObj -> _onOrgEntitySavedFromGrid(_orgDivSrvcLocCmb,
-						 				   														   		  	 _orgDivSrvcLocDetailPopUp),
-						 		    						     	    this::_onPersistenceError), 	// Error subscriber
-						 		      	  	 // delete subscriber: executed after delete
-						 		      	  	 UIPresenterSubscriber.from(viewObj -> _onOrgEntityDeletedFromGrid(_orgDivSrvcLocCmb,
-						 				   															    	   _orgDivSrvcLocDetailPopUp),
-								 		    						    this::_onPersistenceError));	// Error subscriber
-		UI.getCurrent()
-		  .addWindow(_orgDivSrvcLocDetailPopUp);
-	}
-	private void _showWorkPlaceDetailViewForEditingExistingRecord(final X47BOrgObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceRef) {
-		// after save or delete at the detail view the action to be done is the same: refresh the combos/grid & close the detail view
-		_workPlaceDetailPopUp.forEditing(workPlaceRef.getOid(),
-					 		      	  	 // save subscriber: executed after save: refresh the combo
-					 		      	  	 UIPresenterSubscriber.from(viewObj -> _onOrgEntitySavedFromGrid(_workPlaceCmb,
-					 				   														   		  	 _workPlaceDetailPopUp),
-					 		    						     	    this::_onPersistenceError), 	// Error subscriber
-					 		      	  	 // delete subscriber: executed after delete
-					 		      	  	 UIPresenterSubscriber.from(viewObj -> _onOrgEntityDeletedFromGrid(_workPlaceCmb,
-					 				   															    	   _workPlaceDetailPopUp),
-							 		    						    this::_onPersistenceError));	// Error subscriber
-		UI.getCurrent()
-		  .addWindow(_workPlaceDetailPopUp);
-	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	private void _onOrgEntitySavedFromGrid(final PB01CascadedCombo<?,?,?,?> cmbToUpdate,
+	private <O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>
+			void _showDetailViewForEditingExistingRecord(final X47BOrgObjectRef<O,I> objRef,
+														 final PB01DetailWindowForOrganizationalEntityBase<O,?,?,?,?,?> popUp,
+														 final PB01CascadedCombo<?,?> cmbToUpdateAfterSave) {
+		// after save or delete at the detail view the action to be done is the same: refresh the combos/grid & close the detail view
+		popUp.forEditing(objRef.getOid(),
+	 		      	  	 // save subscriber: executed after save: refresh the combo
+	 		      	  	 UIPresenterSubscriber.from(viewObj -> _onOrgEntitySavedFromGrid(cmbToUpdateAfterSave,
+	 				   														   		  	 popUp),
+	 		    						     	    this::_onPersistenceError), 	// Error subscriber
+	 		      	  	 // delete subscriber: executed after delete
+	 		      	  	 UIPresenterSubscriber.from(viewObj -> _onOrgEntityDeletedFromGrid(cmbToUpdateAfterSave,
+	 				   															    	   popUp),
+			 		    						    this::_onPersistenceError));	// Error subscriber
+		UI.getCurrent()
+		  .addWindow(popUp);
+	}
+	private void _onOrgEntitySavedFromGrid(final PB01CascadedCombo<?,?> cmbToUpdate,
 										   final Window popUpToClose) {
 		PB01VaadinComboItem selectedOrg = cmbToUpdate.getSelectedComboItem();
 		// if the combo already had a selected item, refresh the combo and keep the selected item
@@ -269,7 +217,7 @@ public class PB01MainView
 		// close the popup
 		popUpToClose.close();
 	}
-	private void _onOrgEntityDeletedFromGrid(final PB01CascadedCombo<?,?,?,?> cmbToUpdate,
+	private void _onOrgEntityDeletedFromGrid(final PB01CascadedCombo<?,?> cmbToUpdate,
 											 final Window popUpToClose) {
 		cmbToUpdate.refresh();
 		_refreshGridUsingComboValues();

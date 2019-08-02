@@ -6,10 +6,12 @@ import java.util.Collection;
 import com.google.common.collect.Lists;
 import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -34,6 +36,7 @@ import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.org.X47BOrgObjectRef;
+import x47b.model.org.X47BOrgObjectType;
 
 @Slf4j
 public class PB01MainGridView
@@ -175,6 +178,27 @@ public class PB01MainGridView
 				 .setDescriptionGenerator(PB01ViewObjForSearchResultItem::getWorkPlaceHint)
 				 .setResizable(true)
 				 .setId( "workPlaceId" );
+		// RAISE AN ALARM
+		_grid.addComponentColumn( item -> {
+											// Get the workplade oid
+											X47BWorkPlaceOID workPlaceOid = item.getWorkPlaceOid();
+
+											// create the button
+											Button btn = new Button();
+											btn.setIcon(VaadinIcons.BOLT);
+											btn.setDescription(_i18n.getMessage("pb01.view.grid.raiseAlarm"));
+											btn.addClickListener(event -> _presenter.raiseAlarm(workPlaceOid,
+																								viewAlarm -> {	// update the count shown at the grid
+																												// NOTE this does NOT update higher levels of workplace hierarchy
+																												item.increaseAlarmRaiseCount(1);	// one more alarm raised
+																												_grid.getDataProvider().refreshItem(item);
+																												Notification.show(_i18n.getMessage("pb01.view.grid.raisedAlarm"));
+																											 }));
+											btn.setVisible(item.getOrgObjectType() == X47BOrgObjectType.WORKPLACE);	// only visible for workplaces
+											return btn;
+										  } )
+				 .setResizable(false)
+				 .setId( "raiseAlarm" );
 	}
 	private Button _createRaisedAlarmsButtonFor(final PB01ViewObjForSearchResultItem item) {
 		// show a link that opens a popup that shows the list of raised alarms
@@ -194,7 +218,7 @@ public class PB01MainGridView
 																		final PB01OrgEntityClickedEvent<O,I> entityClickedEvent = new PB01OrgEntityClickedEvent<>(btn,
 																																							      objOid.provideValue(),objId.provideValue());
 																		clickEventListener.entityClicked(entityClickedEvent);
-																	  });
+																	   });
 		return btn;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////

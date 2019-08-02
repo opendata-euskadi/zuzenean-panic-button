@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import com.google.common.collect.FluentIterable;
 
 import lombok.extern.slf4j.Slf4j;
+import pb01.ui.vaadin.alarmevent.PB01ViewAlarmEvent;
 import pb01.ui.vaadin.orgentity.organization.PB01COREMediatorForOrganization;
 import pb01.ui.vaadin.orgentity.orgdivision.PB01COREMediatorForOrgDivision;
 import pb01.ui.vaadin.orgentity.orgdivisionservice.PB01COREMediatorForOrgDivisionService;
@@ -19,11 +20,14 @@ import r01f.ui.presenter.UIPresenter;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import r01f.util.types.collections.CollectionUtils;
 import r01f.util.types.collections.Lists;
+import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
+import x47b.model.org.X47BOrgObjectRef;
+import x47b.model.org.X47BOrgObjectType;
 import x47b.model.org.summaries.X47BSummarizedOrganizationalObject;
 import x47b.model.search.X47BSearchFilterForPanicButtonOrganizationalEntity;
 
@@ -105,9 +109,49 @@ public class PB01MainViewPresenter
 													}
 							 				  });
 	}
+	public void raiseAlarm(final X47BWorkPlaceOID workPlaceOid,
+						   final UIPresenterSubscriber<PB01ViewAlarmEvent> subscriber) {
+		_coreMediator.raiseAlarm(workPlaceOid,
+								 alarmEvent -> subscriber.onSuccess(new PB01ViewAlarmEvent(alarmEvent)));
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	COMBOS
 /////////////////////////////////////////////////////////////////////////////////////////
+	public void onOrgEntityComboDataNeeded(final X47BOrgObjectRef<?,?> parentOrgEntityRef,
+										   final Language lang,
+										   final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
+		// use the parent combo oid to guess the object type
+		X47BPersistableObjectOID parentObjOid = parentOrgEntityRef.getOid();
+		final X47BOrgObjectType parentObjType = X47BOrgObjectType.ofOIDType(parentObjOid.getClass());
+
+		// call the correct presenter method depending on the object type
+		switch(parentObjType) {
+		case ORGANIZATION:
+			this.onOrgDivisionsComboDataNeeded((X47BOrganizationOID)parentObjOid,
+											   lang,
+											   presenterSubscriber);			// when loaded the combo data, just refresh the combo
+			break;
+		case ORG_DIVISION:
+			this.onOrgDivisionServicesComboDataNeeded((X47BOrgDivisionOID)parentObjOid,
+											 		  lang,
+											 		  presenterSubscriber);	// when loaded the combo data, just refresh the combo
+			break;
+		case ORG_DIVISION_SERVICE:
+			this.onOrgDivisionServiceLocationsComboDataNeeded((X47BOrgDivisionServiceOID)parentObjOid,
+											 		 		  lang,
+											 		 		  presenterSubscriber);	// when loaded the combo data, just refresh the combo
+			break;
+		case ORG_DIVISION_SERVICE_LOCATION:
+			this.onWorkPlacesComboDataNeeded((X47BOrgDivisionServiceLocationOID)parentObjOid,
+											 lang,
+											 presenterSubscriber);	// when loaded the combo data, just refresh the combo
+			break;
+		case WORKPLACE:
+			throw new IllegalStateException();
+		default:
+			throw new IllegalStateException();
+		}
+	}
     public void onOrgsComboDataNeeded(final Language lang,
                                       final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
     	_coreMediatorForOrg.loadAllOrgs(lang,

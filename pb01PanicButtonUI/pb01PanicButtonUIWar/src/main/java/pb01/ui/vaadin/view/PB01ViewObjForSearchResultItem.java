@@ -148,6 +148,13 @@ public class PB01ViewObjForSearchResultItem
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ALARMS
 /////////////////////////////////////////////////////////////////////////////////////////
+    public long increaseAlarmRaiseCount(final int num) {
+    	long currAlarmRaiseCount = this.getAlarmRaiseCount();
+    	long newAlarmRaiseCount = currAlarmRaiseCount + num;
+    	this.getWrappedModelObject()
+    		.setAlarmRaiseCount(newAlarmRaiseCount);
+    	return newAlarmRaiseCount;
+    }
     public long getAlarmRaiseCount() {
         return this.getWrappedModelObject()
                    .getAlarmRaiseCount();

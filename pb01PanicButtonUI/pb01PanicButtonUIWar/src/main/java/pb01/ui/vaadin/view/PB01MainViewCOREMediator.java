@@ -8,6 +8,8 @@ import r01f.model.search.SearchResults;
 import r01f.ui.coremediator.UICOREMediatorBase;
 import r01f.ui.coremediator.UICOREMediatorSubscriber;
 import x47b.client.api.X47BPanicButtonClientAPI;
+import x47b.model.X47BAlarmEvent;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.search.X47BSearchFilterForPanicButtonOrganizationalEntity;
 import x47b.model.search.X47BSearchResultItemForPanicButtonOrganizationalEntity;
 
@@ -36,5 +38,12 @@ public class PB01MainViewCOREMediator
 																										.fromItemAt(firstItemNum)
 																										.returning(numberOfItems);
 		subscriber.onSuccess(outResults);
+	}
+	public void raiseAlarm(final X47BWorkPlaceOID workPlaceOid,
+						   final UICOREMediatorSubscriber<X47BAlarmEvent> subscriber) {
+		X47BAlarmEvent event = _api.alarmEventsAPI()
+										.getForNotify()
+										.raiseAlarm(workPlaceOid);
+		subscriber.onSuccess(event);
 	}
 }
