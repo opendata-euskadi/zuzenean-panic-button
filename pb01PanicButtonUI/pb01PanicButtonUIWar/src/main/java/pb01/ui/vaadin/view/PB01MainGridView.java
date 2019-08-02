@@ -33,7 +33,7 @@ import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
-import x47b.model.org.X47BOrganizationalObjectRef;
+import x47b.model.org.X47BOrgObjectRef;
 
 @Slf4j
 public class PB01MainGridView
@@ -82,12 +82,12 @@ public class PB01MainGridView
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void refresh(final X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef,
-						final X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef,
-						final X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef,
-						final X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocRef,
-						final X47BOrganizationalObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceRef) {
-		log.info( "...refresh grid" );
+	public void refresh(final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef,
+						final X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef,
+						final X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef,
+						final X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocRef,
+						final X47BOrgObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceRef) {
+		log.info( "[Grid] Refresh..." );
 		final X47BOrganizationOID orgOid = orgRef != null ? orgRef.getOid() : null;
 		final X47BOrgDivisionOID orgDivOid = orgDivRef != null ? orgDivRef.getOid() : null;
 		final X47BOrgDivisionServiceOID orgDivSrcvOid = orgDivSrvcRef != null ? orgDivSrvcRef.getOid() : null;
@@ -205,12 +205,12 @@ public class PB01MainGridView
 	     extends Component.Event {
 		private static final long serialVersionUID = 6771268655053782852L;
 
-		@Getter private final X47BOrganizationalObjectRef<O,I> _objRef;
+		@Getter private final X47BOrgObjectRef<O,I> _objRef;
 
 		public PB01OrgEntityClickedEvent(final Component source,
 								  		 final O oid,final I id) {
 			super(source);
-			_objRef = new X47BOrganizationalObjectRef<>(oid,id);
+			_objRef = new X47BOrgObjectRef<>(oid,id);
 		}
 	}
 	public interface PB01OrgEntityClickEventListener<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>

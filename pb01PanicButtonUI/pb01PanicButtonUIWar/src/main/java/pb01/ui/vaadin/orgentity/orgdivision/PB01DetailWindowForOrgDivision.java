@@ -11,7 +11,7 @@ import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.org.X47BOrgDivision;
-import x47b.model.org.X47BOrganizationalObjectRef;
+import x47b.model.org.X47BOrgObjectRef;
 
 public class PB01DetailWindowForOrgDivision
 	 extends PB01DetailWindowForOrganizationalEntityBase<X47BOrgDivisionOID,X47BOrgDivision,
@@ -44,7 +44,7 @@ public class PB01DetailWindowForOrgDivision
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CREATING
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void forCreating(final X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef,
+	public void forCreating(final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef,
 							final UIPresenterSubscriber<PB01ViewObjForOrgDivision> saveSubscriber) {			// what to do after saving
 		_saveSubscriber = saveSubscriber;
 		_deleteSubscriber = null;		// cannot delete from a create window

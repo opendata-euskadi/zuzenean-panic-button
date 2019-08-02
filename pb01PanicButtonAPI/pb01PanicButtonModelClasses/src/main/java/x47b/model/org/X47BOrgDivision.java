@@ -29,7 +29,7 @@ public class X47BOrgDivision
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallField(as="organization")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> _orgRef;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> _orgRef;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //

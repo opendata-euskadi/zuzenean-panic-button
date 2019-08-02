@@ -7,7 +7,7 @@ import r01f.ui.vaadin.view.VaadinViewMultiValueItem;
 import r01f.util.types.Strings;
 import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
-import x47b.model.org.X47BOrganizationalObjectRef;
+import x47b.model.org.X47BOrgObjectRef;
 import x47b.model.org.X47BOrganizationalPersistableObject;
 import x47b.model.org.summaries.X47BSummarizedOrganizationalObject;
 
@@ -27,7 +27,7 @@ public class PB01VaadinComboItem
    							    oid,id),
 			 name);
 	}
-	public PB01VaadinComboItem(final X47BOrganizationalObjectRef<?,?> objRef,
+	public PB01VaadinComboItem(final X47BOrgObjectRef<?,?> objRef,
 							   final String name) {
 		this(objRef.getOid(),objRef.getId(),
 			 name);
@@ -56,11 +56,11 @@ public class PB01VaadinComboItem
 	public <I extends X47BPersistableObjectID<?>> I getIdUsing(final FactoryFrom<String,I> factory) {
 		return factory.from(_id.split("#")[1]);
 	}
-	public <O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>> X47BOrganizationalObjectRef<O,I> getOrgEntityRefUsing(final FactoryFrom<String,O> oidFactory,
+	public <O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>> X47BOrgObjectRef<O,I> getOrgEntityRefUsing(final FactoryFrom<String,O> oidFactory,
 																																	 	   final FactoryFrom<String,I> idFactory) {
 		O oid = this.getOidUsing(oidFactory);
 		I id = this.getIdUsing(idFactory);
-		return new X47BOrganizationalObjectRef<O,I>(oid,id);
+		return new X47BOrgObjectRef<O,I>(oid,id);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	TRANSFORMS AN ORGANIZATIONAL ENTITY SUMMARY INTO A Vaadin COMBO ITEM
@@ -81,7 +81,7 @@ public class PB01VaadinComboItem
 	}
 	@FunctionalInterface
 	public interface PB01VaadinComboItemFromObjRefFactory {
-	    PB01VaadinComboItem apply(final X47BOrganizationalObjectRef<?,?> objRef,
+	    PB01VaadinComboItem apply(final X47BOrgObjectRef<?,?> objRef,
 							   	  final String name);
 	}
 	@FunctionalInterface

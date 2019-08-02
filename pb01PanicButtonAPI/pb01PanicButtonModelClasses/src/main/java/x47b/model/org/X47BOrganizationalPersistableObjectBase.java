@@ -70,8 +70,8 @@ public abstract class X47BOrganizationalPersistableObjectBase<O extends X47BPers
 	/**
 	 * @return a reference to this model object (a type that encapsulates the oid and the id)
 	 */
-	public X47BOrganizationalObjectRef<O,ID> getReference() {
-		return new X47BOrganizationalObjectRef<O,ID>(_oid,_id);
+	public X47BOrgObjectRef<O,ID> getReference() {
+		return new X47BOrgObjectRef<O,ID>(_oid,_id);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  HasLangDependentNamedFacet

@@ -18,7 +18,7 @@ import x47b.model.org.X47BOrgDivision;
 import x47b.model.org.X47BOrgDivisionService;
 import x47b.model.org.X47BOrgDivisionServiceLocation;
 import x47b.model.org.X47BOrganization;
-import x47b.model.org.X47BOrganizationalObjectRef;
+import x47b.model.org.X47BOrgObjectRef;
 
 @RequiredArgsConstructor
 public class X47BMockOrgDivisionServiceLocationFactory 
@@ -48,9 +48,9 @@ public class X47BMockOrgDivisionServiceLocationFactory
 		outLoc.setId(X47BOrgDivisionServiceLocationID.forId(Strings.customized("{}/{}",
 																			   _service.getId(),	// organization/division/service
 																			   randomLocId)));
-		outLoc.setOrgRef(new X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID>(_organization.getOid(),_organization.getId()));
-		outLoc.setOrgDivisionRef(new X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>(_division.getOid(),_division.getId()));
-		outLoc.setOrgDivisionServiceRef(new X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID>(_service.getOid(),_service.getId()));
+		outLoc.setOrgRef(new X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID>(_organization.getOid(),_organization.getId()));
+		outLoc.setOrgDivisionRef(new X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>(_division.getOid(),_division.getId()));
+		outLoc.setOrgDivisionServiceRef(new X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID>(_service.getOid(),_service.getId()));
 		outLoc.setNameByLanguage(new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL)
 										     .add(Language.SPANISH,"TEST location " + randomLocId)
 										     .add(Language.BASQUE,"[eu] TEST location " + randomLocId));

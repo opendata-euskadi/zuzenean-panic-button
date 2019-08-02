@@ -27,7 +27,7 @@ import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.oids.X47BPanicButtonOIDs.X47BAlarmEventOID;
-import x47b.model.org.X47BOrganizationalObjectRef;
+import x47b.model.org.X47BOrgObjectRef;
 
 @ModelObjectData(X47BMetaDataForAlarmEvent.class)
 @ConvertToDirtyStateTrackable			// changes in state are tracked
@@ -48,19 +48,19 @@ public class X47BAlarmEvent
 	@Getter @Setter private Date _timeStamp;
 
 	@MarshallField(as="organization")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> _organization;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> _organization;
 
 	@MarshallField(as="division")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _division;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _division;
 	
 	@MarshallField(as="service")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> _service;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> _service;
 	
 	@MarshallField(as="location")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> _location;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> _location;
 
 	@MarshallField(as="workPlace")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> _workPlace;
+	@Getter @Setter private X47BOrgObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> _workPlace;
 	
 	@MarshallField(as="notifierResponse")
 	@Getter @Setter private X47BNotifierResponse _alarmNotificationMsg;

@@ -16,7 +16,7 @@ import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
-import x47b.model.org.X47BOrganizationalObjectRef;
+import x47b.model.org.X47BOrgObjectRef;
 import x47b.model.org.X47BWorkPlace;
 
 public class PB01DetailWindowForWorkPlace
@@ -50,10 +50,10 @@ public class PB01DetailWindowForWorkPlace
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CREATING
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void forCreating(final X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef,
-							final X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef,
-							final X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef,
-							final X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocRef,
+	public void forCreating(final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef,
+							final X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef,
+							final X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef,
+							final X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocRef,
 							final UIPresenterSubscriber<PB01ViewObjForWorkPlace> saveSubscriber) {			// what to do after saving
 		_saveSubscriber = saveSubscriber;
 		_deleteSubscriber = null;		// cannot delete from a create window

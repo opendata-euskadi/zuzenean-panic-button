@@ -35,16 +35,16 @@ public class X47BWorkPlace
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallField(as="organization")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> _orgRef;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> _orgRef;
 
 	@MarshallField(as="division")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _orgDivisionRef;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _orgDivisionRef;
 
 	@MarshallField(as="service")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> _orgDivisionServiceRef;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> _orgDivisionServiceRef;
 
 	@MarshallField(as="location")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> _orgDivisionServiceLocationRef;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> _orgDivisionServiceLocationRef;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS

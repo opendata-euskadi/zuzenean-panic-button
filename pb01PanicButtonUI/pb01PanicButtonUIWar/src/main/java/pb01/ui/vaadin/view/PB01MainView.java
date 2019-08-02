@@ -39,7 +39,7 @@ import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
-import x47b.model.org.X47BOrganizationalObjectRef;
+import x47b.model.org.X47BOrgObjectRef;
 
 @Slf4j
 public class PB01MainView
@@ -84,11 +84,11 @@ public class PB01MainView
 	private final Button _workPlaceEditButton;
 
 	// The combo selected organizational entities
-	private X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> _cmbSelectedOrgRef;
-	private X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _cmbSelectedOrgDivRef;
-	private X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> _cmbSelectedOrgDivSrvcRef;
-	private X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> _cmbSelectedOrgDivSrvcLocRef;
-	private X47BOrganizationalObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> _cmbSelectedWorkPlaceRef;
+	private X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> _cmbSelectedOrgRef;
+	private X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _cmbSelectedOrgDivRef;
+	private X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> _cmbSelectedOrgDivSrvcRef;
+	private X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> _cmbSelectedOrgDivSrvcLocRef;
+	private X47BOrgObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> _cmbSelectedWorkPlaceRef;
 
 	// Grid
 	private final PB01MainGridView _gridView;
@@ -315,7 +315,7 @@ public class PB01MainView
 	private void _showOrganizationDetailViewForEditingExistingRecord() {
 		_showOrganizationDetailViewForEditingExistingRecord(_cmbSelectedOrgRef);
 	}
-	private void _showOrganizationDetailViewForEditingExistingRecord(final X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef) {
+	private void _showOrganizationDetailViewForEditingExistingRecord(final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef) {
 		if (orgRef == null) throw new IllegalStateException("NO organization to be edited!");
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
 		_orgDetailPopUp.forEditing(orgRef.getOid(),
@@ -413,7 +413,7 @@ public class PB01MainView
 	private void _showOrgDivDetailViewForEditingExistingRecord() {
 		_showOrgDivDetailViewForEditingExistingRecord(_cmbSelectedOrgDivRef);
 	}
-	private void _showOrgDivDetailViewForEditingExistingRecord(final X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef) {
+	private void _showOrgDivDetailViewForEditingExistingRecord(final X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef) {
 		if (orgDivRef == null) throw new IllegalStateException("NO org division to be edited!");
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
 		_orgDivDetailPopUp.forEditing(orgDivRef.getOid(),
@@ -509,7 +509,7 @@ public class PB01MainView
 	private void _showOrgDivSrvcDetailViewForEditingExistingRecord() {
 		_showOrgDivSrvcDetailViewForEditingExistingRecord(_cmbSelectedOrgDivSrvcRef);
 	}
-	private void _showOrgDivSrvcDetailViewForEditingExistingRecord(final X47BOrganizationalObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef) {
+	private void _showOrgDivSrvcDetailViewForEditingExistingRecord(final X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef) {
 		if (orgDivSrvcRef == null) throw new IllegalStateException("NO org division service to be edited!");
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
 		_orgDivSrvcDetailPopUp.forEditing(orgDivSrvcRef.getOid(),
@@ -603,7 +603,7 @@ public class PB01MainView
 	private void _showOrgDivSrvcLocDetailViewForEditingExistingRecord() {
 		_showOrgDivSrvcLocDetailViewForEditingExistingRecord(_cmbSelectedOrgDivSrvcLocRef);
 	}
-	private void _showOrgDivSrvcLocDetailViewForEditingExistingRecord(final X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocRef) {
+	private void _showOrgDivSrvcLocDetailViewForEditingExistingRecord(final X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocRef) {
 		if (orgDivSrvcLocRef == null) throw new IllegalStateException("NO org division service location to be edited!");
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
 		_orgDivSrvcLocDetailPopUp.forEditing(orgDivSrvcLocRef.getOid(),
@@ -692,7 +692,7 @@ public class PB01MainView
 	private void _showWorkPlaceDetailViewForEditingExistingRecord() {
 		_showWorkPlaceDetailViewForEditingExistingRecord(_cmbSelectedWorkPlaceRef);
 	}
-	private void _showWorkPlaceDetailViewForEditingExistingRecord(final X47BOrganizationalObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceRef) {
+	private void _showWorkPlaceDetailViewForEditingExistingRecord(final X47BOrgObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceRef) {
 		if (workPlaceRef == null) throw new IllegalStateException("NO workplace to be edited!");
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
 		_workPlaceDetailPopUp.forEditing(workPlaceRef.getOid(),

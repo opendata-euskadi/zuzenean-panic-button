@@ -32,10 +32,10 @@ public class X47BOrgDivisionService
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallField(as="organization")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID> _orgRef;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> _orgRef;
 
 	@MarshallField(as="division")
-	@Getter @Setter private X47BOrganizationalObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _orgDivisionRef;
+	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _orgDivisionRef;
 
 	@MarshallField(as="procedure")
 	@Getter @Setter private LanguageTexts _procedure;

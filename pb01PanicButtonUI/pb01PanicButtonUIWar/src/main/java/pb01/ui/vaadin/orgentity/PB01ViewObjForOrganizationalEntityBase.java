@@ -4,7 +4,7 @@ import r01f.locale.Language;
 import r01f.ui.viewobject.UIViewObjectBase;
 import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
-import x47b.model.org.X47BOrganizationalObjectRef;
+import x47b.model.org.X47BOrgObjectRef;
 import x47b.model.org.X47BOrganizationalPersistableObject;
 
 public abstract class PB01ViewObjForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends X47BOrganizationalPersistableObject<O,ID>>
@@ -56,7 +56,7 @@ public abstract class PB01ViewObjForOrganizationalEntityBase<O extends X47BPersi
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public X47BOrganizationalObjectRef<O,ID> getRef() {
-		return new X47BOrganizationalObjectRef<>(_wrappedModelObject.getOid(),_wrappedModelObject.getId());
+	public X47BOrgObjectRef<O,ID> getRef() {
+		return new X47BOrgObjectRef<>(_wrappedModelObject.getOid(),_wrappedModelObject.getId());
 	}
 }

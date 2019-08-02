@@ -41,8 +41,7 @@ abstract class PB01CascadedCombos {
 			super(presenter,
 				  i18n.getMessage("pb01.view.main.combo.org.div.orgs"),i18n.getCurrentLanguage(),
 				  popupWin,
-				  X47BOrganizationOID.class,X47BOrganizationID.class,
-				  null);				// no parent combo
+				  X47BOrganizationOID.class,X47BOrganizationID.class);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -56,13 +55,11 @@ abstract class PB01CascadedCombos {
 
 		public PB01CascadedComboForOrgDivision(final UII18NService i18n,
 											   final PB01MainViewPresenter presenter,
-											   final PB01DetailWindowForOrgDivision popupWin,
-											   final PB01CascadedComboForOrganization parentCmb) {
+											   final PB01DetailWindowForOrgDivision popupWin) {
 			super(presenter,
 				  i18n.getMessage("pb01.view.main.combo.org.div.divs"),i18n.getCurrentLanguage(),
 				  popupWin,
-				  X47BOrgDivisionOID.class,X47BOrgDivisionID.class,
-				  parentCmb);				// parent combo
+				  X47BOrgDivisionOID.class,X47BOrgDivisionID.class);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -76,14 +73,11 @@ abstract class PB01CascadedCombos {
 
 		public PB01CascadedComboForOrgDivisionService(final UII18NService i18n,
 											   		  final PB01MainViewPresenter presenter,
-											   		  final PB01DetailWindowForOrgDivisionService popupWin,
-											   		  final PB01CascadedComboForOrgDivision parentCmb) {
+											   		  final PB01DetailWindowForOrgDivisionService popupWin) {
 			super(presenter,
 				  i18n.getMessage("pb01.view.main.combo.org.div.srvcs"),i18n.getCurrentLanguage(),
 				  popupWin,
-				  X47BOrgDivisionServiceOID.class,X47BOrgDivisionServiceID.class,
-				  parentCmb);					// parent combo
-
+				  X47BOrgDivisionServiceOID.class,X47BOrgDivisionServiceID.class);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -97,13 +91,11 @@ abstract class PB01CascadedCombos {
 
 		public PB01CascadedComboForOrgDivisionServiceLocation(final UII18NService i18n,
 											   		  		  final PB01MainViewPresenter presenter,
-											   		  		  final PB01DetailWindowForOrgDivisionServiceLocation popupWin,
-											   		  		  final PB01CascadedComboForOrgDivisionService parentCmb) {
+											   		  		  final PB01DetailWindowForOrgDivisionServiceLocation popupWin) {
 			super(presenter,
 				  i18n.getMessage("pb01.view.main.combo.org.div.srvc.locs"),i18n.getCurrentLanguage(),
 				  popupWin,
-				  X47BOrgDivisionServiceLocationOID.class,X47BOrgDivisionServiceLocationID.class,
-				  parentCmb);			// parent combo
+				  X47BOrgDivisionServiceLocationOID.class,X47BOrgDivisionServiceLocationID.class);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -117,13 +109,11 @@ abstract class PB01CascadedCombos {
 
 		public PB01CascadedComboForWorkPlace(final UII18NService i18n,
 											 final PB01MainViewPresenter presenter,
-											 final PB01DetailWindowForWorkPlace popupWin,
-											 final PB01CascadedComboForOrgDivisionServiceLocation parentCombo) {
+											 final PB01DetailWindowForWorkPlace popupWin) {
 			super(presenter,
 				  i18n.getMessage("pb01.view.main.combo.org.div.srvc.loc.workplaces"),i18n.getCurrentLanguage(),
 				  popupWin,
-				  X47BWorkPlaceOID.class,X47BWorkPlaceID.class,
-				  parentCombo);		// parent combo
+				  X47BWorkPlaceOID.class,X47BWorkPlaceID.class);
 		}
 	}
 }

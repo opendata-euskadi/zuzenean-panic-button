@@ -12,7 +12,7 @@ import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.org.X47BOrgDivision;
 import x47b.model.org.X47BOrganization;
-import x47b.model.org.X47BOrganizationalObjectRef;
+import x47b.model.org.X47BOrgObjectRef;
 
 @RequiredArgsConstructor
 public class X47BMockOrgDivisionFactory 
@@ -41,7 +41,7 @@ public class X47BMockOrgDivisionFactory
 		outDiv.setId(X47BOrgDivisionID.forId(Strings.customized("{}/{}",
 															    _organization.getId(),
 															    randomDiv)));
-		outDiv.setOrgRef(new X47BOrganizationalObjectRef<X47BOrganizationOID,X47BOrganizationID>(_organization.getOid(),_organization.getId()));
+		outDiv.setOrgRef(new X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID>(_organization.getOid(),_organization.getId()));
 		outDiv.setNameByLanguage(new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL)
 										   .add(Language.SPANISH,"TEST division " + randomDiv)
 										   .add(Language.BASQUE,"[eu] TEST division " + randomDiv));
