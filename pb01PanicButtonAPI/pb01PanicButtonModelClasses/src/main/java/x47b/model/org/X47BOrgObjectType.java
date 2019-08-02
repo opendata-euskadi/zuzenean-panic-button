@@ -1,6 +1,13 @@
 package x47b.model.org;
 
+import r01f.patterns.FactoryFrom;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
@@ -21,7 +28,7 @@ public enum X47BOrgObjectType {
 	ORG_DIVISION_SERVICE_LOCATION,
 	WORKPLACE;
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	FROM OID & ID TYPES
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static <O extends X47BPersistableObjectOID> X47BOrgObjectType ofOIDType(final Class<O> type) {
 		X47BOrgObjectType outType = null;
@@ -40,6 +47,26 @@ public enum X47BOrgObjectType {
 		}
 		return outType;
 	}
+	public static <I extends X47BPersistableObjectID<?>> X47BOrgObjectType ofIDType(final Class<I> type) {
+		X47BOrgObjectType outType = null;
+		if (type == X47BOrganizationID.class) {
+			outType = ORGANIZATION;
+		} else if (type == X47BOrgDivisionID.class) {
+			outType = ORG_DIVISION;
+		} else if (type == X47BOrgDivisionServiceID.class) {
+			outType = ORG_DIVISION_SERVICE;
+		} else if (type == X47BOrgDivisionServiceLocationID.class) {
+			outType = ORG_DIVISION_SERVICE_LOCATION;
+		} else if (type == X47BWorkPlaceID.class) {
+			outType = WORKPLACE;
+		} else {
+			throw new IllegalArgumentException(type + " is NOT a valid organizational object id type!");
+		}
+		return outType;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	FROM SUMARIZED TYPES
+/////////////////////////////////////////////////////////////////////////////////////////
 	public static <T extends X47BOrganizationalPersistableObject<?,?>> X47BOrgObjectType ofType(final Class<T> type) {
 		X47BOrgObjectType outType = null;
 		if (type == X47BOrganization.class) {
@@ -90,5 +117,44 @@ public enum X47BOrgObjectType {
 			throw new IllegalArgumentException("Could NOT guess the type of a search result item instance");
 		}
 		return outType;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	oid & id factories from string
+/////////////////////////////////////////////////////////////////////////////////////////
+	@SuppressWarnings("unchecked")
+	public static <O extends X47BPersistableObjectOID> FactoryFrom<String,O> factoryForOIDType(final Class<O> type) {
+		FactoryFrom<String,O> outFactory = null;
+		if (type == X47BOrganizationOID.class) {
+			outFactory = id -> (O)X47BOrganizationOID.forId(id);
+		} else if (type == X47BOrgDivisionOID.class) {
+			outFactory = id -> (O)X47BOrgDivisionOID.forId(id);
+		} else if (type == X47BOrgDivisionServiceOID.class) {
+			outFactory = id -> (O)X47BOrgDivisionServiceOID.forId(id);
+		} else if (type == X47BOrgDivisionServiceLocationOID.class) {
+			outFactory = id -> (O)X47BOrgDivisionServiceLocationOID.forId(id);
+		} else if (type == X47BWorkPlaceOID.class) {
+			outFactory = id -> (O)X47BWorkPlaceOID.forId(id);
+		} else {
+			throw new IllegalArgumentException(type + " is NOT a valid organizational object oid type!");
+		}
+		return outFactory;
+	}
+	@SuppressWarnings("unchecked")
+	public static <I extends X47BPersistableObjectID<?>> FactoryFrom<String,I> factoryForIDType(final Class<I> type) {
+		FactoryFrom<String,I> outFactory = null;
+		if (type == X47BOrganizationID.class) {
+			outFactory = id -> (I)X47BOrganizationID.forId(id);
+		} else if (type == X47BOrgDivisionID.class) {
+			outFactory = id -> (I)X47BOrgDivisionID.forId(id);
+		} else if (type == X47BOrgDivisionServiceID.class) {
+			outFactory = id -> (I)X47BOrgDivisionServiceID.forId(id);
+		} else if (type == X47BOrgDivisionServiceLocationID.class) {
+			outFactory = id -> (I)X47BOrgDivisionServiceLocationID.forId(id);
+		} else if (type == X47BWorkPlaceID.class) {
+			outFactory = id -> (I)X47BWorkPlaceID.forId(id);
+		} else {
+			throw new IllegalArgumentException(type + " is NOT a valid organizational object id type!");
+		}
+		return outFactory;
 	}
 }

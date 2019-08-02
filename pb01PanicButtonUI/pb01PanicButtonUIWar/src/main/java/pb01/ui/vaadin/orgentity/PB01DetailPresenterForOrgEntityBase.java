@@ -11,8 +11,7 @@ import x47b.model.org.X47BOrganizationalPersistableObject;
 public abstract class PB01DetailPresenterForOrgEntityBase<O extends X47BPersistableObjectOID,M extends X47BOrganizationalPersistableObject<O,?>,
 											  			  V extends PB01ViewObjForOrganizationalEntityBase<O,?,M>,
 											  			  C extends PB01COREMediatorForOrganizationalEntityBase<O,M>>
-  		   implements UIObjectDetailPresenter<O,M,
-  		   									  V> {
+  		   implements UIObjectDetailPresenter<O,V> {
 
 	private static final long serialVersionUID = 7844171401265835661L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -40,23 +39,26 @@ public abstract class PB01DetailPresenterForOrgEntityBase<O extends X47BPersista
 		_coreMediator.load(oid,
 						   obj -> {
 										// [2] . Convert the model object into a view obj
-										V viewObj = _viewObjFromModelObj.from(obj);
+										final V viewObj = _viewObjFromModelObj.from(obj);
 
 										// [3] - Tell the view to paint the object
 										presenterSubscriber.onSuccess(viewObj);
 								   });
 	}
 	@Override
-	public void onSaveRequested(final M obj,
+	public void onSaveRequested(final V viewObj,
 								final UIPresenterSubscriber<V> presenterSubscriber) {
+		// [0] - Get the model object from the view object
+		final M obj = viewObj.getWrappedModelObject();
+
 		// [1] - Use the api to save the object
 		_coreMediator.save(obj,
 						   result -> {
 										// [2] . Convert the model object into a view obj
-										V viewObj = _viewObjFromModelObj.from(result);
+										final V savedViewObj = _viewObjFromModelObj.from(result);
 
 										// [3] - Tell the view to paint the object
-										presenterSubscriber.onSuccess(viewObj);
+										presenterSubscriber.onSuccess(savedViewObj);
 									 });
 	}
 	@Override
@@ -66,7 +68,7 @@ public abstract class PB01DetailPresenterForOrgEntityBase<O extends X47BPersista
 		_coreMediator.delete(oid,
 							 obj -> {
 										// [2] . Convert the model objet into a view obj
-										V viewObj = _viewObjFromModelObj.from(obj);
+										final V viewObj = _viewObjFromModelObj.from(obj);
 
 										// [3] - Tell the view...
 										presenterSubscriber.onSuccess(viewObj);

@@ -90,8 +90,6 @@ public class PB01MainView
 	private X47BOrganizationalObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> _cmbSelectedOrgDivSrvcLocRef;
 	private X47BOrganizationalObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> _cmbSelectedWorkPlaceRef;
 
-	// The pop-up window being edited organizational entities
-
 	// Grid
 	private final PB01MainGridView _gridView;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -174,7 +172,7 @@ public class PB01MainView
 		///////// Org division service locations
 		_orgDivSrvcLocDetailPopUp = orgDivSrvcLocDetailPopUpWin;
 
-		_orgDivSrvcLocsCmb = new ComboBox<>(_i18n.getMessage("pb01.view.main.combo.org.div.srvc.loc"));
+		_orgDivSrvcLocsCmb = new ComboBox<>(_i18n.getMessage("pb01.view.main.combo.org.div.srvc.locs"));
 		_orgDivSrvcLocsCmb.setItemCaptionGenerator(PB01VaadinComboItem::getValue);
 		_orgDivSrvcLocsCmb.addValueChangeListener(this::_onOrgDivSrvcLocsComboValueChanged);
 
@@ -195,7 +193,7 @@ public class PB01MainView
 		///////// WorkPlaces
 		_workPlaceDetailPopUp = workPlaceDetailPopUpWin;
 
-		_workPlacesCmb = new ComboBox<>(_i18n.getMessage("pb01.view.main.combo.org.div.srvc.loc"));
+		_workPlacesCmb = new ComboBox<>(_i18n.getMessage("pb01.view.main.combo.org.div.srvc.loc.workplaces"));
 		_workPlacesCmb.setItemCaptionGenerator(PB01VaadinComboItem::getValue);
 		_workPlacesCmb.addValueChangeListener(this::_onWorkPlacesComboValueChanged);
 

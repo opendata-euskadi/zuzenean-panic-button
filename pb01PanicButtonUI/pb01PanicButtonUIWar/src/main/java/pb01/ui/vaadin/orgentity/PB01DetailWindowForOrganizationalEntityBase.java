@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import pb01.ui.vaadin.view.components.PB01AcceptCancelDeleteButtonsLayout;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
-import r01f.ui.vaadin.view.VaadinDetailView;
 import r01f.ui.vaadin.view.VaadinViewFactories.VaadinViewFactory;
 import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
@@ -40,7 +39,7 @@ public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47B
 														   		  P extends PB01DetailPresenterForOrgEntityBase<O,M,V,C>,		// detail view presenter
 														   		  D extends PB01DetailViewForOrgEntityBase<O,M,V>> 				// detail view
               extends Window
-           implements VaadinDetailView<M> {
+           implements PB01DetailWindowForOrgEntity {
 
 	private static final long serialVersionUID = 5732281917637898689L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -81,8 +80,7 @@ public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47B
 																	// [1] - collect ui controls values into the view object
 																	if (_detailView.writeBeanIfValid(_viewObj)) {
 																		// [2] - tell the presenter to save
-																		M obj = _viewObj.getWrappedModelObject();
-																		_detailViewPresenter.onSaveRequested(obj,
+																		_detailViewPresenter.onSaveRequested(_viewObj,
 																								   			 _saveSubscriber);
 																	} else {
 																		Notification.show(_i18n.getMessage("notification.empty.fields"));
@@ -95,7 +93,7 @@ public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47B
 																 });
 
 		// Layout
-		VerticalLayout layout = new VerticalLayout();
+		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin( true );
 		layout.addComponent(_detailView);
 		layout.addComponent(_btnAcepCancDelete);

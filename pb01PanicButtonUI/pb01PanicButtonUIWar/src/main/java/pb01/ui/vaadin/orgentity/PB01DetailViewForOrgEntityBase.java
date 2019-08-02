@@ -17,7 +17,7 @@ import x47b.model.org.X47BOrganizationalPersistableObject;
 public class PB01DetailViewForOrgEntityBase<O extends X47BPersistableObjectOID,M extends X47BOrganizationalPersistableObject<O,? extends X47BPersistableObjectID<?>>,
 											V extends PB01ViewObjForOrganizationalEntityBase<O,? extends X47BPersistableObjectID<?>,M>>
 	 extends VerticalLayout
-  implements VaadinDetailView<M>,
+  implements VaadinDetailView<V>,
   			 VaadinViewHasVaadinViewObjectBinder<V> {
 
 	private static final long serialVersionUID = 1763832401233570646L;

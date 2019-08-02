@@ -27,6 +27,11 @@ public class PB01VaadinComboItem
    							    oid,id),
 			 name);
 	}
+	public PB01VaadinComboItem(final X47BOrganizationalObjectRef<?,?> objRef,
+							   final String name) {
+		this(objRef.getOid(),objRef.getId(),
+			 name);
+	}
 	public PB01VaadinComboItem(final X47BOrganizationalPersistableObject<?,?> obj,
 							   final Language lang) {
 		this(obj.getOid(),obj.getId(),
@@ -64,8 +69,8 @@ public class PB01VaadinComboItem
     //		- id is composed as oid#id (so both the object oid and id are available)
     //		- value is the object name
 
-
 	public static PB01VaadinComboItemFromObjFactory FROM_OBJ = PB01VaadinComboItem::new;
+	public static PB01VaadinComboItemFromObjRefFactory FROM_OBJ_REF = PB01VaadinComboItem::new;
 	public static PB01VaadinComboItemFromObjSummaryFactory FROM_OBJ_SUMMARY = PB01VaadinComboItem::new;
 	public static PB01VaadinComboItemFromViewObjFactory FROM_VIEW_OBJ = PB01VaadinComboItem::new;
 
@@ -73,6 +78,11 @@ public class PB01VaadinComboItem
 	public interface PB01VaadinComboItemFromObjFactory {
 	    PB01VaadinComboItem apply(final X47BOrganizationalPersistableObject<?,?> obj,
 	    						  final Language lang);
+	}
+	@FunctionalInterface
+	public interface PB01VaadinComboItemFromObjRefFactory {
+	    PB01VaadinComboItem apply(final X47BOrganizationalObjectRef<?,?> objRef,
+							   	  final String name);
 	}
 	@FunctionalInterface
 	public interface PB01VaadinComboItemFromObjSummaryFactory {

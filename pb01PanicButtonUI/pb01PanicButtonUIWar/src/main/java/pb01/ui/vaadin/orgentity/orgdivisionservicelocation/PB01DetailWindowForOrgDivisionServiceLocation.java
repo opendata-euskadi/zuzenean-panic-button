@@ -2,6 +2,8 @@ package pb01.ui.vaadin.orgentity.orgdivisionservicelocation;
 
 import javax.inject.Inject;
 
+import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgEntityVisitors.PB01OrgEntityDetailWinForCreateVisitor;
+import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgEntityVisitors.PB01OrgEntityDetailWinForEditVisitor;
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrganizationalEntityBase;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
@@ -31,6 +33,17 @@ public class PB01DetailWindowForOrgDivisionServiceLocation
 		super(i18n,
 			  i18n1 -> new PB01DetailViewForOrgDivisionServiceLocation(i18n1),	// view factory
 			  detailViewPresenter);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	OPEN
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public void openForCreating(final PB01OrgEntityDetailWinForCreateVisitor openerVisitor) {
+		openerVisitor.forCreatingNewOn(this);
+	}
+	@Override
+	public void openForEdit(final PB01OrgEntityDetailWinForEditVisitor openerVisitor) {
+		openerVisitor.forEditingExistentOn(this);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CREATING

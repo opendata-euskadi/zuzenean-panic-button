@@ -2,6 +2,8 @@ package pb01.ui.vaadin.orgentity.orgdivision;
 
 import javax.inject.Inject;
 
+import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgEntityVisitors.PB01OrgEntityDetailWinForCreateVisitor;
+import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgEntityVisitors.PB01OrgEntityDetailWinForEditVisitor;
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrganizationalEntityBase;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
@@ -23,10 +25,21 @@ public class PB01DetailWindowForOrgDivision
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
 	protected PB01DetailWindowForOrgDivision(final UII18NService i18n,
-											  final PB01DetailPresenterForOrgDivision detailViewPresenter) {
+											 final PB01DetailPresenterForOrgDivision detailViewPresenter) {
 		super(i18n,
 			  i18n1 -> new PB01DetailViewForOrgDivision(i18n1),	// view factory
 			  detailViewPresenter);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	OPEN
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public void openForCreating(final PB01OrgEntityDetailWinForCreateVisitor openerVisitor) {
+		openerVisitor.forCreatingNewOn(this);
+	}
+	@Override
+	public void openForEdit(final PB01OrgEntityDetailWinForEditVisitor openerVisitor) {
+		openerVisitor.forEditingExistentOn(this);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CREATING
@@ -37,7 +50,7 @@ public class PB01DetailWindowForOrgDivision
 		_deleteSubscriber = null;		// cannot delete from a create window
 
 		// create a new org division
-		X47BOrgDivision obj = new X47BOrgDivision();
+		final X47BOrgDivision obj = new X47BOrgDivision();
 		obj.setOid(X47BOrgDivisionOID.supply());
 		obj.setOrgRef(orgRef);
 
