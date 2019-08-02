@@ -18,9 +18,10 @@ import x47b.model.org.X47BOrgDivisionServiceLocation;
 import x47b.model.org.X47BOrganization;
 import x47b.model.org.X47BWorkPlace;
 import x47b.test.entities.X47BAlarmEventTest;
-import x47b.test.entities.X47BOrgDivisionTest;
 import x47b.test.entities.X47BDivisionServiceTest;
+import x47b.test.entities.X47BModelObjectSearchTest;
 import x47b.test.entities.X47BOrgDivisionServiceLocationTest;
+import x47b.test.entities.X47BOrgDivisionTest;
 import x47b.test.entities.X47BOrganizationTest;
 import x47b.test.entities.X47BWorkPlaceTest;
 import x47b.test.entities.mock.X47BMockOrgDivisionFactory;
@@ -28,7 +29,6 @@ import x47b.test.entities.mock.X47BMockOrgDivisionServiceFactory;
 import x47b.test.entities.mock.X47BMockOrgDivisionServiceLocationFactory;
 import x47b.test.entities.mock.X47BMockOrganizationFactory;
 import x47b.test.entities.mock.X47BMockWorkPlaceFactory;
-import x47b.test.entities.X47BModelObjectSearchTest;
 
 
 /**
@@ -234,11 +234,11 @@ public class X47BPanicButtonAPITest
 		log.warn("TEST ALARM EVENTS");
 		log.warn("===========================================================");
 		final X47BAlarmEventTest testAlarmEvent = new X47BAlarmEventTest(api,
-																						   divParentOrg,
-																						   serviceParentDivision,
-																						   locationParentService,
-																						   workPlaceParentLocation,
-																						   alarmParentWorkPlace);
+																	     divParentOrg,
+																	     serviceParentDivision,
+																	     locationParentService,
+																	     workPlaceParentLocation,
+																	     alarmParentWorkPlace);
 		testAlarmEvent.doRaiseAlarms();		// raise alarms
 		testAlarmEvent.doQueryAlarms(TimeLapse.createFor("10m"));
 		testAlarmEvent.doCancelAlarms();

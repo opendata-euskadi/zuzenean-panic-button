@@ -2,7 +2,7 @@ package x47b.test.entities;
 
 import java.util.Collection;
 
-import org.springframework.util.Assert;
+import org.junit.Assert;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Guice;
@@ -41,16 +41,16 @@ public class X47BAlarmEventTest {
 	private final X47BOrgDivisionService _service;
 	private final X47BOrgDivisionServiceLocation _location;
 	private final X47BWorkPlace _workPlace;
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public X47BAlarmEventTest(final X47BPanicButtonClientAPI api,
-							  		   final X47BOrganization organization,
-							  		   final X47BOrgDivision division,
-							  		   final X47BOrgDivisionService service,
-							  		   final X47BOrgDivisionServiceLocation location,
-							  		   final X47BWorkPlace workPlace) {
+							  final X47BOrganization organization,
+							  final X47BOrgDivision division,
+							  final X47BOrgDivisionService service,
+							  final X47BOrgDivisionServiceLocation location,
+							  final X47BWorkPlace workPlace) {
 		_api = api;
 		_organization = organization;
 		_division = division;
@@ -64,30 +64,30 @@ public class X47BAlarmEventTest {
 	/**
 	 * Stores the raised alarms
 	 */
-	private Collection<X47BAlarmEventOID> _raisedAlarms = Lists.newArrayList();
-	
-	public void doRaiseAlarms() {		
+	private final Collection<X47BAlarmEventOID> _raisedAlarms = Lists.newArrayList();
+
+	public void doRaiseAlarms() {
 		// simply create an alarm event for a source workPlace
 		X47BAlarmEvent createdAlarmBySourceId = _api.alarmEventsAPI()
 														.getForNotify()
-															.raiseAlarm(_workPlace.getId());		
-		Assert.notNull(createdAlarmBySourceId);
+															.raiseAlarm(_workPlace.getId());
+		Assert.assertNotNull(createdAlarmBySourceId);
 		System.out.println("--------->Alarm created for " + _workPlace.getId() + ": " + createdAlarmBySourceId.getOid());
 		_checkAlarmRaiseCount(1);	// 1 alarm expected
-		
+
 		_raisedAlarms.add(createdAlarmBySourceId.getOid());
-		
-		
-		
+
+
+
 		// Create another alarm for an workPlace host
 		X47BAlarmEvent createdAlarmByHost = _api.alarmEventsAPI()
 													.getForNotify()
 														.raiseAlarm(_workPlace.getOid());
-		Assert.notNull(createdAlarmByHost);
+		Assert.assertNotNull(createdAlarmByHost);
 		System.out.println("--------->Alarm created for " + _workPlace.getOid() + ": " + createdAlarmBySourceId.getOid());
-		_checkAlarmRaiseCount(2);	// 2 alarms expected	
-		
-		_raisedAlarms.add(createdAlarmByHost.getOid());		
+		_checkAlarmRaiseCount(2);	// 2 alarms expected
+
+		_raisedAlarms.add(createdAlarmByHost.getOid());
 	}
 	public void doQueryAlarms(final TimeLapse timeLapse) {
 		System.out.println("::::>Querying alarm events:");
@@ -95,7 +95,7 @@ public class X47BAlarmEventTest {
 														.getForFind()
 															.findBySourceId(_workPlace.getId(),
 																			timeLapse);
-		Assert.notEmpty(alarmEvents);
+		Assert.assertTrue(CollectionUtils.hasData(alarmEvents));
 		for (X47BAlarmEvent event : alarmEvents) {
 			System.out.println(">> Event created at " + event.getTimeStamp() + " at " + event.getHiearchyPath());
 		}
@@ -103,41 +103,41 @@ public class X47BAlarmEventTest {
 	public void doCancelAlarms() {
 		// Remove the raised alarms
 		if (CollectionUtils.isNullOrEmpty(_raisedAlarms)) return;
-		
+
 		for (X47BAlarmEventOID alarmEventOid : _raisedAlarms) {
 			X47BAlarmEvent removedAlarm = _api.alarmEventsAPI()
 												.getForNotify()
-													.cancelAlarm(alarmEventOid);			
-			Assert.notNull(removedAlarm);
+													.cancelAlarm(alarmEventOid);
+			Assert.assertNotNull(removedAlarm);
 			System.out.println("--------->Alarm "+ alarmEventOid + " REMOVED!");
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	private void _checkAlarmRaiseCount(final int expectedCount) {
 		X47BOrganization org = _api.organizationsAPI()
 										.getForCRUD()
 											.load(_organization.getOid());
-		Assert.isTrue(expectedCount == org.getAlarmRaiseCount());
-		
+		Assert.assertTrue(expectedCount == org.getAlarmRaiseCount());
+
 		X47BOrgDivisionServiceLocation loc = _api.orgDivisionServiceLocationsAPI()
 													.getForCRUD()
 														.load(_location.getOid());
-		Assert.isTrue(expectedCount == loc.getAlarmRaiseCount());
-		
+		Assert.assertTrue(expectedCount == loc.getAlarmRaiseCount());
+
 		X47BWorkPlace workPlace = _api.workPlacesAPI()
 										.getForCRUD()
 											.load(_workPlace.getOid());
-		Assert.isTrue(expectedCount == workPlace.getAlarmRaiseCount());
-		
+		Assert.assertTrue(expectedCount == workPlace.getAlarmRaiseCount());
+
 		System.out.println(">>Alarm raise count: ");
 		System.out.println("\t>Organization: " + org.getAlarmRaiseCount());
 		System.out.println("\t>    Location: " + loc.getAlarmRaiseCount());
 		System.out.println("\t>   WorkPlace: " + workPlace.getAlarmRaiseCount());
-	}	
-	
-	public static void main(String[] args) {
+	}
+
+	public static void main(final String[] args) {
 		// [0] - Load properties
 		XMLPropertiesForApp xmlProps = XMLPropertiesBuilder.createForApp(X47BAppCodes.CORE_APPCODE)
 														   .notUsingCache();
@@ -149,7 +149,7 @@ public class X47BAlarmEventTest {
 													    .ofCoreModules(coreBootCfg)
 													    .coreEventsHandledSynchronously()
 													    .build();
-		
+
 		// [2]: Create the injector
 		Iterable<Module> bootstrapModuleInstances = ServicesBootstrapUtil.getBootstrapGuiceModules(bootstrapCfg)
 																		   .withoutCommonBindingModules();
@@ -163,9 +163,9 @@ public class X47BAlarmEventTest {
 
 		// [3] -Get the api
 		X47BPanicButtonClientAPI api = injector.getInstance(X47BPanicButtonClientAPI.class);
-		
+
 		X47BWorkPlaceID sourceId = X47BWorkPlaceID.forId("CO02549m");
-		
+
 		System.out.println("--------->Read alarms for id " + sourceId.asString());
 		Collection<X47BAlarmEvent>alarms = api.alarmEventsAPI().getForFind().findBySourceId(sourceId,TimeLapse.createFor("60h"));
 		System.out.println("Tiene " + alarms.size() + " alarmas..........");
@@ -173,6 +173,6 @@ public class X47BAlarmEventTest {
 		for(X47BAlarmEvent theAlarm:alarms) {
 			System.out.println("---------> Alarm(" + (i++) + "):" + theAlarm.getHiearchyPath());
 		}
-			
+
 	}
 }
