@@ -14,8 +14,8 @@ import r01f.objectstreamer.Marshaller;
 import r01f.securitycontext.SecurityContext;
 import x47b.api.interfaces.X47BFindServicesForOrganizationalModelObjectBase;
 import x47b.model.X47BPersistableObject;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.services.delegates.persistence.X47BCRUDServicesDelegateForWorkPlace;
 
 /**
@@ -23,7 +23,7 @@ import x47b.services.delegates.persistence.X47BCRUDServicesDelegateForWorkPlace;
  * delegated to {@link X47BCRUDServicesDelegateForWorkPlace}
  */
 @Accessors(prefix="_")
-public abstract class X47BFindServicesImplForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends X47BPersistableObject<O,ID>>
+public abstract class X47BFindServicesImplForOrganizationalEntityBase<O extends X47BOrgObjectOID,ID extends X47BOrgObjectID<O>,M extends X47BPersistableObject<O,ID>>
      		  extends X47BFindServicesImplBase<O,ID,M>
   		   implements X47BFindServicesForOrganizationalModelObjectBase<O,ID,M> {
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ public abstract class X47BFindServicesImplForOrganizationalEntityBase<O extends 
 // 	IMPORTANT!!! Do NOT put any logic in these methods ONLY DELEGATE!!!
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Transactional
-	@Override 
+	@Override
 	public FindResult<M> findByNameIn(final SecurityContext securityContext,
 									  final Language lang,final String name) {
 		return this.forSecurityContext(securityContext)

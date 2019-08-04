@@ -7,12 +7,12 @@ import r01f.model.persistence.FindResultBuilder;
 import r01f.persistence.db.DBFindForModelObject;
 import r01f.securitycontext.SecurityContext;
 import x47b.api.interfaces.X47BFindServicesForOrganizationalModelObjectBase;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.org.X47BOrganizationalPersistableObject;
 
 
-abstract class X47BFindServicesDelegateForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends X47BOrganizationalPersistableObject<O,ID>>
+abstract class X47BFindServicesDelegateForOrganizationalEntityBase<O extends X47BOrgObjectOID,ID extends X47BOrgObjectID<O>,M extends X47BOrganizationalPersistableObject<O,ID>>
 	   extends X47BFindServicesDelegateBase<O,ID,M>
     implements X47BFindServicesForOrganizationalModelObjectBase<O,ID,M> {
 
@@ -29,7 +29,7 @@ abstract class X47BFindServicesDelegateForOrganizationalEntityBase<O extends X47
 /////////////////////////////////////////////////////////////////////////////////////////
 //  EXTENSION METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Override 
+	@Override
 	public FindResult<M> findByNameIn(final SecurityContext securityContext,
 									  final Language lang,final String name) {
 		if (name == null || lang == null) {

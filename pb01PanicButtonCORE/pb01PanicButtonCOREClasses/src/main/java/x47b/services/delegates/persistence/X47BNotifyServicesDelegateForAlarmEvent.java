@@ -38,7 +38,7 @@ public class X47BNotifyServicesDelegateForAlarmEvent
 	private final X47BCRUDServicesDelegateForOrgDivisionService _serviceCRUD;
 	private final X47BCRUDServicesDelegateForOrgDivisionServiceLocation _locationCRUD;
 	private final X47BCRUDServicesDelegateForWorkPlace _workPlaceCRUD;
-	
+
 	private final X47BCRUDServicesDelegateForAlarmEvent _alarmEventCRUD;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
@@ -62,7 +62,7 @@ public class X47BNotifyServicesDelegateForAlarmEvent
 			 													   marshaller,
 			 													   eventBus);
 		_serviceCRUD = new X47BCRUDServicesDelegateForOrgDivisionService(coreCfg,
-																		 entityManager,	
+																		 entityManager,
 				 														 marshaller,
 				 														 eventBus);
 		_locationCRUD = new X47BCRUDServicesDelegateForOrgDivisionServiceLocation(coreCfg,
@@ -93,7 +93,7 @@ public class X47BNotifyServicesDelegateForAlarmEvent
 		// [2] - Find the work place
 		CRUDResult<X47BWorkPlace> workPlaceLoadResult = _workPlaceCRUD.loadById(securityContext,
 																	            workPlaceId);
-		if (workPlaceLoadResult.hasFailed() 
+		if (workPlaceLoadResult.hasFailed()
 		 && workPlaceLoadResult.asCRUDError().wasBecauseClientRequestedEntityWasNOTFound()) {		// as(CRUDError.class)
 			return CRUDResultBuilder.using(securityContext)
 									.on(_modelObjectType)
@@ -119,7 +119,7 @@ public class X47BNotifyServicesDelegateForAlarmEvent
 														  .on(_modelObjectType)
 														  .notCreated()
 																.becauseClientBadRequest("The alarm event source work place oid MUST not be null in order to be raised")
-																	.build();		
+																	.build();
 		// [1] - Load the work place, location, service, division and organization
 		// ... workPlace
 		CRUDResult<X47BWorkPlace> workPlaceLoadResult = _workPlaceCRUD.load(securityContext,
@@ -131,33 +131,33 @@ public class X47BNotifyServicesDelegateForAlarmEvent
 								  	.notCreated()
 									  	.becauseRequiredRelatedEntityWasNOTFound("The alarm event source id={} is NOT a valid one: either the organization, location or work place do NOT exists!!",workPlaceOid)
 										.build();
-		} 
+		}
 		X47BWorkPlace workPlace = workPlaceLoadResult.getOrThrow();
-		
+
 		// ... location
 		CRUDResult<X47BOrgDivisionServiceLocation> locationLoadResult = _locationCRUD.load(securityContext,
 																						   workPlace.getOrgDivisionServiceLocationRef().getOid());
 		X47BOrgDivisionServiceLocation location = locationLoadResult.getOrThrow();
-		
+
 		// ... service
 		CRUDResult<X47BOrgDivisionService> serviceLoadResult = _serviceCRUD.load(securityContext,
 																				 workPlace.getOrgDivisionServiceRef().getOid());
 		X47BOrgDivisionService service = serviceLoadResult.getOrThrow();
-		
+
 		// ... division
 		CRUDResult<X47BOrgDivision> divisionLoadResult = _divisionCRUD.load(securityContext,
 																		    workPlace.getOrgDivisionRef().getOid());
 		X47BOrgDivision division = divisionLoadResult.getOrThrow();
-		
+
 		// Org
 		CRUDResult<X47BOrganization> orgLoadResult = _orgCRUD.load(securityContext,
 																   workPlace.getOrgRef().getOid());
 		X47BOrganization org = orgLoadResult.getOrThrow();
 
-		
+
 		// [2] - Create a new X47BAlarmEvent entity
 		X47BAlarmEvent newAlarmEvent = new X47BAlarmEvent();
-		newAlarmEvent.setTimeStamp(new Date());
+		newAlarmEvent.setDateTime(new Date());
 		newAlarmEvent.setOrganization(workPlace.getOrgRef());
 		newAlarmEvent.setDivision(workPlace.getOrgDivisionRef());
 		newAlarmEvent.setService(workPlace.getOrgDivisionServiceRef());
@@ -169,7 +169,7 @@ public class X47BNotifyServicesDelegateForAlarmEvent
 		//	  		   of dealing with the messaging system to send notification
 		CRUDResult<X47BAlarmEvent> createResult = _alarmEventCRUD.create(securityContext,
 							  											 newAlarmEvent);
-		
+
 		// [4] - Increase the alarm count at the org, division, service, location and work place
 		// ... org
 		org.increaseAlarmRaiseCount();
@@ -182,26 +182,26 @@ public class X47BNotifyServicesDelegateForAlarmEvent
 		CRUDResult<X47BOrgDivision> divUpdated = _divisionCRUD.update(securityContext,
 					   		 							  		 	  division);
 		log.warn("\t-Increased the alarm raise count at the division with id={} (new count={})",division.getId(),divUpdated.getOrThrow().getAlarmRaiseCount());
-		
+
 		// ... service
 		service.increaseAlarmRaiseCount();
 		CRUDResult<X47BOrgDivisionService> srvcUpdated = _serviceCRUD.update(securityContext,
 					   		 							  		 	 		 service);
 		log.warn("\t-Increased the alarm raise count at the service with id={} (new count={})",service.getId(),srvcUpdated.getOrThrow().getAlarmRaiseCount());
-		
+
 		// ... location
 		location.increaseAlarmRaiseCount();
 		CRUDResult<X47BOrgDivisionServiceLocation> locUpdated = _locationCRUD.update(securityContext,
 					   										 						 location);
 		log.warn("\t-Increased the alarm raise count at the location with id={} (new count={})",location.getId(),locUpdated.getOrThrow().getAlarmRaiseCount());
-		
+
 		// ... work place
 		workPlace.increaseAlarmRaiseCount();
 		CRUDResult<X47BWorkPlace> workPlaceUpdated = _workPlaceCRUD.update(securityContext,
 						 									  	           workPlace);
 		log.warn("\t-Increased the alarm raise count at the workPlace with id={} (new count={})",workPlace.getId(),workPlaceUpdated.getOrThrow().getAlarmRaiseCount());
-		
-		
+
+
 		// [5] - Return the created alarm
 		log.warn("Alarm raised for sourceId={}",workPlaceOid);
 		return createResult;
@@ -221,6 +221,6 @@ public class X47BNotifyServicesDelegateForAlarmEvent
 		// [2] - Return the deleted alarm
 		log.warn("Alarm with oid={} cancelled",oid);
 		return deleteResult;
-		
+
 	}
 }

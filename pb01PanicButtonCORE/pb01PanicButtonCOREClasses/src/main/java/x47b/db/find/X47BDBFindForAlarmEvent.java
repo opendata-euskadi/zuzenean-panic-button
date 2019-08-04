@@ -17,7 +17,7 @@ import r01f.persistence.db.DBFindForModelObjectBase;
 import r01f.persistence.db.config.DBModuleConfig;
 import r01f.persistence.db.entities.primarykeys.DBPrimaryKeyForModelObject;
 import r01f.securitycontext.SecurityContext;
-import r01f.types.TimeLapse;
+import r01f.types.Range;
 import x47b.api.interfaces.X47BFindServicesForAlarmEvent;
 import x47b.db.X47BAlarmEventDBEntityToAndFromModelObject;
 import x47b.db.entities.X47BDBEntityForAlarmEvent;
@@ -26,7 +26,7 @@ import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationalID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
 import x47b.model.oids.X47BPanicButtonOIDs.X47BAlarmEventOID;
 
@@ -59,64 +59,59 @@ public class X47BDBFindForAlarmEvent
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											         final X47BOrganizationID id,
-											         final TimeLapse timeLapse) {
+											         final Range<Date> dateRange) {
 		return _findBySourceId("X47BDBEntitiesForAlarmEventsByOrganizationID",
 							   securityContext,
-							   id,timeLapse);
+							   id,dateRange);
 	}
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											         final X47BOrgDivisionID id,
-											         final TimeLapse timeLapse) {
+											         final Range<Date> dateRange) {
 		return _findBySourceId("X47BDBEntitiesForAlarmEventsByDivisionID",
 							   securityContext,
-							   id,timeLapse);
+							   id,dateRange);
 	}
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											         final X47BOrgDivisionServiceID id,
-											         final TimeLapse timeLapse) {
+											         final Range<Date> dateRange) {
 		return _findBySourceId("X47BDBEntitiesForAlarmEventsByServiceID",
 							   securityContext,
-							   id,timeLapse);
+							   id,dateRange);
 	}
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											         final X47BOrgDivisionServiceLocationID id,
-											         final TimeLapse timeLapse) {
+											         final Range<Date> dateRange) {
 		return _findBySourceId("X47BDBEntitiesForAlarmEventsByLocationID",
 							   securityContext,
-							   id,timeLapse);
+							   id,dateRange);
 	}
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											         final X47BWorkPlaceID id,
-											         final TimeLapse timeLapse) {
+											         final Range<Date> dateRange) {
 		return _findBySourceId("X47BDBEntitiesForAlarmEventsByWorkPlaceID",
 							   securityContext,
-							   id,timeLapse);
+							   id,dateRange);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	private FindResult<X47BAlarmEvent> _findBySourceId(final String namedQuery,
 													   final SecurityContext securityContext,
-											           final X47BOrganizationalID<?> id,
-											           final TimeLapse timeLapse) {
-		// Create the start and end date
-		Date now = new Date();
-		Date startDate = new Date(now.getTime() - timeLapse.asMilis());	// time before
-		Date endDate = now;
-		
+											           final X47BOrgObjectID<?> id,
+											           final Range<Date> dateRange) {
 		// Do the query
 		TypedQuery<X47BDBEntityForAlarmEvent> query = this.getEntityManager()
 														  .createNamedQuery(namedQuery,X47BDBEntityForAlarmEvent.class)
-														  .setParameter("startDate",startDate,TemporalType.TIMESTAMP)
-														  .setParameter("endDate",endDate,TemporalType.TIMESTAMP)
+														  .setParameter("startDate",dateRange.getLowerBound(),TemporalType.TIMESTAMP)
+														  .setParameter("endDate",dateRange.getUpperBound(),TemporalType.TIMESTAMP)
 														  .setParameter("id",id.asString());
 		query.setHint(QueryHints.READ_ONLY,HintValues.TRUE);
 		Collection<X47BDBEntityForAlarmEvent> dbEntities = query.getResultList();
-		
+
 		// Return
 		return FindResultBuilder.using(securityContext)
 								.on(_modelObjectType)

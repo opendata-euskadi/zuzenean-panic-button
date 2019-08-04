@@ -10,11 +10,11 @@ import r01f.bootstrap.services.config.core.ServicesCoreBootstrapConfigWhenBeanEx
 import r01f.objectstreamer.Marshaller;
 import x47b.api.interfaces.X47BCRUDServicesForOrganizationalModelObjectBase;
 import x47b.model.X47BPersistableObject;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 
 @Accessors(prefix="_")
-public abstract class X47BCRUDServicesImplForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends X47BPersistableObject<O,ID>>
+public abstract class X47BCRUDServicesImplForOrganizationalEntityBase<O extends X47BOrgObjectOID,ID extends X47BOrgObjectID<O>,M extends X47BPersistableObject<O,ID>>
        		  extends X47BCRUDServicesImplBase<O,ID,M>
     	   implements X47BCRUDServicesForOrganizationalModelObjectBase<O,ID,M> {
 /////////////////////////////////////////////////////////////////////////////////////////

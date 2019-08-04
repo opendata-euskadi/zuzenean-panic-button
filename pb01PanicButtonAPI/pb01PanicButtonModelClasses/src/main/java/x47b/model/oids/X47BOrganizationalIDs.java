@@ -5,12 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import r01f.annotations.Immutable;
 import r01f.objectstreamer.annotations.MarshallType;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BIDs.X47BModelObjectIDBase;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 
@@ -20,26 +20,25 @@ import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 @RequiredArgsConstructor(access=AccessLevel.PRIVATE)
 public abstract class X47BOrganizationalIDs {
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
-	public static interface X47BOrganizationalID<O extends X47BPersistableObjectOID>
+	public static interface X47BOrgObjectID<O extends X47BOrgObjectOID>
 					extends X47BPersistableObjectID<O> {
 		// nothing
 	}
-	public static abstract class X47BOrganizationalIDBase<O extends X47BPersistableObjectOID> 
-						 extends X47BModelObjectIDBase<O> 
-				      implements X47BOrganizationalID<O> {
+	public static abstract class X47BOrgObjectIDBase<O extends X47BOrgObjectOID>
+						 extends X47BModelObjectIDBase<O>
+				      implements X47BOrgObjectID<O> {
 
 		private static final long serialVersionUID = -3628476292215645376L;
-		
-		public X47BOrganizationalIDBase() {
+
+		public X47BOrgObjectIDBase() {
 			/* default no args constructor for serialization purposes */
 		}
-		public X47BOrganizationalIDBase(final String id) {
-			super(id);	
+		public X47BOrgObjectIDBase(final String id) {
+			super(id);
 		}
 	}
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //  Source: Organization / Service / location / user
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +49,7 @@ public abstract class X47BOrganizationalIDs {
 	@MarshallType(as="organizationId")
 	@NoArgsConstructor
 	public static class X47BOrganizationID
-				extends X47BOrganizationalIDBase<X47BOrganizationOID> {
+				extends X47BOrgObjectIDBase<X47BOrganizationOID> {
 		private static final long serialVersionUID = -48738842255923897L;
 		public X47BOrganizationID(final String oid) {
 			super(oid);
@@ -70,7 +69,7 @@ public abstract class X47BOrganizationalIDs {
 	@MarshallType(as="orgDivisionId")
 	@NoArgsConstructor
 	public static class X47BOrgDivisionID
-				extends X47BOrganizationalIDBase<X47BOrgDivisionOID> {
+				extends X47BOrgObjectIDBase<X47BOrgDivisionOID> {
 
 		private static final long serialVersionUID = -1981220256984650494L;
 		public X47BOrgDivisionID(final String oid) {
@@ -92,8 +91,8 @@ public abstract class X47BOrganizationalIDs {
 	@Immutable
 	@MarshallType(as="orgDivisionServiceId")
 	@NoArgsConstructor
-	public static class X47BOrgDivisionServiceID 
-				extends X47BOrganizationalIDBase<X47BOrgDivisionServiceOID> {
+	public static class X47BOrgDivisionServiceID
+				extends X47BOrgObjectIDBase<X47BOrgDivisionServiceOID> {
 		private static final long serialVersionUID = 1122664293187620380L;
 		public X47BOrgDivisionServiceID(final String oid) {
 			super(oid);
@@ -116,7 +115,7 @@ public abstract class X47BOrganizationalIDs {
 	@MarshallType(as="orgServiceLocationGroupId")
 	@NoArgsConstructor
 	public static class X47BOrganizationServiceLocationGroupID
-				extends X47BOrganizationalIDBase<X47BOrgDivisionServiceLocationOID> {
+				extends X47BOrgObjectIDBase<X47BOrgDivisionServiceLocationOID> {
 		private static final long serialVersionUID = 1122664293187620380L;
 		public X47BOrganizationServiceLocationGroupID(final String oid) {
 			super(oid);
@@ -141,7 +140,7 @@ public abstract class X47BOrganizationalIDs {
 	@MarshallType(as="orgServiceLocationId")
 	@NoArgsConstructor
 	public static class X47BOrgDivisionServiceLocationID
-				extends X47BOrganizationalIDBase<X47BOrgDivisionServiceLocationOID> {
+				extends X47BOrgObjectIDBase<X47BOrgDivisionServiceLocationOID> {
 		private static final long serialVersionUID = 1122664293187620380L;
 		public X47BOrgDivisionServiceLocationID(final String oid) {
 			super(oid);
@@ -166,7 +165,7 @@ public abstract class X47BOrganizationalIDs {
 	@MarshallType(as="workPlaceId")
 	@NoArgsConstructor
 	public static class X47BWorkPlaceID
-				extends X47BOrganizationalIDBase<X47BWorkPlaceOID> {
+				extends X47BOrgObjectIDBase<X47BWorkPlaceOID> {
 
 		private static final long serialVersionUID = -6040904246600905030L;
 		public X47BWorkPlaceID(final String id) {

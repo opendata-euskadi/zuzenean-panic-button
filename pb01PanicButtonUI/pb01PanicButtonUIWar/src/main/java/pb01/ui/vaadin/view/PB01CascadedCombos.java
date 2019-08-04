@@ -32,7 +32,7 @@ abstract class PB01CascadedCombos {
 												final PB01MainViewPresenter presenter,
 												final PB01DetailWindowForOrganization popupWin) {
 			super(presenter,
-				  i18n.getMessage("pb01.view.main.combo.org.div.orgs"),i18n.getCurrentLanguage(),
+				  i18n.getMessage("pb01.org.multiple"),i18n.getCurrentLanguage(),
 				  popupWin,
 				  X47BOrganizationOID.class,X47BOrganizationID.class);
 		}
@@ -48,7 +48,7 @@ abstract class PB01CascadedCombos {
 											   final PB01MainViewPresenter presenter,
 											   final PB01DetailWindowForOrgDivision popupWin) {
 			super(presenter,
-				  i18n.getMessage("pb01.view.main.combo.org.div.divs"),i18n.getCurrentLanguage(),
+				  i18n.getMessage("pb01.org.division.multiple"),i18n.getCurrentLanguage(),
 				  popupWin,
 				  X47BOrgDivisionOID.class,X47BOrgDivisionID.class);
 		}
@@ -64,7 +64,7 @@ abstract class PB01CascadedCombos {
 											   		  final PB01MainViewPresenter presenter,
 											   		  final PB01DetailWindowForOrgDivisionService popupWin) {
 			super(presenter,
-				  i18n.getMessage("pb01.view.main.combo.org.div.srvcs"),i18n.getCurrentLanguage(),
+				  i18n.getMessage("pb01.org.service.multiple"),i18n.getCurrentLanguage(),
 				  popupWin,
 				  X47BOrgDivisionServiceOID.class,X47BOrgDivisionServiceID.class);
 		}
@@ -80,7 +80,7 @@ abstract class PB01CascadedCombos {
 											   		  		  final PB01MainViewPresenter presenter,
 											   		  		  final PB01DetailWindowForOrgDivisionServiceLocation popupWin) {
 			super(presenter,
-				  i18n.getMessage("pb01.view.main.combo.org.div.srvc.locs"),i18n.getCurrentLanguage(),
+				  i18n.getMessage("pb01.org.location.multiple"),i18n.getCurrentLanguage(),
 				  popupWin,
 				  X47BOrgDivisionServiceLocationOID.class,X47BOrgDivisionServiceLocationID.class);
 		}
@@ -96,7 +96,7 @@ abstract class PB01CascadedCombos {
 											 final PB01MainViewPresenter presenter,
 											 final PB01DetailWindowForWorkPlace popupWin) {
 			super(presenter,
-				  i18n.getMessage("pb01.view.main.combo.org.div.srvc.loc.workplaces"),i18n.getCurrentLanguage(),
+				  i18n.getMessage("pb01.org.workPlace.multiple"),i18n.getCurrentLanguage(),
 				  popupWin,
 				  X47BWorkPlaceOID.class,X47BWorkPlaceID.class);
 		}

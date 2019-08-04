@@ -1,16 +1,19 @@
 package x47b.model.org;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 import r01f.patterns.FactoryFrom;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.org.summaries.X47BSummarizedObject;
@@ -21,16 +24,21 @@ import x47b.model.org.summaries.X47BSummarizedOrganization;
 import x47b.model.org.summaries.X47BSummarizedWorkPlace;
 import x47b.model.search.X47BSearchResultItemForPanicButtonOrganizationalEntity;
 
+@Accessors(prefix="_")
+@RequiredArgsConstructor
 public enum X47BOrgObjectType {
-	ORGANIZATION,
-	ORG_DIVISION,
-	ORG_DIVISION_SERVICE,
-	ORG_DIVISION_SERVICE_LOCATION,
-	WORKPLACE;
+	ORGANIZATION(0),
+	ORG_DIVISION(1),
+	ORG_DIVISION_SERVICE(2),
+	ORG_DIVISION_SERVICE_LOCATION(3),
+	WORKPLACE(4);
+
+	@Getter private final int _orgHierarchyLevel;
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FROM OID & ID TYPES
 /////////////////////////////////////////////////////////////////////////////////////////
-	public static <O extends X47BPersistableObjectOID> X47BOrgObjectType ofOIDType(final Class<O> type) {
+	public static <O extends X47BOrgObjectOID> X47BOrgObjectType ofOIDType(final Class<O> type) {
 		X47BOrgObjectType outType = null;
 		if (type == X47BOrganizationOID.class) {
 			outType = ORGANIZATION;
@@ -47,7 +55,7 @@ public enum X47BOrgObjectType {
 		}
 		return outType;
 	}
-	public static <I extends X47BPersistableObjectID<?>> X47BOrgObjectType ofIDType(final Class<I> type) {
+	public static <I extends X47BOrgObjectID<?>> X47BOrgObjectType ofIDType(final Class<I> type) {
 		X47BOrgObjectType outType = null;
 		if (type == X47BOrganizationID.class) {
 			outType = ORGANIZATION;
@@ -122,7 +130,7 @@ public enum X47BOrgObjectType {
 //	oid & id factories from string
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("unchecked")
-	public static <O extends X47BPersistableObjectOID> FactoryFrom<String,O> factoryForOIDType(final Class<O> type) {
+	public static <O extends X47BOrgObjectOID> FactoryFrom<String,O> factoryForOIDType(final Class<O> type) {
 		FactoryFrom<String,O> outFactory = null;
 		if (type == X47BOrganizationOID.class) {
 			outFactory = id -> (O)X47BOrganizationOID.forId(id);
@@ -140,7 +148,7 @@ public enum X47BOrgObjectType {
 		return outFactory;
 	}
 	@SuppressWarnings("unchecked")
-	public static <I extends X47BPersistableObjectID<?>> FactoryFrom<String,I> factoryForIDType(final Class<I> type) {
+	public static <I extends X47BOrgObjectID<?>> FactoryFrom<String,I> factoryForIDType(final Class<I> type) {
 		FactoryFrom<String,I> outFactory = null;
 		if (type == X47BOrganizationID.class) {
 			outFactory = id -> (I)X47BOrganizationID.forId(id);

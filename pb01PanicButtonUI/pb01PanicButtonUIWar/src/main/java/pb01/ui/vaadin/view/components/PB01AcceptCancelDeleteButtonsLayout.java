@@ -66,14 +66,14 @@ public class PB01AcceptCancelDeleteButtonsLayout
 	}
 	private HorizontalLayout _createACDLayout(final UII18NService i18n) {
 		// accept
-		_acceptButton.setCaption(i18n.getMessage("save"));
+		_acceptButton.setCaption(i18n.getMessage("pb01.common.buttons.save"));
 		_acceptButton.setStyleName("primary");
 
 		// cancel
-		_cancelButton.setCaption(i18n.getMessage("cancel"));
+		_cancelButton.setCaption(i18n.getMessage("pb01.common.buttons.cancel"));
 
 		// delete
-		_deleteButton.setCaption(i18n.getMessage("delete"));
+		_deleteButton.setCaption(i18n.getMessage("pb01.common.buttons.delete"));
 		_deleteButton.setStyleName("danger");
 		_deleteButton.addClickListener(event -> _enterDeletionCheckingMode());	// when clicking delete enter [deletion checking mode]
 

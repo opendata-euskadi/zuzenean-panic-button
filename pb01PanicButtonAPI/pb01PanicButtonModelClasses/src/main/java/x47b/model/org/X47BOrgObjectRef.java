@@ -12,8 +12,8 @@ import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.Strings;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 
 /**
  * A reference to another org model object
@@ -23,7 +23,7 @@ import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 @MarshallType(as="orgObjectRef")
 @Accessors(prefix="_")
 @NoArgsConstructor @AllArgsConstructor
-public class X47BOrgObjectRef<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>
+public class X47BOrgObjectRef<O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
   implements Serializable,
   			 Debuggable {
 

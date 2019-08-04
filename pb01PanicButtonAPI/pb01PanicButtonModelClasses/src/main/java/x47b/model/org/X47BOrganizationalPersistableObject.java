@@ -9,14 +9,14 @@ import r01f.model.SummarizedModelObject;
 import r01f.types.contact.EMail;
 import r01f.types.contact.Phone;
 import x47b.model.X47BPersistableObject;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 
 /**
  * Interface for every X47B organizational entity: {@link X47BOrganization}, {@link X47BOrgDivision}, {@link X47BOrgDivisionService}
  * @param <O>
  */
-public interface X47BOrganizationalPersistableObject<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>> 
+public interface X47BOrganizationalPersistableObject<O extends X47BOrgObjectOID,ID extends X47BOrgObjectID<O>>
 		 extends X47BPersistableObject<O,ID>,
 				 HasLangDependentNamedFacet {
 	/**
@@ -25,16 +25,20 @@ public interface X47BOrganizationalPersistableObject<O extends X47BPersistableOb
 	 * @return
 	 */
 	public <T extends X47BOrganizationalPersistableObject<O,ID>> SummarizedModelObject<T> getSummarizedIn(Language lang);
-	
+
 	public Date getLastAlarmRaiseDate();
 	public void setLastAlarmRaiseDate(Date date);
-	
+
 	public long getAlarmRaiseCount();
 	public void setAlarmRaiseCount(long count);
-	
+
 	public Collection<Phone> getPhones();
 	public void setPhones(Collection<Phone> phones);
-	
+	public String getPhonesAsString();
+	public void setPhonesFromString(String phones);
+
 	public Collection<EMail> getEmails();
 	public void setEmails(Collection<EMail> emails);
+	public String getEmailsAsString();
+	public void setEmailsFromString(String emails);
 }

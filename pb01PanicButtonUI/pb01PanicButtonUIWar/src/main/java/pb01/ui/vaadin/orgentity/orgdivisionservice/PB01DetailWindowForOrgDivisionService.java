@@ -2,8 +2,8 @@ package pb01.ui.vaadin.orgentity.orgdivisionservice;
 
 import javax.inject.Inject;
 
-import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgEntityVisitors.PB01OrgEntityDetailWinForCreateVisitor;
-import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgEntityVisitors.PB01OrgEntityDetailWinForEditVisitor;
+import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgObjectVisitors.PB01OrgObjectDetailWinForCreateVisitor;
+import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgObjectVisitors.PB01OrgObjectDetailWinForEditVisitor;
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrganizationalEntityBase;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
@@ -19,15 +19,15 @@ public class PB01DetailWindowForOrgDivisionService
 	 extends PB01DetailWindowForOrganizationalEntityBase<X47BOrgDivisionServiceOID,X47BOrgDivisionService,
 	 													 PB01ViewObjForOrgDivisionService,
 	 													 PB01COREMediatorForOrgDivisionService,
-	 													 PB01DetailPresenterForOrgDivisionService,
+	 													 PB01PresenterForOrgDivisionServiceDetailView,
 	 													 PB01DetailViewForOrgDivisionService> {
 	private static final long serialVersionUID = -4481398065564182519L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	protected PB01DetailWindowForOrgDivisionService(final UII18NService i18n,
-											  		final PB01DetailPresenterForOrgDivisionService detailViewPresenter) {
+	public PB01DetailWindowForOrgDivisionService(final UII18NService i18n,
+											     final PB01PresenterForOrgDivisionServiceDetailView detailViewPresenter) {
 		super(i18n,
 			  i18n1 -> new PB01DetailViewForOrgDivisionService(i18n1),	// view factory
 			  detailViewPresenter);
@@ -36,11 +36,11 @@ public class PB01DetailWindowForOrgDivisionService
 //	OPEN
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public void openForCreating(final PB01OrgEntityDetailWinForCreateVisitor openerVisitor) {
+	public void openForCreating(final PB01OrgObjectDetailWinForCreateVisitor openerVisitor) {
 		openerVisitor.forCreatingNewOn(this);
 	}
 	@Override
-	public void openForEdit(final PB01OrgEntityDetailWinForEditVisitor openerVisitor) {
+	public void openForEdit(final PB01OrgObjectDetailWinForEditVisitor openerVisitor) {
 		openerVisitor.forEditingExistentOn(this);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////

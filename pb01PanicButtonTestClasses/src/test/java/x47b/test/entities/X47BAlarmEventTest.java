@@ -97,7 +97,7 @@ public class X47BAlarmEventTest {
 																			timeLapse);
 		Assert.assertTrue(CollectionUtils.hasData(alarmEvents));
 		for (X47BAlarmEvent event : alarmEvents) {
-			System.out.println(">> Event created at " + event.getTimeStamp() + " at " + event.getHiearchyPath());
+			System.out.println(">> Event created at " + event.getDateTime() + " at " + event.getHiearchyPath());
 		}
 	}
 	public void doCancelAlarms() {

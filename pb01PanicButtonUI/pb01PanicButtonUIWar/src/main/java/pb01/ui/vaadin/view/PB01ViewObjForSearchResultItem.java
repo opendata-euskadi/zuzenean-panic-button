@@ -141,9 +141,49 @@ public class PB01ViewObjForSearchResultItem
 /////////////////////////////////////////////////////////////////////////////////////////
 //	HIERARCHY
 /////////////////////////////////////////////////////////////////////////////////////////
+    public String getOrgHierarchyExplained() {
+    	return this.getWrappedModelObject()
+    			   .getOrgHierarchyExplained();
+    }
     public Path getHierarchyPath() {
         return this.getWrappedModelObject()
                    .getHierarchyPath();
+    }
+    public int getOrgHierarchyLevel() {
+    	return this.getWrappedModelObject()
+    			   .getOrgHierarchyLevel();
+    }
+    public boolean isSameLevelAs(final PB01ViewObjForSearchResultItem other) {
+    	return this.getWrappedModelObject()
+    			   .isSameLevelAs(other.getWrappedModelObject());
+    }
+    public boolean isAncestorOf(final PB01ViewObjForSearchResultItem other) {
+    	return this.getWrappedModelObject()
+    			   .isAncestorOf(other.getWrappedModelObject());
+    }
+    public boolean isDescendantOf(final PB01ViewObjForSearchResultItem other) {
+    	return this.getWrappedModelObject()
+    			   .isDescendantOf(other.getWrappedModelObject());
+    }
+    public boolean isOrganization() {
+    	return this.getWrappedModelObject()
+    			   .isOrganization();
+    }
+    public boolean isOrgDivision() {
+    	return this.getWrappedModelObject()
+    			   .isOrgDivision();
+    }
+    public boolean isOrgDivisionService() {
+    	return this.getWrappedModelObject()
+    			   .isOrgDivisionService();
+    }
+    public boolean isOrgDivisionServiceLocation() {
+    	return this.getWrappedModelObject()
+    			   .isOrgDivisionServiceLocation();
+    }
+    public boolean isWorkPlace() {
+    	return this.getWrappedModelObject()
+    			   .isWorkPlace();
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ALARMS
@@ -181,8 +221,17 @@ public class PB01ViewObjForSearchResultItem
         return this.getWrappedModelObject()
                    .getPhones();
     }
+    public String getPhonesAsString() {
+    	return this.getWrappedModelObject()
+    			   .getPhonesAsString();
+    }
     public Collection<EMail> getEMails() {
         return this.getWrappedModelObject()
                    .getEmails();
     }
+    public String getEMailsAsString() {
+    	return this.getWrappedModelObject()
+    			   .getEMailsAsString();
+    }
+
 }

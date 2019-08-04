@@ -1,5 +1,7 @@
 package x47b.client.servicesproxy.rest;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -8,7 +10,7 @@ import r01f.model.persistence.FindResult;
 import r01f.objectstreamer.Marshaller;
 import r01f.securitycontext.SecurityContext;
 import r01f.services.client.servicesproxy.rest.RESTServicesForDBFindProxyBase;
-import r01f.types.TimeLapse;
+import r01f.types.Range;
 import r01f.types.url.Url;
 import r01f.types.url.UrlQueryString;
 import r01f.types.url.UrlQueryStringParam;
@@ -44,50 +46,50 @@ public class X47BRESTFindServicesProxyForAlarmEvent
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											   		 final X47BOrganizationID id,
-											   		 final TimeLapse timeLapse) {
+											   		 final Range<Date> dateRange) {
 		Url restResourceUrl = this.composeURIFor(this.getServicesRESTResourceUrlPathBuilderAs(X47BRESTServiceResourceUrlPathBuilderForAlarmEvent.class)
 													   			  .pathOfAlarmsListBySourceId(id),
-												 UrlQueryString.fromParams(new UrlQueryStringParam("timeLapse",timeLapse.asString())));
+												 UrlQueryString.fromParams(new UrlQueryStringParam("dateRange",dateRange.asString())));
 		return _findDelegate.doFindEntities(securityContext,
 											restResourceUrl);
 	}
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											   		 final X47BOrgDivisionID id,
-											   		 final TimeLapse timeLapse) {
+											   		 final Range<Date> dateRange) {
 		Url restResourceUrl = this.composeURIFor(this.getServicesRESTResourceUrlPathBuilderAs(X47BRESTServiceResourceUrlPathBuilderForAlarmEvent.class)
 													   			  .pathOfAlarmsListBySourceId(id),
-												 UrlQueryString.fromParams(new UrlQueryStringParam("timeLapse",timeLapse.asString())));
+												 UrlQueryString.fromParams(new UrlQueryStringParam("dateRange",dateRange.asString())));
 		return _findDelegate.doFindEntities(securityContext,
 											restResourceUrl);
 	}
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											   		 final X47BOrgDivisionServiceID id,
-											   		 final TimeLapse timeLapse) {
+											   		 final Range<Date> dateRange) {
 		Url restResourceUrl = this.composeURIFor(this.getServicesRESTResourceUrlPathBuilderAs(X47BRESTServiceResourceUrlPathBuilderForAlarmEvent.class)
 													   			  .pathOfAlarmsListBySourceId(id),
-												 UrlQueryString.fromParams(new UrlQueryStringParam("timeLapse",timeLapse.asString())));
+												 UrlQueryString.fromParams(new UrlQueryStringParam("dateRange",dateRange.asString())));
 		return _findDelegate.doFindEntities(securityContext,
 											restResourceUrl);
 	}
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											   		 final X47BOrgDivisionServiceLocationID id,
-											   		 final TimeLapse timeLapse) {
+											   		 final Range<Date> dateRange) {
 		Url restResourceUrl = this.composeURIFor(this.getServicesRESTResourceUrlPathBuilderAs(X47BRESTServiceResourceUrlPathBuilderForAlarmEvent.class)
 													   			  .pathOfAlarmsListBySourceId(id),
-												 UrlQueryString.fromParams(new UrlQueryStringParam("timeLapse",timeLapse.asString())));
+												 UrlQueryString.fromParams(new UrlQueryStringParam("dateRange",dateRange.asString())));
 		return _findDelegate.doFindEntities(securityContext,
 											restResourceUrl);
 	}
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											   		 final X47BWorkPlaceID id,
-											   		 final TimeLapse timeLapse) {
+											   		 final Range<Date> dateRange) {
 		Url restResourceUrl = this.composeURIFor(this.getServicesRESTResourceUrlPathBuilderAs(X47BRESTServiceResourceUrlPathBuilderForAlarmEvent.class)
 													   			  .pathOfAlarmsListBySourceId(id),
-												 UrlQueryString.fromParams(new UrlQueryStringParam("timeLapse",timeLapse.asString())));
+												 UrlQueryString.fromParams(new UrlQueryStringParam("dateRange",dateRange.asString())));
 		return _findDelegate.doFindEntities(securityContext,
 											restResourceUrl);
 	}

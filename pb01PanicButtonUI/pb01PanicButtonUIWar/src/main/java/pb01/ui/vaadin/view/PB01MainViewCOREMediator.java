@@ -39,6 +39,9 @@ public class PB01MainViewCOREMediator
 																										.returning(numberOfItems);
 		subscriber.onSuccess(outResults);
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	RAISE ALARM
+/////////////////////////////////////////////////////////////////////////////////////////
 	public void raiseAlarm(final X47BWorkPlaceOID workPlaceOid,
 						   final UICOREMediatorSubscriber<X47BAlarmEvent> subscriber) {
 		X47BAlarmEvent event = _api.alarmEventsAPI()

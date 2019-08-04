@@ -5,11 +5,11 @@ import r01f.types.dirtytrack.DirtyTrackAdapter;
 import r01f.ui.coremediator.UICOREMediatorForPersistableObjectBase;
 import r01f.ui.coremediator.UICOREMediatorSubscriber;
 import x47b.client.api.X47BPanicButtonClientAPI;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.org.X47BOrganizationalPersistableObject;
 
 @Slf4j
-public abstract class PB01COREMediatorForOrganizationalEntityBase<O extends X47BPersistableObjectOID,M extends X47BOrganizationalPersistableObject<O,?>>
+public abstract class PB01COREMediatorForOrganizationalEntityBase<O extends X47BOrgObjectOID,M extends X47BOrganizationalPersistableObject<O,?>>
 	 		  extends UICOREMediatorForPersistableObjectBase<O,M,
 	 		  												 X47BPanicButtonClientAPI> {
 /////////////////////////////////////////////////////////////////////////////////////////

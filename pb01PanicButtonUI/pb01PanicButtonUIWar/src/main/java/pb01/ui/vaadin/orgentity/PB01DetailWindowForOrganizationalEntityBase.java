@@ -10,7 +10,7 @@ import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import r01f.ui.vaadin.view.VaadinViewFactories.VaadinViewFactory;
 import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.org.X47BOrganizationalPersistableObject;
 
 /**
@@ -33,13 +33,13 @@ import x47b.model.org.X47BOrganizationalPersistableObject;
  * </pre>
  */
 @Slf4j
-public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47BPersistableObjectOID,M extends X47BOrganizationalPersistableObject<O,? extends X47BPersistableObjectID<?>>,
+public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47BOrgObjectOID,M extends X47BOrganizationalPersistableObject<O,? extends X47BPersistableObjectID<?>>,
 														   		  V extends PB01ViewObjForOrganizationalEntityBase<O,? extends X47BPersistableObjectID<?>,M>,
 														   		  C extends PB01COREMediatorForOrganizationalEntityBase<O,M>,	// detail CORE mediator
-														   		  P extends PB01DetailPresenterForOrgEntityBase<O,M,V,C>,		// detail view presenter
-														   		  D extends PB01DetailViewForOrgEntityBase<O,M,V>> 				// detail view
+														   		  P extends PB01PresenterForOrgObjectDetailBase<O,M,V,C>,		// detail view presenter
+														   		  D extends PB01DetailViewForOrgObjectBase<O,M,V>> 				// detail view
               extends Window
-           implements PB01DetailWindowForOrgEntity {
+           implements PB01DetailWindowForOrgObject {
 
 	private static final long serialVersionUID = 5732281917637898689L;
 /////////////////////////////////////////////////////////////////////////////////////////

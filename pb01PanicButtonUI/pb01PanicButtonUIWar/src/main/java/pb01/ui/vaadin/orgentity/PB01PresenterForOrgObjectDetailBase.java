@@ -1,14 +1,17 @@
 package pb01.ui.vaadin.orgentity;
 
+import com.google.common.eventbus.EventBus;
+
 import lombok.extern.slf4j.Slf4j;
+import pb01.ui.vaadin.view.events.PB01OrgObjectChangedEvent;
 import r01f.patterns.FactoryFrom;
 import r01f.ui.presenter.UIObjectDetailPresenter;
 import r01f.ui.presenter.UIPresenterSubscriber;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.org.X47BOrganizationalPersistableObject;
 
 @Slf4j
-public abstract class PB01DetailPresenterForOrgEntityBase<O extends X47BPersistableObjectOID,M extends X47BOrganizationalPersistableObject<O,?>,
+public abstract class PB01PresenterForOrgObjectDetailBase<O extends X47BOrgObjectOID,M extends X47BOrganizationalPersistableObject<O,?>,
 											  			  V extends PB01ViewObjForOrganizationalEntityBase<O,?,M>,
 											  			  C extends PB01COREMediatorForOrganizationalEntityBase<O,M>>
   		   implements UIObjectDetailPresenter<O,V> {
@@ -17,14 +20,17 @@ public abstract class PB01DetailPresenterForOrgEntityBase<O extends X47BPersista
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
+	private final transient EventBus _eventBus;
 	private final transient C _coreMediator;
 	private final transient FactoryFrom<M,V> _viewObjFromModelObj;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	public PB01DetailPresenterForOrgEntityBase(final C mediator,
+	public PB01PresenterForOrgObjectDetailBase(final EventBus eventBus,
+											   final C mediator,
 											   final FactoryFrom<M,V> viewObjFromModelObj) {
+		_eventBus = eventBus;
 		_coreMediator = mediator;
 		_viewObjFromModelObj = viewObjFromModelObj;
 	}
@@ -54,7 +60,14 @@ public abstract class PB01DetailPresenterForOrgEntityBase<O extends X47BPersista
 		// [1] - Use the api to save the object
 		_coreMediator.save(obj,
 						   result -> {
-										// [2] . Convert the model object into a view obj
+										// [1] - Raise an event to inform other presenters
+							   			// 		 that an object has been changed
+							   			// 		 (see PB01PresenterForRaisedAlarmsListView
+							   			//		  which has a cache of the org object types)
+										X47BOrgObjectOID changedOrgObjOid = result.getOid();
+										_eventBus.post(new PB01OrgObjectChangedEvent(changedOrgObjOid));
+
+							   			// [2] . Convert the model object into a view obj
 										final V savedViewObj = _viewObjFromModelObj.from(result);
 
 										// [3] - Tell the view to paint the object

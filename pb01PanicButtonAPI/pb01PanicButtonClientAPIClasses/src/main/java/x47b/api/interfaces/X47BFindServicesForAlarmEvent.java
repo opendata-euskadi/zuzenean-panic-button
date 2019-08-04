@@ -1,10 +1,12 @@
 package x47b.api.interfaces;
 
+import java.util.Date;
+
 import r01f.model.persistence.FindResult;
 import r01f.securitycontext.SecurityContext;
 import r01f.services.interfaces.ExposedServiceInterface;
 import r01f.services.interfaces.FindServicesForModelObject;
-import r01f.types.TimeLapse;
+import r01f.types.Range;
 import x47b.model.X47BAlarmEvent;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
@@ -19,47 +21,52 @@ public interface X47BFindServicesForAlarmEvent
          		 X47BPanicButtonServiceInterface {
 	/**
 	 * Find all {@link X47BAlarmEvent} objects by the organization id
+	 * @param securityContext
 	 * @param id
-	 * @param timeLapse
+	 * @param dateRange
 	 * @return
 	 */
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											   		 final X47BOrganizationID id,
-											   		 final TimeLapse timeLapse);
+											   		 final Range<Date> dateRange);
 	/**
 	 * Find all {@link X47BAlarmEvent} objects by the division id
+	 * @param securityContext
 	 * @param id
-	 * @param timeLapse
+	 * @param dateRange
 	 * @return
 	 */
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											   		 final X47BOrgDivisionID id,
-											   		 final TimeLapse timeLapse);
+											   		 final Range<Date> dateRange);
 	/**
 	 * Find all {@link X47BAlarmEvent} objects by the service id
+	 * @param securityContext
 	 * @param id
-	 * @param timeLapse
+	 * @param dateRange
 	 * @return
 	 */
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											   		 final X47BOrgDivisionServiceID id,
-											   		 final TimeLapse timeLapse);
+											   		 final Range<Date> dateRange);
 	/**
 	 * Find all {@link X47BAlarmEvent} objects by the location id
+	 * @param securityContext
 	 * @param id
-	 * @param timeLapse
+	 * @param dateRange
 	 * @return
 	 */
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											   		 final X47BOrgDivisionServiceLocationID id,
-											   		 final TimeLapse timeLapse);
+											   		 final Range<Date> dateRange);
 	/**
 	 * Find all {@link X47BAlarmEvent} objects by the work place idO
+	 * @param securityContext
 	 * @param id
-	 * @param timeLapse
+	 * @param dateRange
 	 * @return
 	 */
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 											   		 final X47BWorkPlaceID id,
-											   		 final TimeLapse timeLapse);
+											   		 final Range<Date> dateRange);
 }

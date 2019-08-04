@@ -7,10 +7,10 @@ import x47b.model.org.X47BOrganization;
 
 
 @MarshallType(as="summarizedOrg")
-public class X47BSummarizedOrganization 
+public class X47BSummarizedOrganization
 	 extends X47BSummarizedOrganizationalModelObjectBase<X47BOrganizationOID,X47BOrganizationID,X47BOrganization,
-	 											 			   X47BSummarizedOrganization> {
-	
+	 											 		 X47BSummarizedOrganization> {
+
 	private static final long serialVersionUID = -514447944990677006L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR & BUILDER

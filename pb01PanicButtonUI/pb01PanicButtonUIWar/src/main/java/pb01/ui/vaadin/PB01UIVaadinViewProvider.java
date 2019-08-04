@@ -8,7 +8,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
 
 import lombok.extern.slf4j.Slf4j;
-import pb01.ui.vaadin.view.PB01MainViewOLD;
 import pb01.ui.vaadin.view.PB01MainView;
 import r01f.util.types.Strings;
 
@@ -44,9 +43,6 @@ public class PB01UIVaadinViewProvider
 		if ( Strings.isNullOrEmpty(viewName)
 		  || PB01UIVaadinViews.MAIN.is(viewName) ) {
 			outView = _injector.getInstance(PB01MainView.class);
-		}
-		else if (viewName.equals("mainOLD")) {
-			outView = _injector.getInstance(PB01MainViewOLD.class);
 		}
 		else {
 			throw new IllegalArgumentException(viewName + " is NOT a vaadin view!");

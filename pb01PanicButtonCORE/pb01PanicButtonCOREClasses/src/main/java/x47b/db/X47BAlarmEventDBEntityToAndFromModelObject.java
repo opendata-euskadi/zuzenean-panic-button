@@ -22,30 +22,30 @@ public class X47BAlarmEventDBEntityToAndFromModelObject
   implements TransfersModelObjectStateToDBEntity<X47BAlarmEvent,X47BDBEntityForAlarmEvent>,
   			 TransformsDBEntityIntoModelObject<X47BDBEntityForAlarmEvent,X47BAlarmEvent> {
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void setDBEntityFieldsFromModelObject(final SecurityContext securityContext,
 												 final X47BAlarmEvent alarmEvent,final X47BDBEntityForAlarmEvent dbEntity) {
 		// oid
 		dbEntity.setOid(alarmEvent.getOid().asString());
-		
+
 		// org reference
 		dbEntity.setOrganizationOid(alarmEvent.getOrganization().getOid().asString());
 		dbEntity.setOrganizationId(alarmEvent.getOrganization().getId().asString());
-		
+
 		// division reference
 		dbEntity.setDivisionOid(alarmEvent.getDivision().getOid().asString());
 		dbEntity.setDivisionId(alarmEvent.getDivision().getId().asString());
-		
+
 		// service reference
 		dbEntity.setServiceOid(alarmEvent.getService().getOid().asString());
 		dbEntity.setServiceId(alarmEvent.getService().getId().asString());
-		
+
 		// location
 		dbEntity.setLocationOid(alarmEvent.getLocation().getOid().asString());
 		dbEntity.setLocationId(alarmEvent.getLocation().getId().asString());
-		
+
 		dbEntity.setWorkPlaceOid(alarmEvent.getWorkPlace().getOid().asString());
 		dbEntity.setWorkPlaceId(alarmEvent.getWorkPlace().getId().asString());
 	}
@@ -53,7 +53,7 @@ public class X47BAlarmEventDBEntityToAndFromModelObject
 	public X47BAlarmEvent dbEntityToModelObject(final SecurityContext securityContext,
 								   				final X47BDBEntityForAlarmEvent dbAlarm) {
 		X47BAlarmEvent outAlarm = new X47BAlarmEvent();
-		
+
 		outAlarm.setOid(X47BAlarmEventOID.forId(dbAlarm.getOid()));
 		outAlarm.setOrganization(new X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID>(X47BOrganizationOID.forId(dbAlarm.getOrganizationOid()),
 																											  X47BOrganizationID.forId(dbAlarm.getOrganizationId())));
@@ -65,9 +65,9 @@ public class X47BAlarmEventDBEntityToAndFromModelObject
 																									    			 				  X47BOrgDivisionServiceLocationID.forId(dbAlarm.getLocationId())));
 		outAlarm.setWorkPlace(new X47BOrgObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID>(X47BWorkPlaceOID.forId(dbAlarm.getWorkPlaceOid()),
 																						 			 X47BWorkPlaceID.forId(dbAlarm.getWorkPlaceId())));
-		
-		outAlarm.setTimeStamp(dbAlarm.getCreateTimeStamp());
-		
+
+		outAlarm.setDateTime(dbAlarm.getCreateTimeStamp());
+
 		return outAlarm;
 	}
 }

@@ -7,8 +7,8 @@ import com.vaadin.ui.Component;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.org.X47BOrgObjectRef;
 
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
@@ -16,7 +16,7 @@ abstract class PB01CascadedComboEvents {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public static class PB01ComboValueChangedEvent<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>
+	public static class PB01ComboValueChangedEvent<O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
 				extends Component.Event {
 		private static final long serialVersionUID = 6771268655053782852L;
 
@@ -31,7 +31,7 @@ abstract class PB01CascadedComboEvents {
 		}
 	}
 	@FunctionalInterface
-	public interface PB01ComboValueChangedEventListener<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>
+	public interface PB01ComboValueChangedEventListener<O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
 	         extends Serializable {
 		void valueChanged(PB01ComboValueChangedEvent<O,I> event);
 	}

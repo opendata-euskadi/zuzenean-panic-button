@@ -1,9 +1,9 @@
 package pb01.ui.vaadin.orgentity;
 
-import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgEntityVisitors.PB01OrgEntityDetailWinForCreateVisitor;
-import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgEntityVisitors.PB01OrgEntityDetailWinForEditVisitor;
+import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgObjectVisitors.PB01OrgObjectDetailWinForCreateVisitor;
+import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgObjectVisitors.PB01OrgObjectDetailWinForEditVisitor;
 
-public interface PB01DetailWindowForOrgEntity {
+public interface PB01DetailWindowForOrgObject {
 	/**
 	 * Opens a detail window for CREATING a NEW org entity object
 	 * Every concrete sub-type of {@link PB01DetailWindowForOrganizationalEntityBase}
@@ -19,10 +19,10 @@ public interface PB01DetailWindowForOrgEntity {
 	 *
 	 * @param visitor
 	 */
-	public void openForCreating(final PB01OrgEntityDetailWinForCreateVisitor visitor);
+	public void openForCreating(final PB01OrgObjectDetailWinForCreateVisitor visitor);
 	/**
 	 * Opens a detail window for EDITING a NEW org entity object
 	 * @param visitor
 	 */
-	public void openForEdit(final PB01OrgEntityDetailWinForEditVisitor visitor);
+	public void openForEdit(final PB01OrgObjectDetailWinForEditVisitor visitor);
 }

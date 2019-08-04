@@ -3,17 +3,24 @@ package pb01.ui.vaadin.view;
 import javax.inject.Inject;
 
 import com.vaadin.navigator.View;
+import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import lombok.extern.slf4j.Slf4j;
+import pb01.ui.vaadin.alarmevent.PB01PresenterForRaisedAlarmsListView;
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrganizationalEntityBase;
 import pb01.ui.vaadin.orgentity.organization.PB01DetailWindowForOrganization;
+import pb01.ui.vaadin.orgentity.organization.PB01PresenterForOrganizationDetailView;
 import pb01.ui.vaadin.orgentity.orgdivision.PB01DetailWindowForOrgDivision;
+import pb01.ui.vaadin.orgentity.orgdivision.PB01PresenterForOrgDivisionDetailView;
 import pb01.ui.vaadin.orgentity.orgdivisionservice.PB01DetailWindowForOrgDivisionService;
+import pb01.ui.vaadin.orgentity.orgdivisionservice.PB01PresenterForOrgDivisionServiceDetailView;
 import pb01.ui.vaadin.orgentity.orgdivisionservicelocation.PB01DetailWindowForOrgDivisionServiceLocation;
+import pb01.ui.vaadin.orgentity.orgdivisionservicelocation.PB01PresenterForOrgDivisionServiceLocationDetailView;
 import pb01.ui.vaadin.orgentity.workplace.PB01DetailWindowForWorkPlace;
+import pb01.ui.vaadin.orgentity.workplace.PB01PresenterForWorkPlaceDetailView;
 import pb01.ui.vaadin.view.PB01CascadedComboEvents.PB01ComboValueChangedEvent;
 import pb01.ui.vaadin.view.PB01CascadedCombos.PB01CascadedComboForOrgDivision;
 import pb01.ui.vaadin.view.PB01CascadedCombos.PB01CascadedComboForOrgDivisionService;
@@ -23,8 +30,8 @@ import pb01.ui.vaadin.view.PB01CascadedCombos.PB01CascadedComboForWorkPlace;
 import pb01.ui.vaadin.view.components.PB01VaadinComboItem;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.org.X47BOrgObjectRef;
 
 @Slf4j
@@ -66,20 +73,33 @@ public class PB01MainView
 	@Inject
 	public PB01MainView(final UII18NService i18n,
 						final PB01MainViewPresenter presenter,
-						final PB01DetailWindowForOrganization orgDetailPopUpWin,
-						final PB01DetailWindowForOrgDivision orgDivDetailPopUpWin,
-						final PB01DetailWindowForOrgDivisionService orgDivSrvcDetailPopUpWin,
-						final PB01DetailWindowForOrgDivisionServiceLocation orgDivSrvcLocDetailPopUpWin,
-						final PB01DetailWindowForWorkPlace workPlaceDetailPopUpWin) {
+						// presenter for the detail view of every org entity
+						final PB01PresenterForOrganizationDetailView orgDetailViewPresenter,
+						final PB01PresenterForOrgDivisionDetailView orgDivDetailViewPresenter,
+						final PB01PresenterForOrgDivisionServiceDetailView orgDivSrvcDetailViewPresenter,
+						final PB01PresenterForOrgDivisionServiceLocationDetailView orgDivSrvcLocDetailViewPresenter,
+						final PB01PresenterForWorkPlaceDetailView workPlaceDetailViewPresenter,
+						// presenter for the alarm list view
+						final PB01PresenterForRaisedAlarmsListView alarmListViewPresenter) {
 		_i18n = i18n;
 		_presenter = presenter;
 
 		///////// Store popup windows
-		_orgDetailPopUp = orgDetailPopUpWin;
-		_orgDivDetailPopUp = orgDivDetailPopUpWin;
-		_orgDivSrvcDetailPopUp = orgDivSrvcDetailPopUpWin;
-		_orgDivSrvcLocDetailPopUp = orgDivSrvcLocDetailPopUpWin;
-		_workPlaceDetailPopUp = workPlaceDetailPopUpWin;
+		_orgDetailPopUp = new PB01DetailWindowForOrganization(i18n,
+															  orgDetailViewPresenter);
+		_orgDivDetailPopUp = new PB01DetailWindowForOrgDivision(i18n,
+																orgDivDetailViewPresenter);
+		_orgDivSrvcDetailPopUp = new PB01DetailWindowForOrgDivisionService(i18n,
+																		   orgDivSrvcDetailViewPresenter);
+		_orgDivSrvcLocDetailPopUp = new PB01DetailWindowForOrgDivisionServiceLocation(i18n,
+																			  		  orgDivSrvcLocDetailViewPresenter);
+		_workPlaceDetailPopUp = new PB01DetailWindowForWorkPlace(i18n,
+																 workPlaceDetailViewPresenter);
+		_stylePopUpWin(_orgDetailPopUp);
+		_stylePopUpWin(_orgDivDetailPopUp);
+		_stylePopUpWin(_orgDivSrvcDetailPopUp);
+		_stylePopUpWin(_orgDivSrvcLocDetailPopUp);
+		_stylePopUpWin(_workPlaceDetailPopUp);
 
 		///////// Create combos
 		_orgCmb = new PB01CascadedComboForOrganization(i18n,
@@ -131,6 +151,8 @@ public class PB01MainView
 		///////// Grid
 		_gridView = new PB01MainGridView(i18n,
 										 presenter,
+										 // presenter for the alarm list view
+										 alarmListViewPresenter,
 										 // what happens when an org entity is clicked on the grid
 										 orgClickedEvent -> _showDetailViewForEditingExistingRecord(orgClickedEvent.getObjRef(),
 												 												 	_orgDetailPopUp,
@@ -157,10 +179,18 @@ public class PB01MainView
 		_orgDivSrvcLocCmb.refresh();
 		_workPlaceCmb.refresh();
 	}
+	private void _stylePopUpWin(final Window popUp) {
+        popUp.setModal(true);
+        popUp.setClosable(true);
+        popUp.setDraggable(true);
+        popUp.setResizable(false);
+        popUp.setWindowMode(WindowMode.NORMAL);
+        popUp.center();
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	private <O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>
+	private <O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
 		    void _handleComboValueChangeEvent(final PB01ComboValueChangedEvent<O,I> event) {
 		_refreshGridUsingComboValues();
 	}
@@ -168,43 +198,41 @@ public class PB01MainView
 	 * Uses the combo selected values to refresh the grid
 	 */
 	private void _refreshGridUsingComboValues() {
-		_gridView.refresh(_orgCmb.getSelectedOrgEntityRef(),
-						  _orgDivCmb.getSelectedOrgEntityRef(),
-						  _orgDivSrvcCmb.getSelectedOrgEntityRef(),
-						  _orgDivSrvcLocCmb.getSelectedOrgEntityRef(),
-						  _workPlaceCmb.getSelectedOrgEntityRef());
+		_gridView.refresh(_orgCmb.getSelectedOrgObjectRef(),
+						  _orgDivCmb.getSelectedOrgObjectRef(),
+						  _orgDivSrvcCmb.getSelectedOrgObjectRef(),
+						  _orgDivSrvcLocCmb.getSelectedOrgObjectRef(),
+						  _workPlaceCmb.getSelectedOrgObjectRef());
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////////////////
-	private <O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>
+	private <O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
 			void _showDetailViewForEditingExistingRecord(final X47BOrgObjectRef<O,I> objRef,
 														 final PB01DetailWindowForOrganizationalEntityBase<O,?,?,?,?,?> popUp,
 														 final PB01CascadedCombo<?,?> cmbToUpdateAfterSave) {
 		// after save or delete at the detail view the action to be done is the same: refresh the combos/grid & close the detail view
 		popUp.forEditing(objRef.getOid(),
 	 		      	  	 // save subscriber: executed after save: refresh the combo
-	 		      	  	 UIPresenterSubscriber.from(viewObj -> _onOrgEntitySavedFromGrid(cmbToUpdateAfterSave,
+	 		      	  	 UIPresenterSubscriber.from(viewObj -> _onOrgObjectSavedFromGrid(cmbToUpdateAfterSave,
 	 				   														   		  	 popUp),
 	 		    						     	    this::_onPersistenceError), 	// Error subscriber
 	 		      	  	 // delete subscriber: executed after delete
-	 		      	  	 UIPresenterSubscriber.from(viewObj -> _onOrgEntityDeletedFromGrid(cmbToUpdateAfterSave,
+	 		      	  	 UIPresenterSubscriber.from(viewObj -> _onOrgObjectDeletedFromGrid(cmbToUpdateAfterSave,
 	 				   															    	   popUp),
 			 		    						    this::_onPersistenceError));	// Error subscriber
 		UI.getCurrent()
 		  .addWindow(popUp);
 	}
-	private void _onOrgEntitySavedFromGrid(final PB01CascadedCombo<?,?> cmbToUpdate,
+	private void _onOrgObjectSavedFromGrid(final PB01CascadedCombo<?,?> cmbToUpdate,
 										   final Window popUpToClose) {
-		PB01VaadinComboItem selectedOrg = cmbToUpdate.getSelectedComboItem();
+		PB01VaadinComboItem selectedOrgObj = cmbToUpdate.getSelectedComboItem();
+
 		// if the combo already had a selected item, refresh the combo and keep the selected item
 		// ... since the combo refresh & select will fire a combo value change event, there's NO need
 		//	   to refresh the grid (the grid will be refreshed on response of the combo value change event)
-		if (selectedOrg != null) {
-			cmbToUpdate.refreshAndSelect(selectedOrg);
+		if (selectedOrgObj != null) {
+			cmbToUpdate.refreshAndSelect(selectedOrgObj);
 		}
 		// if the combo DID NOT have a selected item, refreshing the combo will NOT fire
 		// a combo value change event so the grid will NOT be updated
@@ -217,7 +245,7 @@ public class PB01MainView
 		// close the popup
 		popUpToClose.close();
 	}
-	private void _onOrgEntityDeletedFromGrid(final PB01CascadedCombo<?,?> cmbToUpdate,
+	private void _onOrgObjectDeletedFromGrid(final PB01CascadedCombo<?,?> cmbToUpdate,
 											 final Window popUpToClose) {
 		cmbToUpdate.refresh();
 		_refreshGridUsingComboValues();

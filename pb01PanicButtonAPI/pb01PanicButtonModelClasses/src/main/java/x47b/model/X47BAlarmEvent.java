@@ -44,24 +44,24 @@ public class X47BAlarmEvent
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@MarshallField(as="timeStamp") 
-	@Getter @Setter private Date _timeStamp;
+	@MarshallField(as="time")
+	@Getter @Setter private Date _dateTime;
 
 	@MarshallField(as="organization")
 	@Getter @Setter private X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> _organization;
 
 	@MarshallField(as="division")
 	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _division;
-	
+
 	@MarshallField(as="service")
 	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> _service;
-	
+
 	@MarshallField(as="location")
 	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> _location;
 
 	@MarshallField(as="workPlace")
 	@Getter @Setter private X47BOrgObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> _workPlace;
-	
+
 	@MarshallField(as="notifierResponse")
 	@Getter @Setter private X47BNotifierResponse _alarmNotificationMsg;
 

@@ -29,12 +29,12 @@ import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.org.X47BOrgObjectRef;
 
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
-public abstract class PB01DetailWindowForOrgEntityVisitors {
+public abstract class PB01DetailWindowForOrgObjectVisitors {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	EDIT VISITOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	@RequiredArgsConstructor
-	public static class PB01OrgEntityDetailWinForEditVisitor {
+	public static class PB01OrgObjectDetailWinForEditVisitor {
 		private final X47BOrgObjectRef<?,?> _orgEntityRef;
 		private final UIPresenterSubscriber<?> _saveSubscriber;
 		private final UIPresenterSubscriber<?> _deleteSubscriber;
@@ -91,7 +91,7 @@ public abstract class PB01DetailWindowForOrgEntityVisitors {
 	 * is different from each other, a VISITOR pattern is used
 	 */
 	@RequiredArgsConstructor
-	public static class PB01OrgEntityDetailWinForCreateVisitor {
+	public static class PB01OrgObjectDetailWinForCreateVisitor {
 		private final List<X47BOrgObjectRef<?,?>> _orgEntityRefChain;
 		private final UIPresenterSubscriber<?> _saveSubscriber;
 

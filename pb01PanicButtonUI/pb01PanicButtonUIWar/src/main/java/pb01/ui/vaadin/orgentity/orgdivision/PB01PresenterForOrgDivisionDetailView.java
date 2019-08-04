@@ -1,15 +1,18 @@
 package pb01.ui.vaadin.orgentity.orgdivision;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
-import pb01.ui.vaadin.orgentity.PB01DetailPresenterForOrgEntityBase;
+import com.google.common.eventbus.EventBus;
+
+import pb01.ui.vaadin.orgentity.PB01PresenterForOrgObjectDetailBase;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.org.X47BOrgDivision;
 
 @Singleton
-public class PB01DetailPresenterForOrgDivision
-	 extends PB01DetailPresenterForOrgEntityBase<X47BOrgDivisionOID,X47BOrgDivision,
+public class PB01PresenterForOrgDivisionDetailView
+	 extends PB01PresenterForOrgObjectDetailBase<X47BOrgDivisionOID,X47BOrgDivision,
 	 											 PB01ViewObjForOrgDivision,
 	 											 PB01COREMediatorForOrgDivision> {
 
@@ -18,8 +21,10 @@ public class PB01DetailPresenterForOrgDivision
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public PB01DetailPresenterForOrgDivision(final PB01COREMediatorForOrgDivision coreMediator) {
-		super(coreMediator,
+	public PB01PresenterForOrgDivisionDetailView(@Named("uiPresenterEventBus") final EventBus eventBus,
+												 final PB01COREMediatorForOrgDivision coreMediator) {
+		super(eventBus,
+			  coreMediator,
 			  obj -> PB01ViewObjForOrgDivision.from(obj));		// factory from
 	}
 }

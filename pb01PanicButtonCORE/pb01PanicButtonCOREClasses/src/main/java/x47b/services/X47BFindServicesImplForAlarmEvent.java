@@ -1,5 +1,7 @@
 package x47b.services;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -17,7 +19,7 @@ import r01f.objectstreamer.Marshaller;
 import r01f.securitycontext.SecurityContext;
 import r01f.services.persistence.CoreFindServicesForModelObjectBase;
 import r01f.services.persistence.ServiceDelegateProvider;
-import r01f.types.TimeLapse;
+import r01f.types.Range;
 import x47b.api.interfaces.X47BFindServicesForAlarmEvent;
 import x47b.model.X47BAlarmEvent;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
@@ -72,55 +74,55 @@ public class X47BFindServicesImplForAlarmEvent
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 										  	  		 final X47BOrganizationID id,
-										  	  		 final TimeLapse timeLapse) {
+										  	  		 final Range<Date> dateRange) {
 		return this.forSecurityContext(securityContext)
 						.createDelegateAs(X47BFindServicesForAlarmEvent.class)
 							.findBySourceId(securityContext,
 									  		id,
-									  		timeLapse);
+									  		dateRange);
 	}
 	@Transactional
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 										  	  		 final X47BOrgDivisionID id,
-										  	  		 final TimeLapse timeLapse) {
+										  	  		 final Range<Date> dateRange) {
 		return this.forSecurityContext(securityContext)
 						.createDelegateAs(X47BFindServicesForAlarmEvent.class)
 							.findBySourceId(securityContext,
 									  		id,
-									  		timeLapse);
+									  		dateRange);
 	}
 	@Transactional
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 										  	  		 final X47BOrgDivisionServiceID id,
-										  	  		 final TimeLapse timeLapse) {
+										  	  		 final Range<Date> dateRange) {
 		return this.forSecurityContext(securityContext)
 						.createDelegateAs(X47BFindServicesForAlarmEvent.class)
 							.findBySourceId(securityContext,
 									  		id,
-									  		timeLapse);
+									  		dateRange);
 	}
 	@Transactional
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 										  	  		 final X47BOrgDivisionServiceLocationID id,
-										  	  		 final TimeLapse timeLapse) {
+										  	  		 final Range<Date> dateRange) {
 		return this.forSecurityContext(securityContext)
 						.createDelegateAs(X47BFindServicesForAlarmEvent.class)
 							.findBySourceId(securityContext,
 									  		id,
-									  		timeLapse);
+									  		dateRange);
 	}
 	@Transactional
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 										  	  		 final X47BWorkPlaceID id,
-										  	  		 final TimeLapse timeLapse) {
+										  	  		 final Range<Date> dateRange) {
 		return this.forSecurityContext(securityContext)
 						.createDelegateAs(X47BFindServicesForAlarmEvent.class)
 							.findBySourceId(securityContext,
 									  		id,
-									  		timeLapse);
+									  		dateRange);
 	}
 }

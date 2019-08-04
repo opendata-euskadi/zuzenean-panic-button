@@ -13,16 +13,16 @@ import r01f.services.client.api.delegates.ClientAPIDelegateForModelObjectFindSer
 import r01f.test.persistence.ManagesTestMockModelObjsLifeCycle;
 import r01f.util.types.collections.CollectionUtils;
 import x47b.client.api.sub.delegates.X47BClientAPIDelegateForOrganizationalEntityFindServicesBase;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.org.X47BOrganizationalPersistableObject;
 
 /**
  * JVM arguments:
  * -javaagent:D:/tools_workspaces/eclipse/local_libs/aspectj/lib/aspectjweaver.jar -Daj.weaving.verbose=true
  */
-abstract class X47BOrganizationalEntityPersistenceTestBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,
-								  						 	  M extends X47BOrganizationalPersistableObject<O,ID>> 
+abstract class X47BOrganizationalEntityPersistenceTestBase<O extends X47BOrgObjectOID,ID extends X47BOrgObjectID<O>,
+								  						   M extends X47BOrganizationalPersistableObject<O,ID>>
 	   extends X47BPanicButtonPersistablelObjectTestBase<O,ID,M> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTORS
@@ -36,8 +36,8 @@ abstract class X47BOrganizationalEntityPersistenceTestBase<O extends X47BPersist
 //  CRUD
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	protected CommandOn<M> _modelObjectStateUpdateCommand() {		
-		return new CommandOn<M>() {									
+	protected CommandOn<M> _modelObjectStateUpdateCommand() {
+		return new CommandOn<M>() {
 						@Override
 						public void executeOn(final M entityToBeUpdated) {
 							entityToBeUpdated.setNameByLanguage(new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL)
@@ -53,7 +53,7 @@ abstract class X47BOrganizationalEntityPersistenceTestBase<O extends X47BPersist
 	public void doFindTest() {
 		// [1]: Basic find tests
 		super.doFindTest();
-		
+
 		// [2]: Test find by name
 		System.out.println("[Test find by name]");
 		_managesTestMockObjects.setUpMockObjs(5);

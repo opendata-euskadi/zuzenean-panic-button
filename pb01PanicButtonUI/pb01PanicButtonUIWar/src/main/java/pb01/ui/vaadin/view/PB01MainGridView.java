@@ -8,31 +8,36 @@ import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.grid.HeightMode;
+import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import pb01.ui.vaadin.alarmevent.PB01PresenterForRaisedAlarmsListView;
+import pb01.ui.vaadin.alarmevent.PB01RaisedAlarmsListView;
 import r01f.patterns.Provider;
+import r01f.types.TimeLapse;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import r01f.ui.vaadin.view.VaadinView;
 import r01f.util.types.collections.CollectionUtils;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.org.X47BOrgObjectRef;
@@ -51,9 +56,12 @@ public class PB01MainGridView
 	private final UII18NService _i18n;
 	private final PB01MainViewPresenter _presenter;
 
+	// The grid
 	private final Grid<PB01ViewObjForSearchResultItem> _grid = new Grid<>();
-
 	private ListDataProvider<PB01ViewObjForSearchResultItem> _gridDataProvider;
+
+	// A pop up where all the raised alarms are shown
+	private final PB01RaisedAlarmsListView _raisedAlarmsPopUp;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -61,18 +69,21 @@ public class PB01MainGridView
 /////////////////////////////////////////////////////////////////////////////////////////
 	public PB01MainGridView(final UII18NService i18n,
 							final PB01MainViewPresenter presenter,
+							// presenter for the alarm list view
+							final PB01PresenterForRaisedAlarmsListView alarmListViewPresenter,
 							// what happens when the user clicks on an organizational entity
-							final PB01OrgEntityClickEventListener<X47BOrganizationOID,X47BOrganizationID> orgClickEventListener,
-						    final PB01OrgEntityClickEventListener<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivClickEventListener,
-						    final PB01OrgEntityClickEventListener<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcClickEventListener,
-						    final PB01OrgEntityClickEventListener<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocClickEventListener,
-						    final PB01OrgEntityClickEventListener<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceClickEventListener) {
+							final PB01OrgObjectClickEventListener<X47BOrganizationOID,X47BOrganizationID> orgClickEventListener,
+						    final PB01OrgObjectClickEventListener<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivClickEventListener,
+						    final PB01OrgObjectClickEventListener<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcClickEventListener,
+						    final PB01OrgObjectClickEventListener<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocClickEventListener,
+						    final PB01OrgObjectClickEventListener<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceClickEventListener) {
 		_i18n = i18n;
 		_presenter = presenter;
 
-        _grid.setStyleName( "stripes" );
+        _grid.setStyleName("stripes");
         _grid.setSizeFull();
-        _grid.setHeightMode( HeightMode.UNDEFINED );
+        _grid.setHeightMode(HeightMode.ROW);
+        _grid.setHeightByRows(8);
 
         _buildGridColumns(orgClickEventListener,
         				  orgDivClickEventListener,
@@ -81,6 +92,18 @@ public class PB01MainGridView
         				  workPlaceClickEventListener);
 
         this.addComponent(_grid);
+
+        // the popup shown when the number of alarms is clicked
+        _raisedAlarmsPopUp = new PB01RaisedAlarmsListView(i18n,
+        												  alarmListViewPresenter);
+        _raisedAlarmsPopUp.setCaption(_i18n.getMessage("pb01.raisedAlarms"));
+        _raisedAlarmsPopUp.setModal(true);
+        _raisedAlarmsPopUp.setClosable(true);
+        _raisedAlarmsPopUp.setDraggable(true);
+        _raisedAlarmsPopUp.setResizable(false);
+        _raisedAlarmsPopUp.setWindowMode(WindowMode.NORMAL);
+        _raisedAlarmsPopUp.setWidth("80%");
+        _raisedAlarmsPopUp.center();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -118,66 +141,78 @@ public class PB01MainGridView
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	private void _buildGridColumns(final PB01OrgEntityClickEventListener<X47BOrganizationOID,X47BOrganizationID> orgClickEventListener,
-								   final PB01OrgEntityClickEventListener<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivClickEventListener,
-								   final PB01OrgEntityClickEventListener<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcClickEventListener,
-								   final PB01OrgEntityClickEventListener<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocClickEventListener,
-								   final PB01OrgEntityClickEventListener<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceClickEventListener) {
+	private void _buildGridColumns(final PB01OrgObjectClickEventListener<X47BOrganizationOID,X47BOrganizationID> orgClickEventListener,
+								   final PB01OrgObjectClickEventListener<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivClickEventListener,
+								   final PB01OrgObjectClickEventListener<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcClickEventListener,
+								   final PB01OrgObjectClickEventListener<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocClickEventListener,
+								   final PB01OrgObjectClickEventListener<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceClickEventListener) {
         // OBJECT TYPE
 		_grid.addColumn( PB01ViewObjForSearchResultItem::getOrgObjectType )
-				 .setCaption( _i18n.getMessage("pb01.view.grid.orgObjectType") )
+				 .setCaption( _i18n.getMessage("pb01.org.objectType") )
 				 .setResizable(false)
 				 .setId( "objType" );
 		// Number of raised alarms
 		_grid.addComponentColumn(this::_createRaisedAlarmsButtonFor)
-			 .setCaption( _i18n.getMessage("pb01.view.grid.raisedAlarmNum") )
+			 .setCaption( _i18n.getMessage("pb01.org.alarm.raised.count.short") )
 			 .setDescriptionGenerator(item -> item.getAlarmLastRaiseDateExplained(_i18n))
 			 .setId( "alarmRaiseCount" );
         // ORG
-		_grid.addComponentColumn( item -> _createOrgEntityButtonFor(item,
+		_grid.addComponentColumn( item -> _createOrgObjectButtonFor(item,
 																	orgClickEventListener,
 																	item::getOrganizationName,							// provides the button caption
 																	item::getOrganizationOid,item::getOrganizationId) )	// provides the button oid & id
-				 .setCaption( _i18n.getMessage("pb01.view.grid.org") )
+				 .setCaption( _i18n.getMessage("pb01.org") )
 				 .setDescriptionGenerator(PB01ViewObjForSearchResultItem::getOrganizationHint)
 				 .setResizable(true)
 				 .setId( "org" );
         // ORG DIVISION
-		_grid.addComponentColumn( item -> _createOrgEntityButtonFor(item,
+		_grid.addComponentColumn( item -> _createOrgObjectButtonFor(item,
 																	orgDivClickEventListener,
 																	item::getOrgDivisionName,							// provides the button caption
 																	item::getOrgDivisionOid,item::getOrgDivisionId) )	// provides the button oid & id
-				 .setCaption( _i18n.getMessage("pb01.view.grid.orgDivision") )
+				 .setCaption( _i18n.getMessage("pb01.org.division") )
 				 .setDescriptionGenerator(PB01ViewObjForSearchResultItem::getOrgDivisionHint)
 				 .setResizable(true)
 				 .setId( "orgDivision" );
         // ORG DIVISION SERVICE
-		_grid.addComponentColumn( item -> _createOrgEntityButtonFor(item,
+		_grid.addComponentColumn( item -> _createOrgObjectButtonFor(item,
 																	orgDivSrvcClickEventListener,
 																	item::getOrgDivisionServiceName,								// provides the button caption
 																	item::getOrgDivisionServiceOid,item::getOrgDivisionServiceId) )	// provides the button oid & id
-				 .setCaption( _i18n.getMessage("pb01.view.grid.orgDivisionService") )
+				 .setCaption( _i18n.getMessage("pb01.org.service") )
 				 .setDescriptionGenerator(PB01ViewObjForSearchResultItem::getOrgDivisionServiceHint)
 				 .setResizable(true)
 				 .setId( "orgDivisionService" );
         // ORG DIVISION SERVICE LOCATION
-		_grid.addComponentColumn( item -> _createOrgEntityButtonFor(item,
+		_grid.addComponentColumn( item -> _createOrgObjectButtonFor(item,
 																	orgDivSrvcLocClickEventListener,
 																	item::getOrgDivisionServiceLocationName,										// provides the button caption
 																	item::getOrgDivisionServiceLocationOid,item::getOrgDivisionServiceLocationId) )	// provides the button oid & id
-				 .setCaption( _i18n.getMessage("pb01.view.grid.orgDivisionServiceLocation") )
+				 .setCaption( _i18n.getMessage("pb01.org.location") )
 				 .setDescriptionGenerator(PB01ViewObjForSearchResultItem::getOrgDivisionServiceLocationHint)
 				 .setResizable(true)
 				 .setId( "orgDivisionServiceLocation" );
         // WORKPLACE
-		_grid.addComponentColumn( item -> _createOrgEntityButtonFor(item,
+		_grid.addComponentColumn( item -> _createOrgObjectButtonFor(item,
 																	workPlaceClickEventListener,
 																	item::getWorkPlaceName,							// provides the button caption
 																	item::getWorkPlaceOid,item::getWorkPlaceId) )	// provides the button oid & id
-				 .setCaption( _i18n.getMessage("pb01.view.grid.workPlace") )
+				 .setCaption( _i18n.getMessage("pb01.org.workPlace") )
 				 .setDescriptionGenerator(PB01ViewObjForSearchResultItem::getWorkPlaceHint)
 				 .setResizable(true)
 				 .setId( "workPlaceId" );
+        // PHONES
+		_grid.addColumn( PB01ViewObjForSearchResultItem::getPhonesAsString )
+				 .setCaption( _i18n.getMessage("pb01.org.phones") )
+				 .setDescriptionGenerator( item -> _i18n.getMessage("pb01.org.phones.hint") )
+				 .setResizable(true)
+				 .setId( "phones" );
+        // EMAILS
+		_grid.addColumn( PB01ViewObjForSearchResultItem::getEMailsAsString )
+				 .setCaption( _i18n.getMessage("pb01.org.emails") )
+				 .setDescriptionGenerator( item -> _i18n.getMessage("pb01.org.emails.hint") )
+				 .setResizable(true)
+				 .setId( "emails" );
 		// RAISE AN ALARM
 		_grid.addComponentColumn( item -> {
 											// Get the workplade oid
@@ -186,13 +221,19 @@ public class PB01MainGridView
 											// create the button
 											Button btn = new Button();
 											btn.setIcon(VaadinIcons.BOLT);
-											btn.setDescription(_i18n.getMessage("pb01.view.grid.raiseAlarm"));
+											btn.setDescription(_i18n.getMessage("pb01.org.alarm.raise"));
 											btn.addClickListener(event -> _presenter.raiseAlarm(workPlaceOid,
 																								viewAlarm -> {	// update the count shown at the grid
-																												// NOTE this does NOT update higher levels of workplace hierarchy
-																												item.increaseAlarmRaiseCount(1);	// one more alarm raised
-																												_grid.getDataProvider().refreshItem(item);
-																												Notification.show(_i18n.getMessage("pb01.view.grid.raisedAlarm"));
+																												for (PB01ViewObjForSearchResultItem gi : _gridDataProvider.getItems()) {
+																													if (gi == item					// the workplace item
+																													 || gi.isAncestorOf(item)) {	// all the ancestors
+																														gi.increaseAlarmRaiseCount(1);
+																														_grid.getDataProvider().refreshItem(gi);
+																													}
+																												}
+																												Notification.show(_i18n.getMessage("pb01.org.alarm.raised",
+																																				   item.getWorkPlaceId(),
+																																				   item.getOrgHierarchyExplained()));
 																											 }));
 											btn.setVisible(item.getOrgObjectType() == X47BOrgObjectType.WORKPLACE);	// only visible for workplaces
 											return btn;
@@ -203,19 +244,25 @@ public class PB01MainGridView
 	private Button _createRaisedAlarmsButtonFor(final PB01ViewObjForSearchResultItem item) {
 		// show a link that opens a popup that shows the list of raised alarms
 		final Button btn = new Button(Long.toString(item.getAlarmRaiseCount()));
+		btn.addClickListener(event -> {
+											_raisedAlarmsPopUp.setCaption(item.getOrgHierarchyExplained());
+											_raisedAlarmsPopUp.listAlarmEventsFor(item.getOrganization().getId(),TimeLapse.createFor("1d"));	// 1 day
+											UI.getCurrent()
+											  .addWindow(_raisedAlarmsPopUp);
+									  });
 		btn.addStyleName(ValoTheme.BUTTON_LINK);
 		return btn;
 	}
-	private <O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>
-			Button _createOrgEntityButtonFor(final PB01ViewObjForSearchResultItem item,
-										  	 final PB01OrgEntityClickEventListener<O,I> clickEventListener,
+	private <O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
+			Button _createOrgObjectButtonFor(final PB01ViewObjForSearchResultItem item,
+										  	 final PB01OrgObjectClickEventListener<O,I> clickEventListener,
 										  	 final Provider<String> buttonCaption,
 										  	 final Provider<O> objOid,final Provider<I> objId) {
 		// show a link that opens a popup for editing the entity
 		final Button btn = new Button(buttonCaption.provideValue());
 		btn.addStyleName(ValoTheme.BUTTON_LINK);
 		if (clickEventListener != null) btn.addClickListener(event -> {	// just raise other event type
-																		final PB01OrgEntityClickedEvent<O,I> entityClickedEvent = new PB01OrgEntityClickedEvent<>(btn,
+																		final PB01OrgObjectClickedEvent<O,I> entityClickedEvent = new PB01OrgObjectClickedEvent<>(btn,
 																																							      objOid.provideValue(),objId.provideValue());
 																		clickEventListener.entityClicked(entityClickedEvent);
 																	   });
@@ -225,20 +272,20 @@ public class PB01MainGridView
 //	EVENTS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
-	public class PB01OrgEntityClickedEvent<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>
+	public class PB01OrgObjectClickedEvent<O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
 	     extends Component.Event {
 		private static final long serialVersionUID = 6771268655053782852L;
 
 		@Getter private final X47BOrgObjectRef<O,I> _objRef;
 
-		public PB01OrgEntityClickedEvent(final Component source,
+		public PB01OrgObjectClickedEvent(final Component source,
 								  		 final O oid,final I id) {
 			super(source);
 			_objRef = new X47BOrgObjectRef<>(oid,id);
 		}
 	}
-	public interface PB01OrgEntityClickEventListener<O extends X47BPersistableObjectOID,I extends X47BPersistableObjectID<O>>
+	public interface PB01OrgObjectClickEventListener<O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
 	         extends Serializable {
-		void entityClicked(PB01OrgEntityClickedEvent<O,I> event);
+		void entityClicked(PB01OrgObjectClickedEvent<O,I> event);
 	}
 }

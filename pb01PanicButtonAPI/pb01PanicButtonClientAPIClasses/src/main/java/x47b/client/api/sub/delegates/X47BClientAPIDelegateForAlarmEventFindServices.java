@@ -1,6 +1,7 @@
 package x47b.client.api.sub.delegates;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.inject.Provider;
 
@@ -8,6 +9,7 @@ import r01f.model.persistence.FindResult;
 import r01f.objectstreamer.Marshaller;
 import r01f.securitycontext.SecurityContext;
 import r01f.services.client.api.delegates.ClientAPIDelegateForModelObjectFindServices;
+import r01f.types.Range;
 import r01f.types.TimeLapse;
 import x47b.api.interfaces.X47BFindServicesForAlarmEvent;
 import x47b.model.X47BAlarmEvent;
@@ -20,7 +22,7 @@ import x47b.model.oids.X47BPanicButtonOIDs.X47BAlarmEventOID;
 
 public class X47BClientAPIDelegateForAlarmEventFindServices
 	 extends ClientAPIDelegateForModelObjectFindServices<X47BAlarmEventOID,X47BAlarmEvent> {;
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -35,8 +37,86 @@ public class X47BClientAPIDelegateForAlarmEventFindServices
 //  EXTENSION METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
+	 * Loads all alarms from an organization raised within the provided time lapse
+	 * @param id
+	 * @param dateRange
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrganizationID id,
+													 final Range<Date> dateRange) {
+		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
+														.findBySourceId(this.getSecurityContext(),
+															   	  		id,
+															   	  		dateRange);
+		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
+		return outAlarmEvents;
+	}
+	/**
+	 * Loads all alarms from a division raised within the provided time lapse
+	 * @param id
+	 * @param dateRange
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrgDivisionID id,
+													 final Range<Date> dateRange) {
+		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
+														.findBySourceId(this.getSecurityContext(),
+															   	  		id,
+															   	  		dateRange);
+		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
+		return outAlarmEvents;
+	}
+	/**
+	 * Loads all alarms from a service raised within the provided time lapse
+	 * @param id
+	 * @param dateRange
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrgDivisionServiceID id,
+													 final Range<Date> dateRange) {
+		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
+														.findBySourceId(this.getSecurityContext(),
+															   	  		id,
+															   	  		dateRange);
+		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
+		return outAlarmEvents;
+	}
+	/**
+	 * Loads all alarms from a location raised within the provided time lapse
+	 * @param id
+	 * @param dateRange
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrgDivisionServiceLocationID id,
+													 final Range<Date> dateRange) {
+		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
+														.findBySourceId(this.getSecurityContext(),
+															   	  		id,
+															   	  		dateRange);
+		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
+		return outAlarmEvents;
+	}
+	/**
+	 * Loads all alarms from a work place raised within the provided time lapse
+	 * @param id
+	 * @param dateRange
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findBySourceId(final X47BWorkPlaceID id,
+													 final Range<Date> dateRange) {
+		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
+														.findBySourceId(this.getSecurityContext(),
+															   	  		id,
+															   	  		dateRange);
+		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
+		return outAlarmEvents;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//  EXTENSION METHODS
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
 	 * Loads all alarms from an organization raised within the last minute
-	 * @param id 
+	 * @param id
 	 * @return
 	 */
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrganizationID id) {
@@ -45,22 +125,17 @@ public class X47BClientAPIDelegateForAlarmEventFindServices
 	}
 	/**
 	 * Loads all alarms from an organization raised within the provided time lapse
-	 * @param id  
+	 * @param id
 	 * @param timeLapse
 	 * @return
 	 */
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrganizationID id,
 													 final TimeLapse timeLapse) {
-		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
-														.findBySourceId(this.getSecurityContext(),
-															   	  		id,
-															   	  		timeLapse);
-		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
-		return outAlarmEvents;
+		return this.findBySourceId(id,_createeDateRange(timeLapse));
 	}
 	/**
 	 * Loads all alarms from a division raised within the last minute
-	 * @param id 
+	 * @param id
 	 * @return
 	 */
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrgDivisionID id) {
@@ -69,22 +144,17 @@ public class X47BClientAPIDelegateForAlarmEventFindServices
 	}
 	/**
 	 * Loads all alarms from a division raised within the provided time lapse
-	 * @param id  
+	 * @param id
 	 * @param timeLapse
 	 * @return
 	 */
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrgDivisionID id,
 													 final TimeLapse timeLapse) {
-		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
-														.findBySourceId(this.getSecurityContext(),
-															   	  		id,
-															   	  		timeLapse);
-		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
-		return outAlarmEvents;
+		return this.findBySourceId(id,_createeDateRange(timeLapse));
 	}
 	/**
 	 * Loads all alarms from a service raised within the last minute
-	 * @param id 
+	 * @param id
 	 * @return
 	 */
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrgDivisionServiceID id) {
@@ -93,22 +163,17 @@ public class X47BClientAPIDelegateForAlarmEventFindServices
 	}
 	/**
 	 * Loads all alarms from a service raised within the provided time lapse
-	 * @param id  
+	 * @param id
 	 * @param timeLapse
 	 * @return
 	 */
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrgDivisionServiceID id,
 													 final TimeLapse timeLapse) {
-		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
-														.findBySourceId(this.getSecurityContext(),
-															   	  		id,
-															   	  		timeLapse);
-		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
-		return outAlarmEvents;
+		return this.findBySourceId(id,_createeDateRange(timeLapse));
 	}
 	/**
 	 * Loads all alarms from a location raised within the last minute
-	 * @param id 
+	 * @param id
 	 * @return
 	 */
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrgDivisionServiceLocationID id) {
@@ -117,22 +182,17 @@ public class X47BClientAPIDelegateForAlarmEventFindServices
 	}
 	/**
 	 * Loads all alarms from a location raised within the provided time lapse
-	 * @param id  
+	 * @param id
 	 * @param timeLapse
 	 * @return
 	 */
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BOrgDivisionServiceLocationID id,
 													 final TimeLapse timeLapse) {
-		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
-														.findBySourceId(this.getSecurityContext(),
-															   	  		id,
-															   	  		timeLapse);
-		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
-		return outAlarmEvents;
+		return this.findBySourceId(id,_createeDateRange(timeLapse));
 	}
 	/**
 	 * Loads all alarms from a work place raised within the last minute
-	 * @param id  
+	 * @param id
 	 * @return
 	 */
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BWorkPlaceID id) {
@@ -141,17 +201,26 @@ public class X47BClientAPIDelegateForAlarmEventFindServices
 	}
 	/**
 	 * Loads all alarms from a work place raised within the provided time lapse
-	 * @param id  
+	 * @param id
 	 * @param timeLapse
 	 * @return
 	 */
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BWorkPlaceID id,
 													 final TimeLapse timeLapse) {
-		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
-														.findBySourceId(this.getSecurityContext(),
-															   	  		id,
-															   	  		timeLapse);
-		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
-		return outAlarmEvents;
+		return this.findBySourceId(id,_createeDateRange(timeLapse));
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+	private Range<Date> _createeDateRange(final TimeLapse timeLapse) {
+		TimeLapse defTimeLapse = TimeLapse.createFor("1d");	// 1 day
+
+		TimeLapse theTimeLapse = timeLapse != null ? timeLapse : defTimeLapse;
+
+		Date now = new Date();
+		Date startDate = new Date(now.getTime() - theTimeLapse.asMilis());	// time before
+		Date endDate = now;
+
+		return Range.closed(startDate,endDate);
 	}
 }

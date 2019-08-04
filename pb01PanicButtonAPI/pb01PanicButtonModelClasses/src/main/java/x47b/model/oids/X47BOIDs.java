@@ -50,13 +50,16 @@ public abstract class X47BOIDs {
 			return X47BGUIDDispenser.generateGUID();
 		}
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Base OID for every X47B OIDs
 	 */
 	@Immutable
 	public static abstract class X47BPersistableObjectOIDBase
 	              		 extends X47BModelObjectOIDBase 	// normally this should extend OIDBaseInmutable BUT it MUST have a default no-args constructor to be serializable
-					  implements X47BPersistableObjectOID {	
+					  implements X47BPersistableObjectOID {
 		private static final long serialVersionUID = -9164578219787647708L;
 		public X47BPersistableObjectOIDBase() {
 			/* default no args constructor for serialization purposes */

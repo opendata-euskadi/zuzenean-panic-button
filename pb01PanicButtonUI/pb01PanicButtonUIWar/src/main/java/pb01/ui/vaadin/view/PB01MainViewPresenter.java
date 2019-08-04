@@ -20,10 +20,10 @@ import r01f.ui.presenter.UIPresenter;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import r01f.util.types.collections.CollectionUtils;
 import r01f.util.types.collections.Lists;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.org.X47BOrgObjectRef;
@@ -40,7 +40,10 @@ public class PB01MainViewPresenter
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
+    // main core mediator
     private final transient PB01MainViewCOREMediator _coreMediator;
+
+    // org entities core mediators
     private final transient PB01COREMediatorForOrganization _coreMediatorForOrg;
     private final transient PB01COREMediatorForOrgDivision _coreMediatorForOrgDiv;
     private final transient PB01COREMediatorForOrgDivisionService _coreMediatorForOrgDivSrvc;
@@ -51,7 +54,9 @@ public class PB01MainViewPresenter
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
     @Inject
-    public PB01MainViewPresenter(final PB01MainViewCOREMediator coreMediator,
+    public PB01MainViewPresenter(// main core mediator
+    							 final PB01MainViewCOREMediator coreMediator,
+    							 // org entities core mediators
     							 final PB01COREMediatorForOrganization coreMediatorForOrg,
     							 final PB01COREMediatorForOrgDivision coreMediatorForOrgDiv,
     							 final PB01COREMediatorForOrgDivisionService coreMediatorForOrgDivSrvc,
@@ -117,11 +122,11 @@ public class PB01MainViewPresenter
 /////////////////////////////////////////////////////////////////////////////////////////
 //	COMBOS
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void onOrgEntityComboDataNeeded(final X47BOrgObjectRef<?,?> parentOrgEntityRef,
+	public void onOrgObjectComboDataNeeded(final X47BOrgObjectRef<?,?> parentOrgObjectRef,
 										   final Language lang,
 										   final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
 		// use the parent combo oid to guess the object type
-		X47BPersistableObjectOID parentObjOid = parentOrgEntityRef.getOid();
+		X47BOrgObjectOID parentObjOid = parentOrgObjectRef.getOid();
 		final X47BOrgObjectType parentObjType = X47BOrgObjectType.ofOIDType(parentObjOid.getClass());
 
 		// call the correct presenter method depending on the object type
@@ -156,7 +161,7 @@ public class PB01MainViewPresenter
                                       final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
     	_coreMediatorForOrg.loadAllOrgs(lang,
     							  		// just transform the Collection<M> into a Collection<PB01VaadinComboItem>
-	    							    orgs -> _onSuccessLoadingOrgEntitySumms(orgs,presenterSubscriber));
+	    							    orgs -> _onSuccessLoadingOrgObjectSumms(orgs,presenterSubscriber));
     }
     public void onOrgDivisionsComboDataNeeded(final X47BOrganizationOID orgOid,
     										  final Language lang,
@@ -164,7 +169,7 @@ public class PB01MainViewPresenter
     	_coreMediatorForOrgDiv.loadOrgDivisions(orgOid,
     											lang,
     											// just transform the Collection<M> into a Collection<PB01VaadinComboItem>
-    											divs -> _onSuccessLoadingOrgEntitySumms(divs,presenterSubscriber));
+    											divs -> _onSuccessLoadingOrgObjectSumms(divs,presenterSubscriber));
     }
     public void onOrgDivisionServicesComboDataNeeded(final X47BOrgDivisionOID orgDivOid,
     										  		 final Language lang,
@@ -172,7 +177,7 @@ public class PB01MainViewPresenter
     	_coreMediatorForOrgDivSrvc.loadOrgDivisonServices(orgDivOid,
     													  lang,
 		    											  // just transform the Collection<M> into a Collection<PB01VaadinComboItem>
-		    											  srvcs -> _onSuccessLoadingOrgEntitySumms(srvcs,presenterSubscriber));
+		    											  srvcs -> _onSuccessLoadingOrgObjectSumms(srvcs,presenterSubscriber));
     }
     public void onOrgDivisionServiceLocationsComboDataNeeded(final X47BOrgDivisionServiceOID orgDivSrvcOid,
     										  		 		 final Language lang,
@@ -180,7 +185,7 @@ public class PB01MainViewPresenter
     	_coreMediatorForOrgDivSrvcLoc.loadOrgDivisionServiceLocations(orgDivSrvcOid,
     													  			  lang,
 					    											  // just transform the Collection<M> into a Collection<PB01VaadinComboItem>
-					    											  locs -> _onSuccessLoadingOrgEntitySumms(locs,presenterSubscriber));
+					    											  locs -> _onSuccessLoadingOrgObjectSumms(locs,presenterSubscriber));
     }
     public void onWorkPlacesComboDataNeeded(final X47BOrgDivisionServiceLocationOID orgDivSrvcLocOid,
     										final Language lang,
@@ -188,12 +193,12 @@ public class PB01MainViewPresenter
     	_coreMediatorForWorkPlace.loadWorkPlaces(orgDivSrvcLocOid,
     											 lang,
 					    						 // just transform the Collection<M> into a Collection<PB01VaadinComboItem>
-					    						 wpcs -> _onSuccessLoadingOrgEntitySumms(wpcs,presenterSubscriber));
+					    						 wpcs -> _onSuccessLoadingOrgObjectSumms(wpcs,presenterSubscriber));
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-    private <S extends X47BSummarizedOrganizationalObject<?,?,?>> void _onSuccessLoadingOrgEntitySumms(final Collection<S> sums,
+    private <S extends X47BSummarizedOrganizationalObject<?,?,?>> void _onSuccessLoadingOrgObjectSumms(final Collection<S> sums,
     																								   final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
 		final Collection<PB01VaadinComboItem> cmbItems = FluentIterable.from(sums)
 														.transform(srvc -> PB01VaadinComboItem.FROM_OBJ_SUMMARY.apply(srvc))

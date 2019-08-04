@@ -10,15 +10,15 @@ import r01f.securitycontext.SecurityContext;
 import r01f.validation.ObjectValidationResult;
 import r01f.validation.ObjectValidationResultBuilder;
 import x47b.api.interfaces.X47BCRUDServicesForOrganizationalModelObjectBase;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.org.X47BOrganizationalPersistableObject;
 import x47b.model.org.X47BOrganizationalPersistableObjectBase;
 
 /**
  * Service layer delegated type for CRUD (Create/Read/Update/Delete) operations
  */
-abstract class X47BCRUDServicesDelegateForOrganizationalEntityBase<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>,M extends X47BOrganizationalPersistableObject<O,ID>>
+abstract class X47BCRUDServicesDelegateForOrganizationalEntityBase<O extends X47BOrgObjectOID,ID extends X47BOrgObjectID<O>,M extends X47BOrganizationalPersistableObject<O,ID>>
 	   extends X47BCRUDServicesDelegateBase<O,ID,M>
     implements X47BCRUDServicesForOrganizationalModelObjectBase<O,ID,M> {
 
@@ -56,7 +56,7 @@ abstract class X47BCRUDServicesDelegateForOrganizationalEntityBase<O extends X47
 														 			   _modelObjectType.getSimpleName(),entity.getOid(),_modelObjectType.getSimpleName(),entity.getId());
 			}
 		}
-		 
+
 		return super.validateModelObjBeforeCreateOrUpdate(securityContext,
 													      requestedOp,
 														  entity);
