@@ -11,7 +11,7 @@
 	<notifiers>
 		<log enabled="false"/>
 		<mail enabled="false">
-			<from>a-lara@ejie.eus</from>
+			<from>user@mydomain.com</from>
 			<msgTemplate>x47b/notifier/X47BMailMessageTemplate.vm</msgTemplate>
 			<msgHeaderImage>x47b/notifier/x47bLogo.gif</msgHeaderImage>
 		</mail>
@@ -28,7 +28,7 @@
 	<!-- JavaMail sender config -->
 	<javaMailSenderImpls active="google_API">
 		<javaMailSenderImpl id='microsoft_exchange'>
-			<host>PROXY2</host>
+			<host>mail_server</host>
 		</javaMailSenderImpl>
 		<javaMailSenderImpl id='google_API'>
 			<!--
@@ -49,7 +49,7 @@
 			<serviceAccountClientID>xxx.apps.googleusercontent.com</serviceAccountClientID>
 			<serviceAccountEmailAddress>xxx@developer.gserviceaccount.com</serviceAccountEmailAddress>
 			<p12Key loadedUsing='classPath'>x47b/notifier/googleServiceAccount.p12</p12Key>	<!-- change to fileSystem if the p12 file is found at the fileSystem -->
-			<googleAppsUser>admin@futuretelematics.net</googleAppsUser>
+			<googleAppsUser>admin@mydomain</googleAppsUser>
 		</javaMailSenderImpl>
 	</javaMailSenderImpls>
 
