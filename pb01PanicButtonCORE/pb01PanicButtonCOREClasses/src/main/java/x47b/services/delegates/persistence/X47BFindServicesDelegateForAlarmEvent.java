@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 
 import com.google.common.eventbus.EventBus;
-import com.google.inject.persist.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import r01f.bootstrap.services.config.core.ServicesCoreBootstrapConfigWhenBeanExposed;
@@ -16,6 +15,8 @@ import r01f.securitycontext.SecurityContext;
 import r01f.services.delegates.persistence.FindServicesForModelObjectDelegateBase;
 import r01f.types.Range;
 import r01f.types.TimeLapse;
+import r01f.types.contact.EMail;
+import r01f.types.contact.Phone;
 import x47b.api.interfaces.X47BFindServicesForAlarmEvent;
 import x47b.db.find.X47BDBFindForAlarmEvent;
 import x47b.model.X47BAlarmEvent;
@@ -51,7 +52,6 @@ public class X47BFindServicesDelegateForAlarmEvent
 /////////////////////////////////////////////////////////////////////////////////////////
 //  EXTENSION METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Transactional
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 													 final X47BOrganizationID id,
@@ -62,7 +62,6 @@ public class X47BFindServicesDelegateForAlarmEvent
 										id,
 										theDateRange);
 	}
-	@Transactional
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 													 final X47BOrgDivisionID id,
@@ -73,7 +72,6 @@ public class X47BFindServicesDelegateForAlarmEvent
 										id,
 										theDateRange);
 	}
-	@Transactional
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 													 final X47BOrgDivisionServiceID id,
@@ -84,7 +82,6 @@ public class X47BFindServicesDelegateForAlarmEvent
 										id,
 										theDateRange);
 	}
-	@Transactional
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 													 final X47BOrgDivisionServiceLocationID id,
@@ -95,7 +92,6 @@ public class X47BFindServicesDelegateForAlarmEvent
 										id,
 										theDateRange);
 	}
-	@Transactional
 	@Override
 	public FindResult<X47BAlarmEvent> findBySourceId(final SecurityContext securityContext,
 													 final X47BWorkPlaceID id,
@@ -105,6 +101,26 @@ public class X47BFindServicesDelegateForAlarmEvent
 						.findBySourceId(securityContext,
 										id,
 										theDateRange);
+	}
+	@Override
+	public FindResult<X47BAlarmEvent> findByNotifiedPhone(final SecurityContext securityContext,
+											   		 	  final Phone phone,
+											   		 	  final Range<Date> dateRange) {
+		Range<Date> theDateRange = _ensureDateRange(dateRange);
+		return this.getServiceImplAs(X47BFindServicesForAlarmEvent.class)
+						.findByNotifiedPhone(securityContext,
+											 phone,
+											 theDateRange);
+	}
+	@Override
+	public FindResult<X47BAlarmEvent> findByNotifiedEMail(final SecurityContext securityContext,
+											   		 	  final EMail email,
+											   		 	  final Range<Date> dateRange) {
+		Range<Date> theDateRange = _ensureDateRange(dateRange);
+		return this.getServiceImplAs(X47BFindServicesForAlarmEvent.class)
+						.findByNotifiedEMail(securityContext,
+											 email,
+											 theDateRange);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //

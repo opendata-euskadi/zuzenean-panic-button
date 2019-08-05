@@ -11,6 +11,8 @@ import r01f.securitycontext.SecurityContext;
 import r01f.services.client.api.delegates.ClientAPIDelegateForModelObjectFindServices;
 import r01f.types.Range;
 import r01f.types.TimeLapse;
+import r01f.types.contact.EMail;
+import r01f.types.contact.Phone;
 import x47b.api.interfaces.X47BFindServicesForAlarmEvent;
 import x47b.model.X47BAlarmEvent;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
@@ -111,6 +113,36 @@ public class X47BClientAPIDelegateForAlarmEventFindServices
 		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
 		return outAlarmEvents;
 	}
+	/**
+	 * Loads all alarms notified to a given phone raised within the provided time lapse
+	 * @param phone
+	 * @param dateRange
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findByNotifiedPhone(final Phone phone,
+													 	  final Range<Date> dateRange) {
+		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
+														.findByNotifiedPhone(this.getSecurityContext(),
+															   	  			 phone,
+															   	  			 dateRange);
+		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
+		return outAlarmEvents;
+	}
+	/**
+	 * Loads all alarms notified to a given email raised within the provided time lapse
+	 * @param phone
+	 * @param dateRange
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findByNotifiedEMail(final EMail email,
+													 	  final Range<Date> dateRange) {
+		FindResult<X47BAlarmEvent> findResult = this.getServiceProxyAs(X47BFindServicesForAlarmEvent.class)
+														.findByNotifiedEMail(this.getSecurityContext(),
+															   	  			 email,
+															   	  			 dateRange);
+		Collection<X47BAlarmEvent> outAlarmEvents = findResult.getOrThrow();
+		return outAlarmEvents;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  EXTENSION METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -208,6 +240,44 @@ public class X47BClientAPIDelegateForAlarmEventFindServices
 	public Collection<X47BAlarmEvent> findBySourceId(final X47BWorkPlaceID id,
 													 final TimeLapse timeLapse) {
 		return this.findBySourceId(id,_createeDateRange(timeLapse));
+	}
+	/**
+	 * Loads all alarms notified to a given phone raised within the last minute
+	 * @param phone
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findByNotifiedPhone(final Phone phone) {
+		return this.findByNotifiedPhone(phone,
+								   		TimeLapse.createFor("1m"));	// last minute
+	}
+	/**
+	 * Loads all alarms notified to a given phone raised within the provided time lapse
+	 * @param phone
+	 * @param timeLapse
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findByNotifiedPhone(final Phone phone,
+													 	  final TimeLapse timeLapse) {
+		return this.findByNotifiedPhone(phone,_createeDateRange(timeLapse));
+	}
+	/**
+	 * Loads all alarms notified to a given email raised within the last minute
+	 * @param email
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findByNotifiedEMail(final EMail email) {
+		return this.findByNotifiedEMail(email,
+								   		TimeLapse.createFor("1m"));	// last minute
+	}
+	/**
+	 * Loads all alarms notified to a given email raised within the provided time lapse
+	 * @param email
+	 * @param timeLapse
+	 * @return
+	 */
+	public Collection<X47BAlarmEvent> findByNotifiedEMail(final EMail email,
+													 	  final TimeLapse timeLapse) {
+		return this.findByNotifiedEMail(email,_createeDateRange(timeLapse));
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //

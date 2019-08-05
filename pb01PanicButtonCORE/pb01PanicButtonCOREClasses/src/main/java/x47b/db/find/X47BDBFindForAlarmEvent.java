@@ -18,6 +18,8 @@ import r01f.persistence.db.config.DBModuleConfig;
 import r01f.persistence.db.entities.primarykeys.DBPrimaryKeyForModelObject;
 import r01f.securitycontext.SecurityContext;
 import r01f.types.Range;
+import r01f.types.contact.EMail;
+import r01f.types.contact.Phone;
 import x47b.api.interfaces.X47BFindServicesForAlarmEvent;
 import x47b.db.X47BAlarmEventDBEntityToAndFromModelObject;
 import x47b.db.entities.X47BDBEntityForAlarmEvent;
@@ -25,8 +27,8 @@ import x47b.model.X47BAlarmEvent;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
 import x47b.model.oids.X47BPanicButtonOIDs.X47BAlarmEventOID;
 
@@ -95,6 +97,24 @@ public class X47BDBFindForAlarmEvent
 		return _findBySourceId("X47BDBEntitiesForAlarmEventsByWorkPlaceID",
 							   securityContext,
 							   id,dateRange);
+	}
+	@Override
+	public FindResult<X47BAlarmEvent> findByNotifiedPhone(final SecurityContext securityContext,
+											   		 	  final Phone phone,
+											   		 	  final Range<Date> dateRange) {
+		// there's NO info about the phone stored at X47BDBEntityForAlarmEvent db entity
+		// maybe a column can store all notified phones comma separated...
+		// ... is this function really necessary???
+		throw new UnsupportedOperationException("Not yet implemented!!");
+	}
+	@Override
+	public FindResult<X47BAlarmEvent> findByNotifiedEMail(final SecurityContext securityContext,
+											   		 	  final EMail email,
+											   		 	  final Range<Date> dateRange) {
+		// there's NO info about the phone stored at X47BDBEntityForAlarmEvent db entity
+		// maybe a column can store all notified phones comma separated...
+		// ... is this function really necessary???
+		throw new UnsupportedOperationException("Not yet implemented!!");
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //

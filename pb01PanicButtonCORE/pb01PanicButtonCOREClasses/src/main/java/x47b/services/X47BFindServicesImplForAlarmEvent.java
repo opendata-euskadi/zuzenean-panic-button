@@ -20,6 +20,8 @@ import r01f.securitycontext.SecurityContext;
 import r01f.services.persistence.CoreFindServicesForModelObjectBase;
 import r01f.services.persistence.ServiceDelegateProvider;
 import r01f.types.Range;
+import r01f.types.contact.EMail;
+import r01f.types.contact.Phone;
 import x47b.api.interfaces.X47BFindServicesForAlarmEvent;
 import x47b.model.X47BAlarmEvent;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
@@ -124,5 +126,27 @@ public class X47BFindServicesImplForAlarmEvent
 							.findBySourceId(securityContext,
 									  		id,
 									  		dateRange);
+	}
+	@Transactional
+	@Override
+	public FindResult<X47BAlarmEvent> findByNotifiedPhone(final SecurityContext securityContext,
+											   		 	  final Phone phone,
+											   		 	  final Range<Date> dateRange) {
+		return this.forSecurityContext(securityContext)
+						.createDelegateAs(X47BFindServicesForAlarmEvent.class)
+							.findByNotifiedPhone(securityContext,
+									  			 phone,
+									  			 dateRange);
+	}
+	@Transactional
+	@Override
+	public FindResult<X47BAlarmEvent> findByNotifiedEMail(final SecurityContext securityContext,
+											   		 	  final EMail email,
+											   		 	  final Range<Date> dateRange) {
+		return this.forSecurityContext(securityContext)
+						.createDelegateAs(X47BFindServicesForAlarmEvent.class)
+							.findByNotifiedEMail(securityContext,
+									  			 email,
+									  			 dateRange);
 	}
 }

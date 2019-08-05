@@ -11,6 +11,8 @@ import r01f.objectstreamer.Marshaller;
 import r01f.securitycontext.SecurityContext;
 import r01f.services.client.servicesproxy.rest.RESTServicesForDBFindProxyBase;
 import r01f.types.Range;
+import r01f.types.contact.EMail;
+import r01f.types.contact.Phone;
 import r01f.types.url.Url;
 import r01f.types.url.UrlQueryString;
 import r01f.types.url.UrlQueryStringParam;
@@ -92,5 +94,26 @@ public class X47BRESTFindServicesProxyForAlarmEvent
 												 UrlQueryString.fromParams(new UrlQueryStringParam("dateRange",dateRange.asString())));
 		return _findDelegate.doFindEntities(securityContext,
 											restResourceUrl);
+	}
+	@Override
+	public FindResult<X47BAlarmEvent> findByNotifiedPhone(final SecurityContext securityContext,
+											   		 	  final Phone phone,
+											   		 	  final Range<Date> dateRange) {
+		Url restResourceUrl = this.composeURIFor(this.getServicesRESTResourceUrlPathBuilderAs(X47BRESTServiceResourceUrlPathBuilderForAlarmEvent.class)
+													   			  .pathOfAlarmsListByNotifiedPhone(phone),
+												 UrlQueryString.fromParams(new UrlQueryStringParam("dateRange",dateRange.asString())));
+		return _findDelegate.doFindEntities(securityContext,
+											restResourceUrl);
+	}
+	@Override
+	public FindResult<X47BAlarmEvent> findByNotifiedEMail(final SecurityContext securityContext,
+											   		 	  final EMail email,
+											   		 	  final Range<Date> dateRange) {
+		Url restResourceUrl = this.composeURIFor(this.getServicesRESTResourceUrlPathBuilderAs(X47BRESTServiceResourceUrlPathBuilderForAlarmEvent.class)
+													   			  .pathOfAlarmsListByNotifiedEMail(email),
+												 UrlQueryString.fromParams(new UrlQueryStringParam("dateRange",dateRange.asString())));
+		return _findDelegate.doFindEntities(securityContext,
+											restResourceUrl);
+
 	}
 }
