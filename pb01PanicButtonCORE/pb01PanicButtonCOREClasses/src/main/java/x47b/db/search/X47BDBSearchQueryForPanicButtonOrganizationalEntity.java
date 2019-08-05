@@ -1,4 +1,4 @@
-package x47b.search.db;
+package x47b.db.search;
 
 import java.util.Collection;
 

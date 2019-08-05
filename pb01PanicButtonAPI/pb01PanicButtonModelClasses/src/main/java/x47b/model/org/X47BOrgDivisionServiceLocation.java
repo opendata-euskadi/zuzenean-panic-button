@@ -63,12 +63,17 @@ public class X47BOrgDivisionServiceLocation
 													   .withOid(_oid)
 													   .withId(_id)
 													   .named(_nameByLanguage.getFor(lang))
+													   // geo position
 													   .country(_position != null && _position.getCountry() != null ? _position.getCountry().getNameIn(lang) : null)
 													   .territory(_position != null && _position.getTerritory() != null ? _position.getTerritory().getNameIn(lang) : null)
 													   .state(_position != null && _position.getTerritory() != null ? _position.getTerritory().getNameIn(lang) : null)
 													   .municipality(_position != null && _position.getMunicipality() != null ? _position.getMunicipality().getNameIn(lang) : null)
 													   .steet(_position != null && _position.getStreet() != null ? _position.getStreet().getNameIn(lang) : null)
-													   .phones(_contactInfo != null ? _contactInfo.getPhones() : null);
+													   // contact info
+													   .phones(_contactInfo != null ? _contactInfo.getPhones() : null)
+													   // alarm phones
+													   .withPhones(_phones)
+													   .withEmails(_emails);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  VALIDATION

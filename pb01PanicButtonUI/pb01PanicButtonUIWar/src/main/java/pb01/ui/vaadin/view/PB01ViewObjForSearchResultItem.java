@@ -221,17 +221,32 @@ public class PB01ViewObjForSearchResultItem
         return this.getWrappedModelObject()
                    .getPhones();
     }
+    public Collection<Phone> getEffectivePhones() {
+    	return this.getWrappedModelObject()
+    			   .getEffectivePhones();
+    }
     public String getPhonesAsString() {
     	return this.getWrappedModelObject()
     			   .getPhonesAsString();
+    }
+    public String getEffectivePhonesAsString() {
+    	return this.getWrappedModelObject()
+    			   .getEffectivePhonesAsString();
     }
     public Collection<EMail> getEMails() {
         return this.getWrappedModelObject()
                    .getEmails();
     }
+    public Collection<EMail> getEffectiveEMails() {
+    	return this.getWrappedModelObject()
+    			   .getEffectiveEMails();
+    }
     public String getEMailsAsString() {
     	return this.getWrappedModelObject()
     			   .getEMailsAsString();
     }
-
+    public String getEffectiveEMailsAsString() {
+    	return this.getWrappedModelObject()
+    			   .getEffectiveEMailsAsString();
+    }
 }

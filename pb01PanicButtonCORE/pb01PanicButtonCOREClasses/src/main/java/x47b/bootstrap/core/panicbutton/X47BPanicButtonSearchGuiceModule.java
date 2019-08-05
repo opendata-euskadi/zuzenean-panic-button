@@ -4,7 +4,7 @@ package x47b.bootstrap.core.panicbutton;
 import lombok.EqualsAndHashCode;
 import r01f.bootstrap.persistence.SearchGuiceModuleBase;
 import r01f.persistence.search.config.SearchModuleConfig;
-import x47b.search.db.X47BPanicButtonSearcherProviders.X47BDBSearcherProviderForPanicButtonObject;
+import x47b.db.search.X47BPanicButtonSearcherProviders.X47BDBSearcherProviderForPanicButtonObject;
 
 @EqualsAndHashCode(callSuper=true)				// This is important for guice modules
   class X47BPanicButtonSearchGuiceModule 

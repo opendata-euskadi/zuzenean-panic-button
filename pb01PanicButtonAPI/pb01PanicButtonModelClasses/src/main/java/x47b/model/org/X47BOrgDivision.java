@@ -39,7 +39,9 @@ public class X47BOrgDivision
 		return X47BSummarizedOrgDivision.create()
 									    .withOid(_oid)
 									    .withId(_id)
-									    .named(_nameByLanguage.get(lang));
+									    .named(_nameByLanguage.get(lang))
+									    .withPhones(_phones)
+									    .withEmails(_emails);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  VALIDATION

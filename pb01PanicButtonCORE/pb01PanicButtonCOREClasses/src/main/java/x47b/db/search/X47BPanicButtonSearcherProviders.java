@@ -1,4 +1,4 @@
-package x47b.search.db;
+package x47b.db.search;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

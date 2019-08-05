@@ -1,9 +1,14 @@
 package x47b.model.org.summaries;
 
+import java.util.Collection;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.objectstreamer.annotations.MarshallField;
+import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
+import r01f.types.contact.EMail;
+import r01f.types.contact.Phone;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.org.X47BOrganizationalPersistableObject;
@@ -21,6 +26,14 @@ public abstract class X47BSummarizedOrganizationalModelObjectBase<O extends X47B
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallField(as="name",escape=true)
 	@Getter @Setter private String _name;
+
+	@MarshallField(as="phones",
+				   whenXml=@MarshallFieldAsXml(collectionElementName="phone"))
+	@Getter @Setter private Collection<Phone> _phones;
+
+	@MarshallField(as="emails",
+				   whenXml=@MarshallFieldAsXml(collectionElementName="email"))
+	@Getter @Setter private Collection<EMail> _emails;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -34,6 +47,16 @@ public abstract class X47BSummarizedOrganizationalModelObjectBase<O extends X47B
 	@SuppressWarnings("unchecked")
 	public SELF_TYPE named(final String name) {
 		_name = name;
+		return (SELF_TYPE)this;
+	}
+	@SuppressWarnings("unchecked")
+	public SELF_TYPE withPhones(final Collection<Phone> phones) {
+		_phones = phones;
+		return (SELF_TYPE)this;
+	}
+	@SuppressWarnings("unchecked")
+	public SELF_TYPE withEmails(final Collection<EMail> emails) {
+		_emails = emails;
 		return (SELF_TYPE)this;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////

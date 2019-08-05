@@ -55,18 +55,18 @@ public abstract class X47BOrganizationalPersistableObjectBase<O extends X47BOrgO
 
 	@MarshallField(as="lastAlarmRaiseDate",
 				   dateFormat=@MarshallDateFormat(use=DateFormat.CUSTOM,format="dd/MM/yyyy hh:mm:ss"))
-	@Getter @Setter private Date _lastAlarmRaiseDate;
+	@Getter @Setter protected Date _lastAlarmRaiseDate;
 
 	@MarshallField(as="alarmRaiseCount")
-	@Getter @Setter private long _alarmRaiseCount;
+	@Getter @Setter protected long _alarmRaiseCount;
 
 	@MarshallField(as="phones",
 				   whenXml=@MarshallFieldAsXml(collectionElementName="phone"))
-	@Getter @Setter private Collection<Phone> _phones;
+	@Getter @Setter protected Collection<Phone> _phones;
 
 	@MarshallField(as="emails",
 				   whenXml=@MarshallFieldAsXml(collectionElementName="email"))
-	@Getter @Setter private Collection<EMail> _emails;
+	@Getter @Setter protected Collection<EMail> _emails;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  REFERENCE
 /////////////////////////////////////////////////////////////////////////////////////////

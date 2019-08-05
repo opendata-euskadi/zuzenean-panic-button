@@ -28,7 +28,9 @@ public class X47BOrganization
 		return X47BSummarizedOrganization.create()
 									     .withOid(_oid)
 									     .withId(_id)
-									     .named(_nameByLanguage.get(lang));
+									     .named(_nameByLanguage.get(lang))
+									     .withPhones(_phones)
+									     .withEmails(_emails);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //

@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.locale.Language;
-import r01f.locale.LanguageTexts;
 import r01f.model.metadata.annotations.ModelObjectData;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallType;
@@ -36,9 +35,6 @@ public class X47BOrgDivisionService
 
 	@MarshallField(as="division")
 	@Getter @Setter private X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> _orgDivisionRef;
-
-	@MarshallField(as="procedure")
-	@Getter @Setter private LanguageTexts _procedure;
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +44,8 @@ public class X47BOrgDivisionService
 											   .withOid(_oid)
 											   .withId(_id)
 											   .named(_nameByLanguage != null ? _nameByLanguage.get(lang) : null)
-											   .managedProcedure(_procedure != null ? _procedure.get(lang) : null);
+											   .withPhones(_phones)
+											   .withEmails(_emails);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  VALIDATION

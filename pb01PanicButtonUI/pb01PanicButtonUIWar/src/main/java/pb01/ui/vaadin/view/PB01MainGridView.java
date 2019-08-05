@@ -202,13 +202,13 @@ public class PB01MainGridView
 				 .setResizable(true)
 				 .setId( "workPlaceId" );
         // PHONES
-		_grid.addColumn( PB01ViewObjForSearchResultItem::getPhonesAsString )
+		_grid.addColumn( PB01ViewObjForSearchResultItem::getEffectivePhonesAsString )
 				 .setCaption( _i18n.getMessage("pb01.org.phones") )
 				 .setDescriptionGenerator( item -> _i18n.getMessage("pb01.org.phones.hint") )
 				 .setResizable(true)
 				 .setId( "phones" );
         // EMAILS
-		_grid.addColumn( PB01ViewObjForSearchResultItem::getEMailsAsString )
+		_grid.addColumn( PB01ViewObjForSearchResultItem::getEffectiveEMailsAsString )
 				 .setCaption( _i18n.getMessage("pb01.org.emails") )
 				 .setDescriptionGenerator( item -> _i18n.getMessage("pb01.org.emails.hint") )
 				 .setResizable(true)

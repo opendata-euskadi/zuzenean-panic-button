@@ -3,6 +3,8 @@ package x47b.model.search;
 import java.util.Collection;
 import java.util.Date;
 
+import com.google.common.collect.Sets;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -243,12 +245,58 @@ public class X47BSearchResultItemForPanicButtonOrganizationalEntity
         return this.getOrgObjectType() == X47BOrgObjectType.WORKPLACE;
     }
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	PHONES & EMAILS
 /////////////////////////////////////////////////////////////////////////////////////////
     public String getPhonesAsString() {
     	return X47BOrganizationalPersistableObjectBase.phonesAsString(this.getPhones());
     }
     public String getEMailsAsString() {
     	return X47BOrganizationalPersistableObjectBase.emailsAsString(this.getEmails());
+    }
+    public Collection<Phone> getEffectivePhones() {
+    	Collection<Phone> orgPhones = this.getOrganization() != null ? this.getOrganization().getPhones() : null;
+    	Collection<Phone> orgDivPhones = this.getOrgDivision() != null ? this.getOrgDivision().getPhones() : null;
+    	Collection<Phone> orgDivSrvcPhones = this.getOrgDivisionService() != null ? this.getOrgDivisionService().getPhones() : null;
+    	Collection<Phone> orgDivSrvcLocPhones = this.getOrgDivisionServiceLocation() != null ? this.getOrgDivisionServiceLocation().getPhones() : null;
+    	Collection<Phone> workPlacePhones = this.getWorkPlace() != null ? this.getWorkPlace().getPhones() : null;
+
+    	int phoneNum = (orgPhones != null ? orgPhones.size() : 0)
+    				 + (orgDivPhones != null ? orgDivPhones.size() : 0)
+    				 + (orgDivSrvcPhones != null ? orgDivSrvcPhones.size() : 0)
+    				 + (orgDivSrvcLocPhones != null ? orgDivSrvcLocPhones.size() : 0)
+    				 + (workPlacePhones != null ? workPlacePhones.size() : 0);
+    	Collection<Phone> outPhones = Sets.newLinkedHashSetWithExpectedSize(phoneNum);
+    	if (orgPhones != null) 				outPhones.addAll(orgPhones);
+    	if (orgDivPhones != null)			outPhones.addAll(orgDivPhones);
+    	if (orgDivSrvcPhones != null)		outPhones.addAll(orgDivSrvcPhones);
+    	if (orgDivSrvcLocPhones != null)	outPhones.addAll(orgDivSrvcLocPhones);
+    	if (workPlacePhones != null)		outPhones.addAll(workPlacePhones);
+    	return outPhones;
+    }
+    public Collection<EMail> getEffectiveEMails() {
+    	Collection<EMail> orgEMails = this.getOrganization() != null ? this.getOrganization().getEmails() : null;
+    	Collection<EMail> orgDivEMails = this.getOrganization() != null ? this.getOrgDivision().getEmails() : null;
+    	Collection<EMail> orgDivSrvcEMails = this.getOrgDivisionService() != null ? this.getOrgDivisionService().getEmails() : null;
+    	Collection<EMail> orgDivSrvcLocEMails = this.getOrgDivisionServiceLocation() != null ? this.getOrgDivisionServiceLocation().getEmails() : null;
+    	Collection<EMail> workPlaceEMails = this.getWorkPlace() != null ? this.getWorkPlace().getEmails() : null;
+
+    	int EMailNum = (orgEMails != null ? orgEMails.size() : 0)
+    				 + (orgDivEMails != null ? orgDivEMails.size() : 0)
+    				 + (orgDivSrvcEMails != null ? orgDivSrvcEMails.size() : 0)
+    				 + (orgDivSrvcLocEMails != null ? orgDivSrvcLocEMails.size() : 0)
+    				 + (workPlaceEMails != null ? workPlaceEMails.size() : 0);
+    	Collection<EMail> outEMails = Sets.newLinkedHashSetWithExpectedSize(EMailNum);
+    	if (orgEMails != null) 				outEMails.addAll(orgEMails);
+    	if (orgDivEMails != null)			outEMails.addAll(orgDivEMails);
+    	if (orgDivSrvcEMails != null)		outEMails.addAll(orgDivSrvcEMails);
+    	if (orgDivSrvcLocEMails != null)	outEMails.addAll(orgDivSrvcLocEMails);
+    	if (workPlaceEMails != null)		outEMails.addAll(workPlaceEMails);
+    	return outEMails;
+    }
+    public String getEffectivePhonesAsString() {
+    	return X47BOrganizationalPersistableObjectBase.phonesAsString(this.getEffectivePhones());
+    }
+    public String getEffectiveEMailsAsString() {
+    	return X47BOrganizationalPersistableObjectBase.emailsAsString(this.getEffectiveEMails());
     }
 }
