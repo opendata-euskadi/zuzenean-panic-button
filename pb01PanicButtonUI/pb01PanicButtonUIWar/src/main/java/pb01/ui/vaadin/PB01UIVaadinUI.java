@@ -7,10 +7,12 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewProvider;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.communication.PushMode;
 import com.vaadin.ui.UI;
 
 import pb01.ui.vaadin.view.PB01ViewContainer;
@@ -26,6 +28,7 @@ import x47b.common.internal.X47BAppCodes;
 							// 			@include addons;
   							//			@include demoStyles;
 							//		}
+@Push(PushMode.MANUAL)
 @UIMessageBundle(basename={X47BAppCodes.UI_APPCODE_STR})	// loads i18n resource bundles from x47b.i18n
 public class PB01UIVaadinUI
 	 extends UI {

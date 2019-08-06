@@ -5,6 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 <!-- ====================================================================== -->
+<!-- PROPERTIES                                                             -->
+<!-- ====================================================================== -->
+	<properties>
+		<vaadin.version>8.8.0</vaadin.version>	<!-- BEWARE!! must be equal to the one at r01fVaadin8UIServerClasses' pom.xml -->
+	</properties>
+
+<!-- ====================================================================== -->
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
@@ -65,6 +72,11 @@
 			<groupId>r01.r01f.ui.vaadin</groupId>
 			<artifactId>r01fVaadin8UIServerClasses</artifactId>
 			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.vaadin</groupId>
+		    <artifactId>vaadin-push</artifactId>
+		    <version>${vaadin.version}</version>
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
