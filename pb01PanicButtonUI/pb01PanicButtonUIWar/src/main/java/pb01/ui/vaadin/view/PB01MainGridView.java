@@ -68,6 +68,7 @@ public class PB01MainGridView
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public PB01MainGridView(final UII18NService i18n,
+							// the presenter
 							final PB01MainViewPresenter presenter,
 							// presenter for the alarm list view
 							final PB01PresenterForRaisedAlarmsListView alarmListViewPresenter,
@@ -153,7 +154,7 @@ public class PB01MainGridView
 				 .setId( "objType" );
 		// Number of raised alarms
 		_grid.addComponentColumn(this::_createRaisedAlarmsButtonFor)
-			 .setCaption( _i18n.getMessage("pb01.org.alarm.raised.count.short") )
+			 .setCaption( _i18n.getMessage("pb01.alarm.raised.count.short") )
 			 .setDescriptionGenerator(item -> item.getAlarmLastRaiseDateExplained(_i18n))
 			 .setId( "alarmRaiseCount" );
         // ORG
@@ -221,7 +222,7 @@ public class PB01MainGridView
 											// create the button
 											Button btn = new Button();
 											btn.setIcon(VaadinIcons.BOLT);
-											btn.setDescription(_i18n.getMessage("pb01.org.alarm.raise"));
+											btn.setDescription(_i18n.getMessage("pb01.alarm.raise"));
 											btn.addClickListener(event -> _presenter.raiseAlarm(workPlaceOid,
 																								viewAlarm -> {	// update the count shown at the grid
 																												for (PB01ViewObjForSearchResultItem gi : _gridDataProvider.getItems()) {
@@ -231,7 +232,7 @@ public class PB01MainGridView
 																														_grid.getDataProvider().refreshItem(gi);
 																													}
 																												}
-																												Notification.show(_i18n.getMessage("pb01.org.alarm.raised",
+																												Notification.show(_i18n.getMessage("pb01.alarm.raised",
 																																				   item.getWorkPlaceId(),
 																																				   item.getOrgHierarchyExplained()));
 																											 }));

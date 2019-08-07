@@ -12,8 +12,8 @@ import com.vaadin.server.VaadinServlet;
 import lombok.extern.slf4j.Slf4j;
 
 @Singleton
-@VaadinServletConfiguration( ui = PB01UIVaadinUI.class,
-							 productionMode = false )		// TODO change in prod
+@VaadinServletConfiguration(ui = PB01UIVaadinUI.class,
+							productionMode = false)		// TODO change in prod
 @Slf4j
 public class PB01UIVaadinServlet
 	 extends VaadinServlet

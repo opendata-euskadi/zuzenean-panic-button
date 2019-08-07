@@ -1,7 +1,12 @@
 package pb01.ui.bootstrap;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Singleton;
 import javax.script.ScriptEngineManager;
+
+import org.atmosphere.cpr.ApplicationConfig;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Binder;
@@ -29,6 +34,7 @@ import pb01.ui.vaadin.view.PB01MainViewPresenter;
 import r01f.bootstrap.services.config.core.ServicesCoreBootstrapConfigWhenServletExposed;
 import r01f.bootstrap.services.core.ServletImplementedServicesCoreBootstrapGuiceModuleBase;
 import r01f.ui.i18n.UII18NService;
+import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcaster;
 
 @Slf4j
 public class PB01UIWarBootstrapGuiceModule
@@ -40,7 +46,7 @@ public class PB01UIWarBootstrapGuiceModule
 		super( coreBootstrapCfg );
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	MODULE
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void configure( final Binder binder ) {
@@ -51,8 +57,10 @@ public class PB01UIWarBootstrapGuiceModule
 								@Override
 								protected void configureServlets() {
 									// controller
-									this.serve( "/*" )
-										.with(PB01UIVaadinServlet.class);
+									Map<String, String> params = new HashMap<>();
+									params.put(ApplicationConfig.WEBSOCKET_SUPPRESS_JSR356,"true");		// server push: force tomcat native API to take the precedence over JSR356
+									this.serve( "/*" )													// see: https://stackoverflow.com/questions/36917059/atmosphere-is-unable-to-configure-jsr-356
+										.with(PB01UIVaadinServlet.class,params);						// If this param is NOT set: java.lang.IllegalStateException: Unable to configure jsr356 at that stage
 								}
 					  });
 		// Bind the i18n service
@@ -64,6 +72,10 @@ public class PB01UIWarBootstrapGuiceModule
 		binder.bind(EventBus.class)
 			  .annotatedWith(Names.named("uiPresenterEventBus"))
 			  .toInstance(new EventBus());
+
+		// bind the server-side pushed messages broadcaster
+		binder.bind(VaadinServerPushedMessagesBroadcaster.class)
+			  .in(Singleton.class);
 
 
 		// UI & view provider

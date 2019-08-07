@@ -137,7 +137,7 @@ public class PB01RaisedAlarmsListView
 			 .setId( "workPlace" );
 		// DateTime
 		_grid.addColumn( PB01ViewAlarmEvent::getDateTime )
-			 .setCaption( _i18n.getMessage("pb01.org.alarm.dateTime") )
+			 .setCaption( _i18n.getMessage("pb01.alarm.dateTime") )
 			 .setResizable(true)
 			 .setId( "dateTime" );
 	}

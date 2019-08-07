@@ -18,6 +18,7 @@ import pb01.ui.vaadin.view.components.PB01VaadinComboItem;
 import r01f.locale.Language;
 import r01f.ui.presenter.UIPresenter;
 import r01f.ui.presenter.UIPresenterSubscriber;
+import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcaster;
 import r01f.util.types.collections.CollectionUtils;
 import r01f.util.types.collections.Lists;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
@@ -43,6 +44,9 @@ public class PB01MainViewPresenter
     // main core mediator
     private final transient PB01MainViewCOREMediator _coreMediator;
 
+    // server-pushed events broadcaster (used server-push a message to the client when an alarm event is fired)
+    private final VaadinServerPushedMessagesBroadcaster _serverPushedMessagesBroadcaster;
+
     // org entities core mediators
     private final transient PB01COREMediatorForOrganization _coreMediatorForOrg;
     private final transient PB01COREMediatorForOrgDivision _coreMediatorForOrgDiv;
@@ -56,6 +60,8 @@ public class PB01MainViewPresenter
     @Inject
     public PB01MainViewPresenter(// main core mediator
     							 final PB01MainViewCOREMediator coreMediator,
+								 // server-pushed events broadcaster (used server-push a message to the client when an alarm event is fired)
+								 final VaadinServerPushedMessagesBroadcaster serverPushedMessagesBroadcaster,
     							 // org entities core mediators
     							 final PB01COREMediatorForOrganization coreMediatorForOrg,
     							 final PB01COREMediatorForOrgDivision coreMediatorForOrgDiv,
@@ -63,6 +69,8 @@ public class PB01MainViewPresenter
     							 final PB01COREMediatorForOrgDivisionServiceLocation coreMediatorForOrgDivSrvcLoc,
     							 final PB01COREMediatorForWorkPlace coreMediatorForWorkPlace) {
     	_coreMediator = coreMediator;
+
+    	_serverPushedMessagesBroadcaster = serverPushedMessagesBroadcaster;
 
     	_coreMediatorForOrg = coreMediatorForOrg;
     	_coreMediatorForOrgDiv = coreMediatorForOrgDiv;
@@ -117,7 +125,7 @@ public class PB01MainViewPresenter
 	public void raiseAlarm(final X47BWorkPlaceOID workPlaceOid,
 						   final UIPresenterSubscriber<PB01ViewAlarmEvent> subscriber) {
 		_coreMediator.raiseAlarm(workPlaceOid,
-								 alarmEvent -> subscriber.onSuccess(new PB01ViewAlarmEvent(alarmEvent)));
+								 alarmEvent -> subscriber.onSuccess(new PB01ViewAlarmEvent(alarmEvent)));	// Tell the subscriber (the view) that the event was sent
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	COMBOS

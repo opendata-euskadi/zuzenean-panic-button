@@ -8,7 +8,7 @@
 <!-- PROPERTIES                                                             -->
 <!-- ====================================================================== -->
 	<properties>
-		<vaadin.version>8.8.0</vaadin.version>	<!-- BEWARE!! must be equal to the one at r01fVaadin8UIServerClasses' pom.xml -->
+		<vaadin.version>8.8.5</vaadin.version>	<!-- BEWARE!! must be equal to the one at r01fVaadin8UIServerClasses' pom.xml -->
 	</properties>
 
 <!-- ====================================================================== -->

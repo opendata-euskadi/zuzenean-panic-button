@@ -16,7 +16,7 @@ public abstract class PB01UIServletServicesBootstrapConfigBuilder
 /////////////////////////////////////////////////////////////////////////////////////////
 //  R01UIAppCodes
 /////////////////////////////////////////////////////////////////////////////////////////
-	public static ServicesCoreBootstrapConfigWhenServletExposed buildCoreBootstrapConfig() {
+	public static ServicesCoreBootstrapConfigWhenServletExposed buildUIBootstrapConfig() {
 		return ServicesCoreBootstrapConfigBuilder.forCoreAppAndModule(X47BAppCodes.UI_APPCODE,X47BAppCodes.PANICBUTTON_MOD)
 								   				 .servletImplemented()
 								   				 .bootstrappedBy(PB01UIWarBootstrapGuiceModule.class)

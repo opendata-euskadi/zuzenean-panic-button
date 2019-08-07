@@ -11,21 +11,22 @@ import r01f.model.PersistableModelObject;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
+import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
 import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
+import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
 import x47b.model.org.X47BOrgDivision;
 import x47b.model.org.X47BOrgDivisionService;
 import x47b.model.org.X47BOrgDivisionServiceLocation;
+import x47b.model.org.X47BOrgObjectRef;
 import x47b.model.org.X47BOrganization;
 import x47b.model.org.X47BWorkPlace;
 
@@ -34,27 +35,27 @@ import x47b.model.org.X47BWorkPlace;
  */
 public class X47BAlarmMessageEntityAbstracts {
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Encapsulates data about an entity ({@link X47BOrganization}, {@link X47BOrgDivision}, {@link X47BOrgDivisionService}, {@link X47BOrgDivisionServiceLocation}, or {@link X47BWorkPlace}) 
-	 * to be sent in the {@link X47BAlarmMessage} 
-	 * Like {@link X47BAlarmMessage}, this model object is NOT persisted (it's NOT a {@link PersistableModelObject} instance) since it's composed 
-	 * when handling the {@link X47BAlarmEvent} creation event from other model objects 
+	 * Encapsulates data about an entity ({@link X47BOrganization}, {@link X47BOrgDivision}, {@link X47BOrgDivisionService}, {@link X47BOrgDivisionServiceLocation}, or {@link X47BWorkPlace})
+	 * to be sent in the {@link X47BAlarmMessage}
+	 * Like {@link X47BAlarmMessage}, this model object is NOT persisted (it's NOT a {@link PersistableModelObject} instance) since it's composed
+	 * when handling the {@link X47BAlarmEvent} creation event from other model objects
 	 */
 	@Accessors(prefix="_") @NoArgsConstructor @AllArgsConstructor
-	private static class X47BAlarmMessageEntityAbstract<O extends X47BPersistableObjectOID,ID extends X47BPersistableObjectID<O>> {
+	private static class X47BAlarmMessageEntityAbstract<O extends X47BOrgObjectOID,ID extends X47BOrgObjectID<O>> {
 		@MarshallField(as="oid",
 			   	       whenXml=@MarshallFieldAsXml(attr=true))
 		@Getter @Setter private O _entityOid;
-		
+
 		@MarshallField(as="id",
 			   	   	   whenXml=@MarshallFieldAsXml(attr=true))
 		@Getter @Setter private ID _entityId;
-		
+
 		@MarshallField(as="name")
 		@Getter @Setter private LanguageTexts _name;
-		
+
 		public String getDefaultName() {
 			String outName = _name != null ? _name.get(Language.SPANISH) : null;
 			if (outName == null) outName = _name != null ? _name.get(Language.BASQUE) : null;
@@ -63,9 +64,12 @@ public class X47BAlarmMessageEntityAbstracts {
 			if (outName == null) throw new IllegalStateException("NO available name for an alarm entity!");
 			return outName;
 		}
+		public X47BOrgObjectRef<O,ID> getOrgObjectRef() {
+			return new X47BOrgObjectRef<O,ID>(_entityOid,_entityId);
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallType(as="organizationAbstract")
 	public static class X47BAlarmMessageAbstractForOrganization

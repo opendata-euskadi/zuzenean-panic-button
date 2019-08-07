@@ -50,6 +50,7 @@ public class X47BAlarmMessageBuilder
 
 		public X47BAlarmMessage createForEvent(final X47BAlarmEvent event) {
 			_message.setAlarmEventOid(event.getOid());
+			_message.setDateTime(event.getDateTime());
 
 			X47BOrganization org = _api.organizationsAPI()
 										.getForCRUD()

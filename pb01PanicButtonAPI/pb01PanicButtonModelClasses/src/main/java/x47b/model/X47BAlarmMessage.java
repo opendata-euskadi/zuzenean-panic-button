@@ -1,6 +1,7 @@
 package x47b.model;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -12,6 +13,8 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import r01f.model.PersistableModelObject;
 import r01f.objectstreamer.annotations.MarshallField;
+import r01f.objectstreamer.annotations.MarshallField.DateFormat;
+import r01f.objectstreamer.annotations.MarshallField.MarshallDateFormat;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.contact.EMail;
@@ -44,6 +47,10 @@ public class X47BAlarmMessage
 			   	   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private X47BAlarmEventOID _alarmEventOid;
 
+	@MarshallField(as="dateTime",dateFormat=@MarshallDateFormat(use=DateFormat.ISO8601),
+				   whenXml=@MarshallFieldAsXml(attr=true))
+	@Getter @Setter private Date _dateTime;
+
 	@MarshallField(as="organization",
 			   	   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private X47BAlarmMessageAbstractForOrganization _organization;
@@ -51,11 +58,11 @@ public class X47BAlarmMessage
 	@MarshallField(as="division",
 			   	   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private X47BAlarmMessageAbstractForDivision _division;
-	
+
 	@MarshallField(as="service",
 			   	   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private X47BAlarmMessageAbstractForService _service;
-	
+
 	@MarshallField(as="location",
 			   	   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private X47BAlarmMessageAbstractForLocation _location;
@@ -72,7 +79,7 @@ public class X47BAlarmMessage
 			   	   whenXml=@MarshallFieldAsXml(collectionElementName="mail"))
 	@Getter @Setter private Collection<EMail> _mails;
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * @return a {@link Collection} of sanitized phones (removes invalid phones an sets a valid format)

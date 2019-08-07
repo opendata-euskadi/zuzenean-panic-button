@@ -72,6 +72,7 @@ public class PB01MainView
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
 	public PB01MainView(final UII18NService i18n,
+						// the presenter
 						final PB01MainViewPresenter presenter,
 						// presenter for the detail view of every org entity
 						final PB01PresenterForOrganizationDetailView orgDetailViewPresenter,
@@ -150,7 +151,7 @@ public class PB01MainView
 
 		///////// Grid
 		_gridView = new PB01MainGridView(i18n,
-										 presenter,
+										 presenter,								// the presenter
 										 // presenter for the alarm list view
 										 alarmListViewPresenter,
 										 // what happens when an org entity is clicked on the grid
