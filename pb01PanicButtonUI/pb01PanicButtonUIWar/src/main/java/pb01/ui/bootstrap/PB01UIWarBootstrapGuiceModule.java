@@ -10,7 +10,6 @@ import org.atmosphere.cpr.ApplicationConfig;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Binder;
-import com.google.inject.name.Names;
 import com.google.inject.servlet.ServletModule;
 import com.vaadin.navigator.ViewProvider;
 
@@ -33,6 +32,7 @@ import pb01.ui.vaadin.view.PB01MainViewCOREMediator;
 import pb01.ui.vaadin.view.PB01MainViewPresenter;
 import r01f.bootstrap.services.config.core.ServicesCoreBootstrapConfigWhenServletExposed;
 import r01f.bootstrap.services.core.ServletImplementedServicesCoreBootstrapGuiceModuleBase;
+import r01f.inject.annotations.EventBusSingletonImpl;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcaster;
 
@@ -70,7 +70,7 @@ public class PB01UIWarBootstrapGuiceModule
 
 		// bind an event bus instance
 		binder.bind(EventBus.class)
-			  .annotatedWith(Names.named("uiPresenterEventBus"))
+			  .annotatedWith(new EventBusSingletonImpl("uiPresenter"))
 			  .toInstance(new EventBus());
 
 		// bind the server-side pushed messages broadcaster

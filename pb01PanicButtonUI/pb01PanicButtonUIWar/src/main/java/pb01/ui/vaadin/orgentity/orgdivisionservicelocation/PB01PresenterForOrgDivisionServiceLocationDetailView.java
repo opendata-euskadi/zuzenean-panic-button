@@ -1,12 +1,12 @@
 package pb01.ui.vaadin.orgentity.orgdivisionservicelocation;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import com.google.common.eventbus.EventBus;
 
 import pb01.ui.vaadin.orgentity.PB01PresenterForOrgObjectDetailBase;
+import r01f.inject.annotations.EventBusSingleton;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 import x47b.model.org.X47BOrgDivisionServiceLocation;
 
@@ -21,7 +21,7 @@ public class PB01PresenterForOrgDivisionServiceLocationDetailView
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public PB01PresenterForOrgDivisionServiceLocationDetailView(@Named("uiPresenterEventBus") final EventBus eventBus,
+	public PB01PresenterForOrgDivisionServiceLocationDetailView(@EventBusSingleton(usedFor="uiPresenter") final EventBus eventBus,
 																final PB01COREMediatorForOrgDivisionServiceLocation coreMediator) {
 		super(eventBus,
 			  coreMediator,

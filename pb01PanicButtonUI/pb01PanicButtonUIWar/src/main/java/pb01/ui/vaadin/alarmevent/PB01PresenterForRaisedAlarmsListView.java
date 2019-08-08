@@ -6,7 +6,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import com.google.common.cache.Cache;
@@ -23,6 +22,7 @@ import pb01.ui.vaadin.orgentity.orgdivisionservicelocation.PB01COREMediatorForOr
 import pb01.ui.vaadin.orgentity.workplace.PB01COREMediatorForWorkPlace;
 import pb01.ui.vaadin.view.events.PB01OrgObjectChangedEvent;
 import r01f.facets.LangDependentNamed.HasLangDependentNamedFacet;
+import r01f.inject.annotations.EventBusSingleton;
 import r01f.locale.Language;
 import r01f.locale.LanguageTexts;
 import r01f.types.Range;
@@ -64,7 +64,7 @@ public class PB01PresenterForRaisedAlarmsListView
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
     @Inject
-    public PB01PresenterForRaisedAlarmsListView(@Named("uiPresenterEventBus") final EventBus eventBus,
+    public PB01PresenterForRaisedAlarmsListView(@EventBusSingleton(usedFor="uiPresenter") final EventBus eventBus,
     											final PB01COREMediatorForRaisedAlarmsListView coreMediator,
     										 	// org entities core mediators
     										 	final PB01COREMediatorForOrganization coreMediatorForOrg,
