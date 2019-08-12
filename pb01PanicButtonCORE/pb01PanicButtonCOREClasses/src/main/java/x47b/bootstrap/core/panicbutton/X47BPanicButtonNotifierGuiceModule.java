@@ -15,6 +15,8 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import lombok.EqualsAndHashCode;
+import r01f.cloud.twilio.TwilioService;
+import r01f.cloud.twilio.TwilioServiceProvider;
 import r01f.mail.JavaMailSenderProvider;
 import r01f.model.annotations.ModelObjectsMarshaller;
 import r01f.notifier.UseEMailNotifier;
@@ -24,8 +26,6 @@ import r01f.notifier.UseVoiceNotifier;
 import r01f.objectstreamer.Marshaller;
 import r01f.services.latinia.LatiniaService;
 import r01f.services.latinia.LatiniaServiceProvider;
-import r01f.twilio.TwilioService;
-import r01f.twilio.TwilioServiceProvider;
 import x47b.internal.services.X47BNotifierConfigForEMail;
 import x47b.internal.services.X47BNotifierConfigForLatinia;
 import x47b.internal.services.X47BNotifierConfigForLog;

@@ -14,8 +14,8 @@ import com.twilio.sdk.TwilioRestException;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import r01f.cloud.twilio.TwilioService;
 import r01f.internal.R01F;
-import r01f.twilio.TwilioService;
 import r01f.types.Path;
 import r01f.types.contact.Phone;
 import r01f.types.url.Url;

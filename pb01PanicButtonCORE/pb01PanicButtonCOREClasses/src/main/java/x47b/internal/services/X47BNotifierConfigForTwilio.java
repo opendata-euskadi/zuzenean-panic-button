@@ -2,7 +2,7 @@ package x47b.internal.services;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import r01f.twilio.TwilioConfig;
+import r01f.cloud.twilio.TwilioConfig;
 import r01f.types.Path;
 import r01f.types.url.Url;
 import r01f.xmlproperties.XMLPropertiesForAppComponent;
