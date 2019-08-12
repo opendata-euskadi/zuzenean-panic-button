@@ -27,7 +27,7 @@
 
 	<!-- JavaMail sender config -->
 	<javaMailSenderImpls active="google_API">
-		<javaMailSenderImpl id='microsoft_exchange'>
+		<javaMailSenderImpl id='smtp'>
 			<host>mail_server</host>
 		</javaMailSenderImpl>
 		<javaMailSenderImpl id='google_API'>
