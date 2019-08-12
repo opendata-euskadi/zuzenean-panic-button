@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+================================================================================
+	 X47B LOGBACK CONFIGURATION
+================================================================================
+-->
+<included>
+	<logger name="x47b" level="debug">
+		<appender-ref ref="app_log" />
+	</logger>
+</included>
+

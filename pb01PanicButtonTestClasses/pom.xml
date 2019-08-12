@@ -38,7 +38,7 @@
 		</dependency>
 		<dependency>
 			<groupId>pb01.core.config</groupId>
-			<artifactId>pb01PanicButtonConfig</artifactId>
+			<artifactId>pb01PanicButtonCOREConfig</artifactId>
 			<version>${pb01.version}</version>
 		</dependency>
 		<dependency>
