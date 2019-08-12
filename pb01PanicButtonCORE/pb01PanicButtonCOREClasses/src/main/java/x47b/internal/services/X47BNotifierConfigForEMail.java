@@ -18,7 +18,7 @@ public class X47BNotifierConfigForEMail
 	@Getter private final EMail _from;
 	@Getter private final Path _msgImage;
 /////////////////////////////////////////////////////////////////////////////////////////
-//	CONSTRUCTOR  
+//	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	private X47BNotifierConfigForEMail(final boolean enabled,
 							 		   final Path alertMsgTemplatePath,
@@ -32,7 +32,7 @@ public class X47BNotifierConfigForEMail
 		_from = from;
 	}
 	private X47BNotifierConfigForEMail(final XMLPropertiesForAppComponent props) {
-		super("voice",
+		super("mail",
 			  props);
 		_mailSenderConfig = JavaMailSenderConfigBuilder.createFrom(props,
 							 					  				   "notifier");

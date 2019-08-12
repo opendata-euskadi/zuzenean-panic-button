@@ -108,7 +108,7 @@ implements Module {
 										Properties velocityProps = new Properties();
 										velocityProps.put(RuntimeConstants.DEFAULT_RUNTIME_LOG_NAME,"pb01velocity");
 										velocityProps.put(RuntimeConstants.RESOURCE_LOADER,"class");
-								        velocityProps.put(RuntimeConstants.RESOURCE_LOADER_CLASS,ClasspathResourceLoader.class.getName());
+										velocityProps.setProperty("class.resource.loader.class",ClasspathResourceLoader.class.getName());
 
 										VelocityEngine outVelocityEngine = new VelocityEngine();
 										outVelocityEngine.setProperties(velocityProps);
