@@ -8,7 +8,7 @@
 	<notifiers>
 		<log enabled="false"/>
 		<mail enabled="true">
-			<from>user@mydomain.com</from>
+			<from mail="me@futuretelematics.net">Zuzenean</from>
 			<msgTemplate>x47b/notifier/X47BMailMessageTemplate.vm</msgTemplate>
 			<msgHeaderImage>x47b/notifier/x47bLogo.gif</msgHeaderImage>
 		</mail>

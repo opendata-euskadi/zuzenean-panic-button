@@ -18,6 +18,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import r01f.internal.R01F;
+import r01f.mail.model.EMailRFC822Address;
 import r01f.service.ServiceCanBeDisabled;
 import r01f.types.Path;
 import r01f.types.contact.EMail;
@@ -83,46 +84,82 @@ public class X47BPanicButtonNotifierServicesEMailImpl
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Send a mail message when an alarm message is received
-	 * @param mail
+	 * @param to
 	 * @param org
 	 * @param log
 	 * @param workPlace
 	 */
-	private void _sendEMailMessage(final EMail mail,
+	private void _sendEMailMessage(final EMail to,
 								   final X47BAlarmMessageAbstractForOrganization org,
 								   final X47BAlarmMessageAbstractForDivision div,
 								   final X47BAlarmMessageAbstractForService srvc,
 								   final X47BAlarmMessageAbstractForLocation loc,
 								   final X47BAlarmMessageAbstractForWorkPlace workPlace) {
-		log.info("\t-->sending email to {} using {}",mail,_mailSender.getClass());
+		log.info("\t-->sending email to {} using {}",to,_mailSender.getClass());
 
 		// [1] - Create a MimeMessagePreparator
 		final String subject = _composeMailMessageSubject(org,loc,workPlace);
 		final String body = _composeMailMessageBody(_velocityEngine,_config.getAlertMsgTemplatePath(),
 													org,div,srvc,loc,workPlace);
+
+//		EMailMessage msg = EMailMessageBuilder.from(EMailRFC822Address.of("me@futuretelematics.net"))
+//											  .to(EMailRFC822Address.of(to))
+//											  .noCC().noBCC()
+//											  .withSubject(subject)
+//											  .withPlainTextBody(body)
+//											  .build();
+//		// one way to send
+//		try {
+//			AWSClientConfig cfg = AWSClientConfigBuilder.region(Region.EU_WEST_1)
+//											.using(AWSAccessKey.forId("AKIASOHENLOJWOPU37CL"),
+//												   AWSAccessSecret.forId("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"))
+//											.charset(Charset.defaultCharset())
+//											.build();
+//			AWSSESClientConfig sesCfg = new AWSSESClientConfig(cfg);
+//			AWSSESClient sesCli = new AWSSESClient(sesCfg);
+//
+//			SesResponse res = sesCli.sendEMail(msg);
+//			log.warn("EMail message sent (id={}",
+//					 ((SendEmailResponse)res).messageId());
+//		} catch (Throwable th) {
+//			th.printStackTrace();
+//		}
+// 		// Another way
+//		try {
+//			MimeMessage mimeMsg = EMailMimeMessages.createMimeMessageFor(msg)
+//												   .withDefaultCharset()
+//												   .usingDefaultSession()
+//												   .noAttachments()
+//												   .build();
+//			_mailSender.send(mimeMsg);
+//		} catch (Throwable th) {
+//			th.printStackTrace();
+//		}
+
+		// the proper way
 		MimeMessagePreparator msgPreparator = new MimeMessagePreparator() {
 													@Override
 										            public void prepare(final MimeMessage mimeMessage) throws Exception {
-														_createMimeMessageHelper(mimeMessage,
-																				 mail,
-																				 _config.getFrom(),
-																				 subject,
-																				 body);
+														_createMimeMessage(mimeMessage,
+																		   to,
+																		   _config.getFrom(),
+																		   subject,
+																		   body);
 										            }
 											  };
-		// [2] - Send the message
+		  // [2] - Send the message
         _mailSender.send(msgPreparator);
 	}
-	private MimeMessageHelper _createMimeMessageHelper(final MimeMessage mimeMessage,
-													   final EMail to,
-													   final EMail from,
-													   final String subject,
-													   final String text) throws MessagingException {
+	private void _createMimeMessage(final MimeMessage mimeMessage,
+									final EMail to,
+									final EMailRFC822Address from,
+									final String subject,
+									final String text) throws MessagingException {
 	    MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
 	    												  true);	// multi-part!!
 	    // To & From
 	    message.setTo(to.asString());
-	    message.setFrom(from.asString());
+	    message.setFrom(from.asRFC822Address());
 
 	    // Subject
 	    message.setSubject(subject);
@@ -135,7 +172,6 @@ public class X47BPanicButtonNotifierServicesEMailImpl
         ClassPathResource res = new ClassPathResource(_config.getAlertMsgTemplatePath()
         													 .asRelativeString());
         message.addInline("logo",res);
-	    return message;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  MAIL MESSAGE COMPOSING
