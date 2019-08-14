@@ -15,10 +15,7 @@ import x47b.events.X47BCRUDOKEventListenersForAlarmEvents.X47BCRUDOKEventListene
 import x47b.events.X47BCRUDOKEventListenersForAlarmEvents.X47BCRUDOKEventListenersForAlarmMessageNotifyByEMail;
 import x47b.events.X47BCRUDOKEventListenersForAlarmEvents.X47BCRUDOKEventListenersForAlarmMessageNotifyByMessaging;
 import x47b.events.X47BCRUDOKEventListenersForAlarmEvents.X47BCRUDOKEventListenersForAlarmMessageNotifyByVoice;
-import x47b.internal.services.X47BNotifierConfigForEMail;
-import x47b.internal.services.X47BNotifierConfigForLatinia;
-import x47b.internal.services.X47BNotifierConfigForLog;
-import x47b.internal.services.X47BNotifierConfigForTwilio;
+import x47b.internal.services.config.X47BNotifiersConfig;
 
 
 @EqualsAndHashCode(callSuper=true)									// This is important for guice modules
@@ -36,10 +33,7 @@ public class X47BPanicButtonServicesBootstrapGuiceModule
 			  new X47BPanicButtonSearchGuiceModule(SearchModuleConfigBuilder.searchModuleConfigFrom(coreBootstrapCfg)),
 			  // other modules: notifier
 			  new Module[] {
-					  new X47BPanicButtonNotifierGuiceModule((X47BNotifierConfigForLog)coreBootstrapCfg.getSubModuleConfigFor(AppComponent.forId("logNotifier")),
-							  								 (X47BNotifierConfigForEMail)coreBootstrapCfg.getSubModuleConfigFor(AppComponent.forId("mailNotifier")),
-							  								 (X47BNotifierConfigForLatinia)coreBootstrapCfg.getSubModuleConfigFor(AppComponent.forId("latiniaNotifier")),
-							  								 (X47BNotifierConfigForTwilio)coreBootstrapCfg.getSubModuleConfigFor(AppComponent.forId("twilioNotifier")))
+					  new X47BPanicButtonNotifierGuiceModule((X47BNotifiersConfig)coreBootstrapCfg.getSubModuleConfigFor(AppComponent.forId("notifier")))
 			  });
 	}
 /////////////////////////////////////////////////////////////////////////////////////////

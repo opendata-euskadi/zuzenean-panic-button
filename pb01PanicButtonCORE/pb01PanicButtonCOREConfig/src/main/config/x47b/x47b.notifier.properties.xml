@@ -7,18 +7,19 @@
 	<!-- Notifiers config -->
 	<notifiers>
 		<log enabled="false"/>
-		<mail enabled="true">
+		<email enabled="true" impl="aws">	<!-- impls: smtp | aws | google/api | google/smtp -->
 			<from mail="me@futuretelematics.net">Zuzenean</from>
-			<msgTemplate>x47b/notifier/X47BMailMessageTemplate.vm</msgTemplate>
+			<msgTemplate>x47b/notifier/x47bEMAILMessageTemplate.vm</msgTemplate>
 			<msgHeaderImage>x47b/notifier/x47bLogo.gif</msgHeaderImage>
-		</mail>
-		<messaging enabled="false">
-			<impl>latinia</impl>	<!-- latinia / twilio / aws sns -->
-			<msgTemplate>x47b/notifier/X47BMessagingTemplate.vm</msgTemplate>
-		</messaging>
-		<voice enabled="false">
+		</email>
+		<sms enabled="true" impl="aws">	<!-- impls: latinia | aws -->
+			<from phone="012">Zuzenean</from>
+			<smsTemplate>x47b/notifier/x47bSMSMessageTemplate.vm</smsTemplate>
+		</sms>
+		<voice enabled="false" impl="twilio">	<!-- impls: twilio -->
+			<from phone="012">Zuzenean</from>
 			<twmlUrl>https://dl.dropboxusercontent.com/u/1264561/testTwilioTWML.xml</twmlUrl>	<!-- ie: http://demo.twilio.com/docs/voice.xml -->
-			<msgTemplate>x47b/notifier/X47BVoiceTemplate.vm</msgTemplate>
+			<msgTemplate>x47b/notifier/x47bVOICEMessageTemplate.vm</msgTemplate>
 		</voice>
 	</notifiers>
 </notifier>

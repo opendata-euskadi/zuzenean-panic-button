@@ -12,13 +12,13 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 import lombok.extern.slf4j.Slf4j;
+import r01f.core.services.notifier.NotifierServicesForSMS;
 import r01f.internal.R01F;
-import r01f.model.latinia.LatiniaRequestMessage;
-import r01f.model.latinia.LatiniaResponse;
-import r01f.services.latinia.LatiniaService;
+import r01f.patterns.Factory;
 import r01f.types.Path;
 import r01f.types.contact.Phone;
 import r01f.util.types.collections.CollectionUtils;
+import x47b.internal.services.config.X47BNotifierConfigForSMS;
 import x47b.model.X47BAlarmMessage;
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForDivision;
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForLocation;
@@ -27,75 +27,57 @@ import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForSer
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForWorkPlace;
 
 /**
- * Latinia notifier, sends SMS to Latinia services.
+ * SMS notifier
  */
 @Singleton
 @Slf4j
-public class X47BPanicButtonNotifierServicesLatiniaImpl
-     extends X47BPanicButtonNotifierServicesBase<X47BNotifierConfigForLatinia> {
+public class X47BPanicButtonNotifierServicesSMSImpl
+     extends X47BPanicButtonNotifierServicesBase<X47BNotifierConfigForSMS> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Latinia services
+	 * SMS notifier services
 	 */
-	private final LatiniaService _latiniaService;
+	private final NotifierServicesForSMS _smsNotifier;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTORS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public X47BPanicButtonNotifierServicesLatiniaImpl(final X47BNotifierConfigForLatinia config,final LatiniaService latiniaService,
-												      final VelocityEngine velocityEngine) {
+	public X47BPanicButtonNotifierServicesSMSImpl(final X47BNotifierConfigForSMS config,final NotifierServicesForSMS smsNotifier,
+												  final VelocityEngine velocityEngine) {
 		super(config,
 			  velocityEngine);
-		_latiniaService = latiniaService;
+		_smsNotifier = smsNotifier;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void sendNotification(final X47BAlarmMessage alarmMessage) {
-		boolean enabled = _config.isEnabled();
-		if (!enabled) {
-			log.warn("Instant message sending is DISABLED!");
+		if (!this.isEnabledConsidering(_smsNotifier)) {
+			log.warn("SMS notifier is DISABLED!");
 			return;
 		}
-		log.info("==============>SEND ALERT EVENT NOTIFICATION BY (latinia)!!!");
+		log.warn("[SMS Notifier ({})]================================================",
+				 _smsNotifier.getClass().getSimpleName());
 		Collection<Phone> phones = alarmMessage.getPhonesSanitized();
-		if (CollectionUtils.hasData(phones)) {
-			// We must send "one message per phone" because when sends Latinia's priority messages, works only with single phone per message.
-			for(final Phone currPhone:phones) {
-				// Transform X47BAlarmMessage to X47BLatiniaRequestMessage
-				// BEWARE! 	Do NOT set timestamp because the message MUST immediately delivered,
-				//			(timestamp should be used when delivering deferred messages).
-				LatiniaRequestMessage latiniaMsg = new LatiniaRequestMessage();
-				latiniaMsg.setAcknowledge("S"); // Telephone company must send acknowledge to latinia service,
-												// X47B does NOT received this confirmation directly
-				latiniaMsg.setMessageContent(_composeIMMessage(_velocityEngine,_config.getAlertMsgTemplatePath(),
-															   alarmMessage.getOrganization(),
-															   alarmMessage.getDivision(),
-															   alarmMessage.getService(),
-															   alarmMessage.getLocation(),
-															   alarmMessage.getWorkPlace()));
-
-				// One phone
-				latiniaMsg.setReceiverNumbers(currPhone.asStringWithoutCountryCode());
-
-				// Send Message to Latinia service
-				log.warn("\t--> Sending an instant message to: {}",currPhone.asStringWithoutCountryCode());
-				LatiniaResponse response = _latiniaService.sendNotification(latiniaMsg);
-
-				//TODO Write response into database
-//					X47BClientAPI api = X47BClientAPIProvider.getDefaultApi();
-//					X47BAlarmEvent alarmEvent = api.alarmEventsAPI()
-//													.getForCRUD()
-//													.load(alarmMessage.getAlarmEventOid());
-//					X47BNotifierResponse alarmResponse = alarmEvent.getAlarmNotificationMsg() != null ? alarmEvent.getAlarmNotificationMsg()
-//																									  : new X47BNotifierResponse("");
-			}
-		} else {
-			log.warn("\t--> there aren�t phones to send message...");
+		if (CollectionUtils.isNullOrEmpty(phones)) {
+			log.warn("... NO phones to notify to");
+			return;
 		}
+		_smsNotifier.notifyAll(_config.getFrom(),phones,
+							   new Factory<String>() {
+										@Override
+										public String create() {
+											return _composeIMMessage(_velocityEngine,_config.getMsgTemplatePath(),
+															   		  alarmMessage.getOrganization(),
+															   		  alarmMessage.getDivision(),
+															   		  alarmMessage.getService(),
+															   		  alarmMessage.getLocation(),
+															   		  alarmMessage.getWorkPlace());
+										}
+							   });
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	PRIVATE METHODS

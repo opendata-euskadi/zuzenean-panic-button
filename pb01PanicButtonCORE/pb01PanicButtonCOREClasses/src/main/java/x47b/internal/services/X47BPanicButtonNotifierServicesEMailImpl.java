@@ -1,11 +1,12 @@
 package x47b.internal.services;
 
 import java.io.StringWriter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.mail.MessagingException;
+import javax.inject.Singleton;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.velocity.VelocityContext;
@@ -13,17 +14,23 @@ import org.apache.velocity.app.VelocityEngine;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
+
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import r01f.core.services.mail.model.EMailRFC822Address;
+import r01f.core.services.mail.notifier.JavaMailSenderNotifierServices;
+import r01f.core.services.notifier.NotifierServicesForEMail;
 import r01f.internal.R01F;
-import r01f.mail.model.EMailRFC822Address;
-import r01f.service.ServiceCanBeDisabled;
+import r01f.patterns.Factory;
 import r01f.types.Path;
 import r01f.types.contact.EMail;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
+import x47b.internal.services.config.X47BNotifierConfigForEMail;
 import x47b.model.X47BAlarmMessage;
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForDivision;
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForLocation;
@@ -35,49 +42,51 @@ import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForWor
  * EMail notifier
  */
 @Slf4j
+@Singleton
 public class X47BPanicButtonNotifierServicesEMailImpl
      extends X47BPanicButtonNotifierServicesBase<X47BNotifierConfigForEMail> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Getter private final JavaMailSender _mailSender;
+	@Getter private final NotifierServicesForEMail _mailNotifier;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public X47BPanicButtonNotifierServicesEMailImpl(final X47BNotifierConfigForEMail mailSenderConfig,final JavaMailSender mailSender,
+	public X47BPanicButtonNotifierServicesEMailImpl(final X47BNotifierConfigForEMail notifierConfig,final NotifierServicesForEMail notifier,
 												    final VelocityEngine velocityEngine) {
-		super(mailSenderConfig,
+		super(notifierConfig,
 			  velocityEngine);
-		_mailSender = mailSender;
+		_mailNotifier = notifier;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void sendNotification(final X47BAlarmMessage alarmMessage) {
-		boolean isEnabled = this.isEnabled();
-		if (_mailSender instanceof ServiceCanBeDisabled) {
-			ServiceCanBeDisabled serviceCanBeDisabled = (ServiceCanBeDisabled)_mailSender;
-			if (serviceCanBeDisabled.isDisabled()) isEnabled = false;
+		if (!this.isEnabledConsidering(_mailNotifier)) {
+			log.warn("EMail notifier is DISABLED!");
+			return;
 		}
-		if (isEnabled) {
-			log.info("==============>SEND ALERT EVENT NOTIFICATION BY EMAIL");
-			if (CollectionUtils.hasData(alarmMessage.getMails())) {
-				for (EMail mail : alarmMessage.getMails()) {
-					_sendEMailMessage(mail,
-									   alarmMessage.getOrganization(),
-									   alarmMessage.getDivision(),
-									   alarmMessage.getService(),
-									   alarmMessage.getLocation(),
-									   alarmMessage.getWorkPlace());
-				}
-			} else {
-				log.warn("\t--> there aren�t eMails to send message...");
-			}
-		} else {
-			log.warn("Mail sending is DISABLED");
+		log.warn("[EMailNotifier ({})]================================================",
+				 _mailNotifier.getClass().getSimpleName());
+		if (CollectionUtils.isNullOrEmpty(alarmMessage.getMails())) {
+			log.warn("... NO phones to notify to");
+			return;
 		}
+		_sendEMailMessage(FluentIterable.from(alarmMessage.getMails())
+										.transform(new Function<EMail,EMailRFC822Address>() {
+															@Override
+															public EMailRFC822Address apply(final EMail to) {
+																return EMailRFC822Address.of(to);
+															}
+												   })
+										.toList(),
+						  alarmMessage.getOrganization(),
+						  alarmMessage.getDivision(),
+						  alarmMessage.getService(),
+						  alarmMessage.getLocation(),
+						  alarmMessage.getWorkPlace());
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -89,89 +98,44 @@ public class X47BPanicButtonNotifierServicesEMailImpl
 	 * @param log
 	 * @param workPlace
 	 */
-	private void _sendEMailMessage(final EMail to,
+	private void _sendEMailMessage(final Collection<EMailRFC822Address> to,
 								   final X47BAlarmMessageAbstractForOrganization org,
 								   final X47BAlarmMessageAbstractForDivision div,
 								   final X47BAlarmMessageAbstractForService srvc,
 								   final X47BAlarmMessageAbstractForLocation loc,
 								   final X47BAlarmMessageAbstractForWorkPlace workPlace) {
-		log.info("\t-->sending email to {} using {}",to,_mailSender.getClass());
+		log.info("\t-->sending email to {} using {}",to,_mailNotifier.getClass());
 
 		// [1] - Create a MimeMessagePreparator
 		final String subject = _composeMailMessageSubject(org,loc,workPlace);
-		final String body = _composeMailMessageBody(_velocityEngine,_config.getAlertMsgTemplatePath(),
+		final String body = _composeMailMessageBody(_velocityEngine,_config.getMsgTemplatePath(),
 													org,div,srvc,loc,workPlace);
 
-//		EMailMessage msg = EMailMessageBuilder.from(EMailRFC822Address.of("me@futuretelematics.net"))
-//											  .to(EMailRFC822Address.of(to))
-//											  .noCC().noBCC()
-//											  .withSubject(subject)
-//											  .withPlainTextBody(body)
-//											  .build();
-//		// one way to send
-//		try {
-//			AWSClientConfig cfg = AWSClientConfigBuilder.region(Region.EU_WEST_1)
-//											.using(AWSAccessKey.forId("AKIASOHENLOJWOPU37CL"),
-//												   AWSAccessSecret.forId("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"))
-//											.charset(Charset.defaultCharset())
-//											.build();
-//			AWSSESClientConfig sesCfg = new AWSSESClientConfig(cfg);
-//			AWSSESClient sesCli = new AWSSESClient(sesCfg);
-//
-//			SesResponse res = sesCli.sendEMail(msg);
-//			log.warn("EMail message sent (id={}",
-//					 ((SendEmailResponse)res).messageId());
-//		} catch (Throwable th) {
-//			th.printStackTrace();
-//		}
-// 		// Another way
-//		try {
-//			MimeMessage mimeMsg = EMailMimeMessages.createMimeMessageFor(msg)
-//												   .withDefaultCharset()
-//												   .usingDefaultSession()
-//												   .noAttachments()
-//												   .build();
-//			_mailSender.send(mimeMsg);
-//		} catch (Throwable th) {
-//			th.printStackTrace();
-//		}
-
-		// the proper way
-		MimeMessagePreparator msgPreparator = new MimeMessagePreparator() {
-													@Override
-										            public void prepare(final MimeMessage mimeMessage) throws Exception {
-														_createMimeMessage(mimeMessage,
-																		   to,
-																		   _config.getFrom(),
-																		   subject,
-																		   body);
-										            }
-											  };
 		  // [2] - Send the message
-        _mailSender.send(msgPreparator);
-	}
-	private void _createMimeMessage(final MimeMessage mimeMessage,
-									final EMail to,
-									final EMailRFC822Address from,
-									final String subject,
-									final String text) throws MessagingException {
-	    MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
-	    												  true);	// multi-part!!
-	    // To & From
-	    message.setTo(to.asString());
-	    message.setFrom(from.asRFC822Address());
+        _mailNotifier.notifyAll(_config.getFrom(),to,
+        						// mime message factory
+        						new Factory<MimeMessage>() {
+										@Override @SneakyThrows
+										public MimeMessage create() {
+											JavaMailSender mailSender = ((JavaMailSenderNotifierServices)_mailNotifier).getSpringJavaMailSender();
+											MimeMessage mimeMessage = mailSender.createMimeMessage();
+										    MimeMessageHelper msgHelper = new MimeMessageHelper(mimeMessage,
+										    												    true);	// multi-part!!
+										    // To & From
+										    msgHelper.setTo(EMailRFC822Address.multipleAsRFC822Address(to));
+										    msgHelper.setFrom(_config.getFrom().asRFC822Address());
 
-	    // Subject
-	    message.setSubject(subject);
-
-	    // Text
-	    message.setText(text,
-	    				true);	// html message
-
-	    // Header image (ALWAYS AFTER message.setText())
-        ClassPathResource res = new ClassPathResource(_config.getAlertMsgTemplatePath()
-        													 .asRelativeString());
-        message.addInline("logo",res);
+										    // Subject & Text
+										    msgHelper.setSubject(subject);
+										    msgHelper.setText(body,
+										    				  true);	// html message
+										    // Header image (ALWAYS AFTER message.setText())
+									        ClassPathResource res = new ClassPathResource(_config.getMsgTemplatePath()
+									        													 .asRelativeString());
+									        msgHelper.addInline("logo",res);
+									        return mimeMessage;
+										}
+								});
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  MAIL MESSAGE COMPOSING

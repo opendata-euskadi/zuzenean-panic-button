@@ -10,15 +10,14 @@ import javax.inject.Singleton;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
-import com.twilio.sdk.TwilioRestException;
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import r01f.cloud.twilio.TwilioService;
+import r01f.core.services.notifier.NotifierServicesForVoicePhoneCall;
 import r01f.internal.R01F;
+import r01f.patterns.Factory;
 import r01f.types.Path;
-import r01f.types.contact.Phone;
-import r01f.types.url.Url;
+import r01f.util.types.collections.CollectionUtils;
+import x47b.internal.services.config.X47BNotifierConfigForVoice;
 import x47b.model.X47BAlarmMessage;
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForDivision;
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForLocation;
@@ -27,50 +26,53 @@ import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForSer
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForWorkPlace;
 
 /**
- * A notifier that just logs the message
+ * A notifier that makes a voice call and locutates the message
  */
-@Singleton
 @Slf4j
+@Singleton
 public class X47BPanicButtonNotifierServicesVoiceImpl
-     extends X47BPanicButtonNotifierServicesBase<X47BNotifierConfigForTwilio> {
+     extends X47BPanicButtonNotifierServicesBase<X47BNotifierConfigForVoice> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Getter private final TwilioService _twilioService;
+	@Getter private final NotifierServicesForVoicePhoneCall _voiceNotifier;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTORS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public X47BPanicButtonNotifierServicesVoiceImpl(final X47BNotifierConfigForTwilio twilioConfig,final TwilioService twilioService,
+	public X47BPanicButtonNotifierServicesVoiceImpl(final X47BNotifierConfigForVoice config,final NotifierServicesForVoicePhoneCall voiceNotifier,
 													final VelocityEngine velocityEngine) {
-		super(twilioConfig,
+		super(config,
 			  velocityEngine);
-		_twilioService = twilioService;
+		_voiceNotifier = voiceNotifier;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void sendNotification(final X47BAlarmMessage alarmMessage) {
-		boolean isEnabled = this.isEnabled() & _twilioService.isEnabled();
-		if (isEnabled) {
-			log.info("==============>SEND ALERT EVENT NOTIFICATION BY VOICE (twilio)");
-			if (alarmMessage.getPhonesSanitized() != null) {
-				try {
-					for (Phone phone : alarmMessage.getPhonesSanitized()) {
-						Phone intPhone = Phone.of(phone.asStringEnsuringCountryCode("+34"));	// ensure the phone contains +34
-						log.warn("\t--> sending voice message to {}",intPhone);
-						Url twmlUrl = Url.from("https://dl.dropboxusercontent.com/u/1264561/testTwilioTWML.xml");
-						_twilioService.makeCall(intPhone,
-												twmlUrl);
-					}
-				} catch (TwilioRestException restEx) {
-					restEx.printStackTrace(System.out);
-				}
-			} else {
-				log.warn("\t--> there aren�t phones to send message...");
-			}
+		if (!this.isEnabledConsidering(_voiceNotifier)) {
+			log.warn("Voice notifier is DISABLED!");
+			return;
 		}
+		log.warn("[VoiceNotifier ({})]================================================",
+				 _voiceNotifier.getClass().getSimpleName());
+		if (CollectionUtils.isNullOrEmpty(alarmMessage.getPhonesSanitized())) {
+			log.warn("... NO phones to notify to");
+			return;
+		}
+		_voiceNotifier.notifyAll(_config.getFrom(),alarmMessage.getPhonesSanitized(),
+								 new Factory<String>() {
+										@Override
+										public String create() {
+											return _composeVoiceMessage(_velocityEngine,_config.getMsgTemplatePath(),
+																		alarmMessage.getOrganization(),
+																		alarmMessage.getDivision(),
+																		alarmMessage.getService(),
+																		alarmMessage.getLocation(),
+																		alarmMessage.getWorkPlace());
+										}
+								 });
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //

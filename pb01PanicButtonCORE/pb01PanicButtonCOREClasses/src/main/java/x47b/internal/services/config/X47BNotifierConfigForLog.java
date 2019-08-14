@@ -1,28 +1,29 @@
-package x47b.internal.services;
+package x47b.internal.services.config;
 
 import lombok.experimental.Accessors;
-import r01f.types.Path;
+import r01f.core.services.notifier.config.NotifierConfigForLogBase;
+import r01f.core.services.notifier.config.NotifierEnums.NotifierImpl;
 import r01f.xmlproperties.XMLPropertiesForAppComponent;
+import x47b.common.internal.X47BAppCodes;
 
 @Accessors(prefix="_")
 public class X47BNotifierConfigForLog
-     extends X47BNotifierServiceConfigBase {
+     extends NotifierConfigForLogBase {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	// nothing specific
 /////////////////////////////////////////////////////////////////////////////////////////
-//	CONSTRUCTOR  
+//	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	private X47BNotifierConfigForLog(final boolean enabled,
-							 	     final Path alertMsgTemplatePath) {
-		super("log",
+									 final NotifierImpl impl) {
+		super(X47BAppCodes.CORE_APPCODE,
 			  enabled,
-			  alertMsgTemplatePath);
+			  impl);
 	}
 	private X47BNotifierConfigForLog(final XMLPropertiesForAppComponent props) {
-		super("log",
-			  props);
+		super(props);
 	}
 	public static final X47BNotifierConfigForLog createFrom(final XMLPropertiesForAppComponent props) {
 		return new X47BNotifierConfigForLog(props);

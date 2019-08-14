@@ -24,7 +24,7 @@ import r01f.objectstreamer.annotations.MarshallField.MarshallDateFormat;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.types.contact.EMail;
 import r01f.types.contact.Phone;
-import r01f.types.contact.ValidatedContactID;
+import r01f.types.contact.ValidatedContactMean;
 import r01f.types.summary.Summary;
 import r01f.types.summary.SummaryBuilder;
 import r01f.util.types.StringSplitter;
@@ -169,11 +169,11 @@ public abstract class X47BOrganizationalPersistableObjectBase<O extends X47BOrgO
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	private static String _colToString(final Collection<? extends ValidatedContactID> col) {
+	private static String _colToString(final Collection<? extends ValidatedContactMean> col) {
 		if (CollectionUtils.isNullOrEmpty(col)) return null;
 		StringBuilder str = new StringBuilder();
-		for (Iterator<? extends ValidatedContactID> idIt = col.iterator(); idIt.hasNext(); ) {
-			ValidatedContactID id = idIt.next();
+		for (Iterator<? extends ValidatedContactMean> idIt = col.iterator(); idIt.hasNext(); ) {
+			ValidatedContactMean id = idIt.next();
 			if (id == null) continue;
 			str.append(id.asString());
 			if (idIt.hasNext()) str.append("; ");
