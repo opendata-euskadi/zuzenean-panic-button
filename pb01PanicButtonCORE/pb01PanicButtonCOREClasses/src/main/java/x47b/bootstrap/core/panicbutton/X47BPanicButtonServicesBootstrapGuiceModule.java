@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import r01f.bootstrap.BeanImplementedPersistenceServicesCoreBootstrapGuiceModuleBase;
 import r01f.bootstrap.ServicesBootstrapGuiceModuleBindsCRUDEventListeners;
 import r01f.bootstrap.services.config.core.ServicesCoreBootstrapConfigWhenBeanExposed;
+import r01f.core.services.notifier.config.NotifiersConfigs;
 import r01f.guids.CommonOIDs.AppComponent;
 import r01f.persistence.db.config.DBModuleConfigBuilder;
 import r01f.persistence.search.config.SearchModuleConfigBuilder;
@@ -15,7 +16,6 @@ import x47b.events.X47BCRUDOKEventListenersForAlarmEvents.X47BCRUDOKEventListene
 import x47b.events.X47BCRUDOKEventListenersForAlarmEvents.X47BCRUDOKEventListenersForAlarmMessageNotifyByEMail;
 import x47b.events.X47BCRUDOKEventListenersForAlarmEvents.X47BCRUDOKEventListenersForAlarmMessageNotifyByMessaging;
 import x47b.events.X47BCRUDOKEventListenersForAlarmEvents.X47BCRUDOKEventListenersForAlarmMessageNotifyByVoice;
-import x47b.internal.services.config.X47BNotifiersConfig;
 
 
 @EqualsAndHashCode(callSuper=true)									// This is important for guice modules
@@ -33,7 +33,7 @@ public class X47BPanicButtonServicesBootstrapGuiceModule
 			  new X47BPanicButtonSearchGuiceModule(SearchModuleConfigBuilder.searchModuleConfigFrom(coreBootstrapCfg)),
 			  // other modules: notifier
 			  new Module[] {
-					  new X47BPanicButtonNotifierGuiceModule((X47BNotifiersConfig)coreBootstrapCfg.getSubModuleConfigFor(AppComponent.forId("notifier")))
+					  new X47BPanicButtonNotifierGuiceModule((NotifiersConfigs)coreBootstrapCfg.getSubModuleConfigFor(AppComponent.forId("notifier")))
 			  });
 	}
 /////////////////////////////////////////////////////////////////////////////////////////

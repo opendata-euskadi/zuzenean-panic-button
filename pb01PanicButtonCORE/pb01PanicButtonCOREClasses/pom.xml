@@ -65,39 +65,6 @@
 			<version>${r01f.version}</version>
 		</dependency>
 
-		<!-- EMail notifier (coment out aws ses if not used) -->
-		<dependency>
-			<groupId>r01.r01f.coreservices.email</groupId>
-			<artifactId>r01fEMailSpringClasses</artifactId>
-			<version>${r01f.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>r01.r01f.coreservices.cloud.aws.ses</groupId>
-			<artifactId>r01fAWSSESClasses</artifactId>
-			<version>${r01f.version}</version>
-		</dependency>
-
-		<!-- SMS notifier (coment out the one not used) -->
-		<dependency>
-			<groupId>r01.r01f.coreservices.cloud.aws.sns</groupId>
-			<artifactId>r01fAWSSNSClasses</artifactId>
-			<version>${r01f.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>r01.r01f.ejie</groupId>
-			<artifactId>r01fLatiniaClasses</artifactId>
-			<version>${r01f.version}</version>
-		</dependency>
-
-		<!-- Voice notifier -->
-		<dependency>
-			<groupId>r01.r01f.coreservices.cloud.twilio</groupId>
-			<artifactId>r01fTwilioClasses</artifactId>
-			<version>${r01f.version}</version>
-		</dependency>
-
-
-
 		<!-- ///////////////////////////////////////// -->
 		<!-- Velocity                                  -->
 		<!-- ///////////////////////////////////////// -->

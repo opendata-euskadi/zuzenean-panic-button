@@ -2,7 +2,8 @@ package x47b.internal.services.config;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import r01f.core.services.notifier.config.NotifierConfigForSMSBase;
+import r01f.config.ContainsConfigData;
+import r01f.core.services.notifier.config.NotifierConfigForSMS;
 import r01f.core.services.notifier.config.NotifierEnums.NotifierImpl;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.types.Path;
@@ -14,7 +15,7 @@ import x47b.common.internal.X47BAppCodes;
 
 @Accessors(prefix="_")
 public class X47BNotifierConfigForSMS
-     extends NotifierConfigForSMSBase {
+     extends NotifierConfigForSMS {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -24,18 +25,18 @@ public class X47BNotifierConfigForSMS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private X47BNotifierConfigForSMS(final AppCode appCode,
 								 	 final boolean enabled,
-								 	 final NotifierImpl impl,
+								 	 final NotifierImpl impl,final ContainsConfigData config,
 								 	 final OwnedContactMean<Phone> from,
 								 	 final Path msgTemplatePath) {
 		super(X47BAppCodes.CORE_APPCODE,
 			  enabled,
-			  impl,
+			  impl,config,
 			  from);
 		_msgTemplatePath = msgTemplatePath;
 	}
 	private X47BNotifierConfigForSMS(final XMLPropertiesForAppComponent props) {
 		super(props);
-		 _msgTemplatePath = props.propertyAt(_xPathBase() + "/msgTemplate")
+		 _msgTemplatePath = props.propertyAt(_xPathBaseForCommonProperties() + "/msgTemplate")
 								 .asPath(Strings.customized("{}/notifier/{}{}MessageTemplate.vm",	// ie: x47b/notifier/x47bEMAILMessageTemplate.vm
 										  					_appCode,
 															_appCode,_type));

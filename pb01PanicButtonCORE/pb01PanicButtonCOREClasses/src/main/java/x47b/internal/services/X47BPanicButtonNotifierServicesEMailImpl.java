@@ -23,7 +23,8 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import r01f.core.services.mail.model.EMailRFC822Address;
 import r01f.core.services.mail.notifier.JavaMailSenderNotifierServices;
-import r01f.core.services.notifier.NotifierServicesForEMail;
+import r01f.core.services.notifier.NotifierServiceForEMail;
+import r01f.core.services.notifier.config.NotifierConfigForEMail;
 import r01f.internal.R01F;
 import r01f.patterns.Factory;
 import r01f.types.Path;
@@ -48,14 +49,14 @@ public class X47BPanicButtonNotifierServicesEMailImpl
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Getter private final NotifierServicesForEMail _mailNotifier;
+	@Getter private final NotifierServiceForEMail _mailNotifier;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public X47BPanicButtonNotifierServicesEMailImpl(final X47BNotifierConfigForEMail notifierConfig,final NotifierServicesForEMail notifier,
+	public X47BPanicButtonNotifierServicesEMailImpl(final NotifierConfigForEMail notifierConfig,final NotifierServiceForEMail notifier,
 												    final VelocityEngine velocityEngine) {
-		super(notifierConfig,
+		super((X47BNotifierConfigForEMail)notifierConfig,
 			  velocityEngine);
 		_mailNotifier = notifier;
 	}

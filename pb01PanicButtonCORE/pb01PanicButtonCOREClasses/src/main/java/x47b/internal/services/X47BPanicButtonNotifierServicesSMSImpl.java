@@ -12,7 +12,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 import lombok.extern.slf4j.Slf4j;
-import r01f.core.services.notifier.NotifierServicesForSMS;
+import r01f.core.services.notifier.NotifierServiceForSMS;
+import r01f.core.services.notifier.config.NotifierConfigForSMS;
 import r01f.internal.R01F;
 import r01f.patterns.Factory;
 import r01f.types.Path;
@@ -39,14 +40,14 @@ public class X47BPanicButtonNotifierServicesSMSImpl
 	/**
 	 * SMS notifier services
 	 */
-	private final NotifierServicesForSMS _smsNotifier;
+	private final NotifierServiceForSMS _smsNotifier;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTORS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public X47BPanicButtonNotifierServicesSMSImpl(final X47BNotifierConfigForSMS config,final NotifierServicesForSMS smsNotifier,
+	public X47BPanicButtonNotifierServicesSMSImpl(final NotifierConfigForSMS config,final NotifierServiceForSMS smsNotifier,
 												  final VelocityEngine velocityEngine) {
-		super(config,
+		super((X47BNotifierConfigForSMS)config,
 			  velocityEngine);
 		_smsNotifier = smsNotifier;
 	}

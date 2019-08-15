@@ -12,7 +12,8 @@ import org.apache.velocity.app.VelocityEngine;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import r01f.core.services.notifier.NotifierServicesForVoicePhoneCall;
+import r01f.core.services.notifier.NotifierServiceForVoicePhoneCall;
+import r01f.core.services.notifier.config.NotifierConfigForVoice;
 import r01f.internal.R01F;
 import r01f.patterns.Factory;
 import r01f.types.Path;
@@ -35,14 +36,14 @@ public class X47BPanicButtonNotifierServicesVoiceImpl
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Getter private final NotifierServicesForVoicePhoneCall _voiceNotifier;
+	@Getter private final NotifierServiceForVoicePhoneCall _voiceNotifier;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTORS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public X47BPanicButtonNotifierServicesVoiceImpl(final X47BNotifierConfigForVoice config,final NotifierServicesForVoicePhoneCall voiceNotifier,
+	public X47BPanicButtonNotifierServicesVoiceImpl(final NotifierConfigForVoice config,final NotifierServiceForVoicePhoneCall voiceNotifier,
 													final VelocityEngine velocityEngine) {
-		super(config,
+		super((X47BNotifierConfigForVoice)config,
 			  velocityEngine);
 		_voiceNotifier = voiceNotifier;
 	}

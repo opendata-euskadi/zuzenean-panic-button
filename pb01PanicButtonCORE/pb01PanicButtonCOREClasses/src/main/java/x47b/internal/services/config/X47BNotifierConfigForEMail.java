@@ -2,7 +2,8 @@ package x47b.internal.services.config;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import r01f.core.services.notifier.config.NotifierConfigForEMailBase;
+import r01f.config.ContainsConfigData;
+import r01f.core.services.notifier.config.NotifierConfigForEMail;
 import r01f.core.services.notifier.config.NotifierEnums.NotifierImpl;
 import r01f.types.Path;
 import r01f.types.contact.EMail;
@@ -12,7 +13,7 @@ import x47b.common.internal.X47BAppCodes;
 
 @Accessors(prefix="_")
 public class X47BNotifierConfigForEMail
-     extends NotifierConfigForEMailBase {
+     extends NotifierConfigForEMail {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -22,13 +23,13 @@ public class X47BNotifierConfigForEMail
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	private X47BNotifierConfigForEMail(final boolean enabled,
-									   final NotifierImpl impl,
+									   final NotifierImpl impl,final ContainsConfigData config,
 							 	   	   final EMail fromMail,final String fromName,
 							 	   	   final Path msgTemplatePath,
 							 	   	   final Path msgImagePath) {
 		super(X47BAppCodes.CORE_APPCODE,
 			  enabled,
-			  impl,
+			  impl,config,
 			  fromMail,fromName);
 		_msgTemplatePath = msgTemplatePath;
 		_msgImagePath = msgImagePath;
@@ -36,11 +37,11 @@ public class X47BNotifierConfigForEMail
 	private X47BNotifierConfigForEMail(final XMLPropertiesForAppComponent props) {
 		super(props);
  	     // template path
-		 _msgTemplatePath = props.propertyAt(_xPathBase() + "/msgTemplate")
+		 _msgTemplatePath = props.propertyAt(_xPathBaseForCommonProperties() + "/msgTemplate")
 								 .asPath(Strings.customized("{}/notifier/{}{}MessageTemplate.vm",	// ie: x47b/notifier/x47bEMAILMessageTemplate.vm
 										  					_appCode,
 															_appCode,_type));
-		_msgImagePath = props.propertyAt(_xPathBase() + "/msgHeaderImage")
+		_msgImagePath = props.propertyAt(_xPathBaseForCommonProperties() + "/msgHeaderImage")
 						 .asPath(Strings.customized("{}/notifier/{}Logo.gif",
 								 					props.getAppCode(),props.getAppCode()));
 	}
