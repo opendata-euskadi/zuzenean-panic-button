@@ -20,9 +20,9 @@
 	<packaging>pom</packaging>
 
   <modules>
-  <module>pb01PanicButtonCOREClasses</module>
-    <module>pb01PanicButtonCORERestServicesWar</module>
+    <module>pb01PanicButtonCOREConfig</module>
+  	<module>pb01PanicButtonCOREClasses</module>
     <module>pb01PanicButtonCORERestServicesCommonClasses</module>
-    <module>pb01PanicButtonconfig</module>
+    <module>pb01PanicButtonCORERestServicesWar</module>
   </modules>
 </project>
