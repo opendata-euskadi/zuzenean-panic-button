@@ -72,7 +72,7 @@ public class X47BPanicButtonNotifierEMailImpl
 		log.warn("[EMailNotifier ({})]================================================",
 				 _mailNotifier.getClass().getSimpleName());
 		if (CollectionUtils.isNullOrEmpty(alarmMessage.getMails())) {
-			log.warn("... NO phones to notify to");
+			log.warn("... NO emails to notify to");
 			return;
 		}
 		_sendEMailMessage(FluentIterable.from(alarmMessage.getMails())
