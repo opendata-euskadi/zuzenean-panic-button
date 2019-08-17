@@ -56,14 +56,10 @@
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.coreservices.notifier</groupId>
-			<artifactId>r01fNotifierClasses</artifactId>
-			<version>${r01f.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>r01.r01f.coreservices.notifier</groupId>
 			<artifactId>r01fNotifierGuiceClasses</artifactId>
 			<version>${r01f.version}</version>
 		</dependency>
+
 
 		<!-- ///////////////////////////////////////// -->
 		<!-- Velocity                                  -->
