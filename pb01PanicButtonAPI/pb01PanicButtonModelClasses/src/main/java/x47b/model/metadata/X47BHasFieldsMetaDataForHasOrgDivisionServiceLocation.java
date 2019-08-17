@@ -12,34 +12,34 @@ import r01f.model.metadata.annotations.Storage;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
 
-public interface X47BHasFieldsMetaDataForHasOrgDivisionServiceLocation 
+public interface X47BHasFieldsMetaDataForHasOrgDivisionServiceLocation
 		 extends HasFieldsMetaData {
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	SEARCHABLE METADATA
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public enum SEARCHABLE_METADATA 
+	public enum SEARCHABLE_METADATA
 	 implements FieldIDToken {
 		OID ("orgDivisionServiceLocationOid"),
 		ID ("orgDivisionServiceLocationId");
-		
+
 		@Getter private final String _token;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	SERVICE LOCATION	  
+//	SERVICE LOCATION
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MetaDataForField(description = {
-						@DescInLang(language=Language.SPANISH, value="Identificador 鷑ico de la localizaci髇 del servicio de la divisi髇 de la organizaci髇"),
+						@DescInLang(language=Language.SPANISH, value="Identificador 煤nico de la localizaci贸n del servicio de la divisi贸n de la organizaci贸n"),
 						@DescInLang(language=Language.BASQUE, value="[eu] Organization's division's service's location's unique identifier"),
 						@DescInLang(language=Language.ENGLISH, value="Organization's division's service's location's unique identifier")
 				     },
 				   	 storage = @Storage(indexed=true,
 				   			 			stored=true))
 	public X47BOrgDivisionServiceLocationOID getOrgDivisionServiceLocationOid();
-	
+
 	@MetaDataForField(description = {
-						@DescInLang(language=Language.SPANISH, value="Identificador 鷑ico de negocio de la localizaci髇 del servicio de la divisi髇 de la organizaci髇"),
+						@DescInLang(language=Language.SPANISH, value="Identificador 煤nico de negocio de la localizaci贸n del servicio de la divisi贸n de la organizaci贸n"),
 						@DescInLang(language=Language.BASQUE, value="[eu] Organization's division's service's location's unique business identifier"),
 						@DescInLang(language=Language.ENGLISH, value="Organization's division's service's location's unique business identifier")
 				     },

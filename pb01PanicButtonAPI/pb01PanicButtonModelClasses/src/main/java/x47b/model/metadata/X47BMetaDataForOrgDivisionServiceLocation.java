@@ -13,16 +13,16 @@ import x47b.model.org.X47BOrgDivisionServiceLocation;
  */
 @MetaDataForType(modelObjTypeCode = X47BModelObjectCodes.ORG_DIVISION_SERVICE_LOCATION_MODEL_OBJ_TYPE_CODE,
 			     description = {
-						@DescInLang(language=Language.SPANISH, value="Localización de un servicio de una división de una organización"),
+						@DescInLang(language=Language.SPANISH, value="LocalizaciÃ³n de un servicio de una divisiÃ³n de una organizaciÃ³n"),
 						@DescInLang(language=Language.BASQUE, value="[eu] Organization's division's service's location"),
 						@DescInLang(language=Language.ENGLISH, value="Organization's division's service's location")
 				 })
 public abstract class X47BMetaDataForOrgDivisionServiceLocation
-	 		  extends X47BMetaDataForModelObjectBase<X47BOrgDivisionServiceLocationOID> 
+	 		  extends X47BMetaDataForModelObjectBase<X47BOrgDivisionServiceLocationOID>
 	 	   implements HasMetaDataForHasIDModelObject<X47BOrgDivisionServiceLocationID>,
-	 	   			  X47BHasFieldsMetaDataForHasOrganization, 
+	 	   			  X47BHasFieldsMetaDataForHasOrganization,
 	 	   			  X47BHasFieldsMetaDataForHasOrgDivision {
 /////////////////////////////////////////////////////////////////////////////////////////
-//	  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 }

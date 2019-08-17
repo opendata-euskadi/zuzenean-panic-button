@@ -13,7 +13,7 @@ import x47b.model.org.X47BOrganization;
  */
 @MetaDataForType(modelObjTypeCode = X47BModelObjectCodes.ORGANIZATION_MODEL_OBJ_TYPE_CODE,
 			     description = {
-						@DescInLang(language=Language.SPANISH, value="Organización"),
+						@DescInLang(language=Language.SPANISH, value="OrganizaciÃ³n"),
 						@DescInLang(language=Language.BASQUE, value="[eu] Organization"),
 						@DescInLang(language=Language.ENGLISH, value="Organization")
 				 })
@@ -21,6 +21,6 @@ public abstract class X47BMetaDataForOrganization
 	 		  extends X47BMetaDataForModelObjectBase<X47BOrganizationOID>
 	 	   implements HasMetaDataForHasIDModelObject<X47BOrganizationID> {
 /////////////////////////////////////////////////////////////////////////////////////////
-//	  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 }

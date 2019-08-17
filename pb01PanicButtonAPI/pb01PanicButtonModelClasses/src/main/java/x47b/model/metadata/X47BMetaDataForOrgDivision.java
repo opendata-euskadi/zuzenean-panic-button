@@ -13,15 +13,15 @@ import x47b.model.org.X47BOrgDivision;
  */
 @MetaDataForType(modelObjTypeCode = X47BModelObjectCodes.ORG_DIVISION_MODEL_OBJ_TYPE_CODE,
 			     description = {
-						@DescInLang(language=Language.SPANISH, value="División de la organización"),
+						@DescInLang(language=Language.SPANISH, value="DivisiÃ³n de la organizaciï¿½n"),
 						@DescInLang(language=Language.BASQUE, value="[eu] Organization's division"),
 						@DescInLang(language=Language.ENGLISH, value="Organization's division")
 				 })
 public abstract class X47BMetaDataForOrgDivision
-	          extends X47BMetaDataForModelObjectBase<X47BOrgDivisionOID> 
+	          extends X47BMetaDataForModelObjectBase<X47BOrgDivisionOID>
 	 	   implements HasMetaDataForHasIDModelObject<X47BOrgDivisionID>,
 	 	   			  X47BHasFieldsMetaDataForHasOrganization {
 /////////////////////////////////////////////////////////////////////////////////////////
-//	  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 }

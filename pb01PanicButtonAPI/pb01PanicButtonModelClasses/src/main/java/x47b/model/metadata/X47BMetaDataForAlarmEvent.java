@@ -26,16 +26,16 @@ public abstract class X47BMetaDataForAlarmEvent
 	 			X47BHasFieldsMetaDataForHasOrgDivision,
 	 			X47BHasFieldsMetaDataForHasOrgDivisionService,
 	 			X47BHasFieldsMetaDataForHasOrgDivisionServiceLocation,
-	 			X47BHasFieldsMetaDataForHasWorkPlace {	
+	 			X47BHasFieldsMetaDataForHasWorkPlace {
 /////////////////////////////////////////////////////////////////////////////////////////
-// 	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Fecha/hora en la que se lanzó la alarma"),
-							@DescInLang(language=Language.BASQUE, value="[eu] Fecha/hora en la que se lanzó la alarma"),
+							@DescInLang(language=Language.SPANISH, value="Fecha/hora en la que se lanza la alarma"),
+							@DescInLang(language=Language.BASQUE, value="[eu] Fecha/hora en la que se lanza la alarma"),
 							@DescInLang(language=Language.ENGLISH, value="Date/time when the alarm was raisen")
 					  },
-					  storage = @Storage(indexed=true, 
+					  storage = @Storage(indexed=true,
 					  					 stored=true))
 	@Getter private Date _timeStamp;
 

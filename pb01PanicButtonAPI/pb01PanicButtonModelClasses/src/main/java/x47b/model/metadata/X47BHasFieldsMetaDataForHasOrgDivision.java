@@ -12,34 +12,34 @@ import r01f.model.metadata.annotations.Storage;
 import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
 import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
 
-public interface X47BHasFieldsMetaDataForHasOrgDivision 
+public interface X47BHasFieldsMetaDataForHasOrgDivision
 		 extends HasFieldsMetaData {
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	SEARCHABLE METADATA
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public enum SEARCHABLE_METADATA 
+	public enum SEARCHABLE_METADATA
 	 implements FieldIDToken {
 		OID ("orgDivisionOid"),
 		ID ("orgDivisionId");
-		
+
 		@Getter private final String _token;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	DIVISION	  
+//	DIVISION
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MetaDataForField(description = {
-						@DescInLang(language=Language.SPANISH, value="Identificador 鷑ico de la divisi髇 de la organizaci髇"),
+						@DescInLang(language=Language.SPANISH, value="Identificador 煤nico de la divisi贸n de la organizaci贸n"),
 						@DescInLang(language=Language.BASQUE, value="[eu] Organization's division's unique identifier"),
 						@DescInLang(language=Language.ENGLISH, value="Organization's division's unique identifier")
 				     },
 				   	 storage = @Storage(indexed=true,
 				   			 			stored=true))
 	public X47BOrgDivisionOID getOrgDivisionOid();
-	
+
 	@MetaDataForField(description = {
-						@DescInLang(language=Language.SPANISH, value="Identificador 鷑ico de negocio de la divisi髇 de la organizaci髇"),
+						@DescInLang(language=Language.SPANISH, value="Identificador 锟絥ico de negocio de la divisi贸n de la organizaci贸n"),
 						@DescInLang(language=Language.BASQUE, value="[eu] Organization's division's unique business identifier"),
 						@DescInLang(language=Language.ENGLISH, value="Organization's division's unique business identifier")
 				     },
