@@ -290,6 +290,22 @@ The generated WAR artifact named [pb01PanicButtonUIWar.war] should be at:
 		b) start tomcat
 
 
+UPDATE FROM GIT
+===================================================================================
+If any change is published at the [git server], it has to be _pulled_ to the local GIT, to do so:
+
+    {develop}\projects\fabric-r01f>git pull
+    {develop}\projects\fabric-r01fBusinessServices>git pull
+    {develop}\projects\fabric-r01fCOREServices>git pull
+    {develop}\projects\fabric-r01fUI>git pull
+    {develop}\projects\zuzenean-panic-button>git-pull
+
+    {develop}\projects\fabric-r01f>mvn clean install
+    {develop}\projects\fabric-r01fBusinessServices> mvn clean install
+    {develop}\projects\fabric-r01fCOREServices> mvn clean install
+    {develop}\projects\fabric-r01fUI> mvn clean install
+    {develop}\projects\zuzenean-panic-button> mvn clean install
+
 
 
 
