@@ -14,9 +14,9 @@ import r01f.services.ids.ServiceIDs.CoreModule;
 import r01f.xmlproperties.XMLPropertiesForApp;
 import r01f.xmlproperties.XMLPropertiesForAppComponent;
 import x47b.common.internal.X47BAppCodes;
-import x47b.internal.services.config.X47BNotifierConfigForEMail;
-import x47b.internal.services.config.X47BNotifierConfigForSMS;
-import x47b.internal.services.config.X47BNotifierConfigForVoice;
+import x47b.internal.notifier.config.X47BNotifierConfigForEMail;
+import x47b.internal.notifier.config.X47BNotifierConfigForSMS;
+import x47b.internal.notifier.config.X47BNotifierConfigForVoice;
 import x47b.services.X47BPanicButtonCoreServiceImpl;
 
 /**

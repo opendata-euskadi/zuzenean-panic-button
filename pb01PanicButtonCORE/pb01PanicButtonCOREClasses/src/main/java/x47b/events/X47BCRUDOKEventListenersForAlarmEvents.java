@@ -16,7 +16,7 @@ import r01f.events.COREEventBusEventListener;
 import r01f.events.PersistenceOperationEvents.PersistenceOperationOKEvent;
 import r01f.events.crud.CRUDOperationOKEventListenerBase;
 import x47b.client.api.X47BPanicButtonClientAPI;
-import x47b.internal.services.X47BPanicButtonNotifierServices;
+import x47b.internal.notifier.X47BPanicButtonNotifier;
 import x47b.model.X47BAlarmEvent;
 import x47b.model.X47BAlarmMessage;
 
@@ -35,7 +35,7 @@ import x47b.model.X47BAlarmMessage;
  *               		<li>Voice based: notifies using twilio services to send a voice call to the security person mobild</li>
  *               		<li>Lob based</li>
  *               </ul>
- *               All them implements {@link X47BPanicButtonNotifierServices} that contains a single method: sendNotification(message)
+ *               All them implements {@link X47BPanicButtonNotifier} that contains a single method: sendNotification(message)
  *
  * Using this two-stages approach improves reusability of alarm events since anyone (ie the UI)
  * can subscribe to X47BAlarmMessage posts
@@ -101,9 +101,9 @@ public abstract class X47BCRUDOKEventListenersForAlarmEvents {
 	private static abstract class X47BCRUDOKEventListenerForAlarmMessageBase
 					   implements COREEventBusEventListener {	// DO NOT forget: this automatically registers the listener at the event bus
 
-		private final X47BPanicButtonNotifierServices _notifierServices;
+		private final X47BPanicButtonNotifier _notifierServices;
 
-		public X47BCRUDOKEventListenerForAlarmMessageBase(final X47BPanicButtonNotifierServices notifierServices) {
+		public X47BCRUDOKEventListenerForAlarmMessageBase(final X47BPanicButtonNotifier notifierServices) {
 			_notifierServices = notifierServices;
 		}
 		@Subscribe	// subscribes this event listener at the EventBus
@@ -130,7 +130,7 @@ public abstract class X47BCRUDOKEventListenersForAlarmEvents {
 	public static class X47BCRUDOKEventListenersForAlarmMessageLog
 			    extends X47BCRUDOKEventListenerForAlarmMessageBase {
 		@Inject
-		public X47BCRUDOKEventListenersForAlarmMessageLog(@UseLogNotifier final X47BPanicButtonNotifierServices notifierServices) {
+		public X47BCRUDOKEventListenersForAlarmMessageLog(@UseLogNotifier final X47BPanicButtonNotifier notifierServices) {
 			super(notifierServices);
 		}
 	}
@@ -140,7 +140,7 @@ public abstract class X47BCRUDOKEventListenersForAlarmEvents {
 	public static class X47BCRUDOKEventListenersForAlarmMessageNotifyByMessaging
 			    extends X47BCRUDOKEventListenerForAlarmMessageBase {
 		@Inject
-		public X47BCRUDOKEventListenersForAlarmMessageNotifyByMessaging(@UseMessagingNotifier final X47BPanicButtonNotifierServices notifierServices) {
+		public X47BCRUDOKEventListenersForAlarmMessageNotifyByMessaging(@UseMessagingNotifier final X47BPanicButtonNotifier notifierServices) {
 			super(notifierServices);
 		}
 	}
@@ -150,7 +150,7 @@ public abstract class X47BCRUDOKEventListenersForAlarmEvents {
 	public static class X47BCRUDOKEventListenersForAlarmMessageNotifyByEMail
 			    extends X47BCRUDOKEventListenerForAlarmMessageBase {
 		@Inject
-		public X47BCRUDOKEventListenersForAlarmMessageNotifyByEMail(@UseEMailNotifier final X47BPanicButtonNotifierServices notifierServices) {
+		public X47BCRUDOKEventListenersForAlarmMessageNotifyByEMail(@UseEMailNotifier final X47BPanicButtonNotifier notifierServices) {
 			super(notifierServices);
 		}
 	}
@@ -160,7 +160,7 @@ public abstract class X47BCRUDOKEventListenersForAlarmEvents {
 	public static class X47BCRUDOKEventListenersForAlarmMessageNotifyByVoice
 			    extends X47BCRUDOKEventListenerForAlarmMessageBase {
 		@Inject
-		public X47BCRUDOKEventListenersForAlarmMessageNotifyByVoice(@UseVoiceNotifier final X47BPanicButtonNotifierServices notifierServices) {
+		public X47BCRUDOKEventListenersForAlarmMessageNotifyByVoice(@UseVoiceNotifier final X47BPanicButtonNotifier notifierServices) {
 			super(notifierServices);
 		}
 	}

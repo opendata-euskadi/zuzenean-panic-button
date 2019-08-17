@@ -1,7 +1,6 @@
-package x47b.internal.services;
+package x47b.internal.notifier;
 
 import java.io.StringWriter;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,15 +10,15 @@ import javax.inject.Singleton;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import r01f.core.services.notifier.NotifierServiceForSMS;
-import r01f.core.services.notifier.config.NotifierConfigForSMS;
+import r01f.core.services.notifier.NotifierServiceForVoicePhoneCall;
+import r01f.core.services.notifier.config.NotifierConfigForVoice;
 import r01f.internal.R01F;
 import r01f.patterns.Factory;
 import r01f.types.Path;
-import r01f.types.contact.Phone;
 import r01f.util.types.collections.CollectionUtils;
-import x47b.internal.services.config.X47BNotifierConfigForSMS;
+import x47b.internal.notifier.config.X47BNotifierConfigForVoice;
 import x47b.model.X47BAlarmMessage;
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForDivision;
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForLocation;
@@ -28,67 +27,63 @@ import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForSer
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForWorkPlace;
 
 /**
- * SMS notifier
+ * A notifier that makes a voice call and locutates the message
  */
-@Singleton
 @Slf4j
-public class X47BPanicButtonNotifierServicesSMSImpl
-     extends X47BPanicButtonNotifierServicesBase<X47BNotifierConfigForSMS> {
+@Singleton
+public class X47BPanicButtonNotifiereVoiceImpl
+     extends X47BPanicButtonNotifierBase<X47BNotifierConfigForVoice> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * SMS notifier services
-	 */
-	private final NotifierServiceForSMS _smsNotifier;
+	@Getter private final NotifierServiceForVoicePhoneCall _voiceNotifier;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTORS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public X47BPanicButtonNotifierServicesSMSImpl(final NotifierConfigForSMS config,final NotifierServiceForSMS smsNotifier,
-												  final VelocityEngine velocityEngine) {
-		super((X47BNotifierConfigForSMS)config,
+	public X47BPanicButtonNotifiereVoiceImpl(final NotifierConfigForVoice config,final NotifierServiceForVoicePhoneCall voiceNotifier,
+											 final VelocityEngine velocityEngine) {
+		super((X47BNotifierConfigForVoice)config,
 			  velocityEngine);
-		_smsNotifier = smsNotifier;
+		_voiceNotifier = voiceNotifier;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void sendNotification(final X47BAlarmMessage alarmMessage) {
-		if (!this.isEnabledConsidering(_smsNotifier)) {
-			log.warn("SMS notifier is DISABLED!");
+		if (!this.isEnabledConsidering(_voiceNotifier)) {
+			log.warn("Voice notifier is DISABLED!");
 			return;
 		}
-		log.warn("[SMS Notifier ({})]================================================",
-				 _smsNotifier.getClass().getSimpleName());
-		Collection<Phone> phones = alarmMessage.getPhonesSanitized();
-		if (CollectionUtils.isNullOrEmpty(phones)) {
+		log.warn("[VoiceNotifier ({})]================================================",
+				 _voiceNotifier.getClass().getSimpleName());
+		if (CollectionUtils.isNullOrEmpty(alarmMessage.getPhonesSanitized())) {
 			log.warn("... NO phones to notify to");
 			return;
 		}
-		_smsNotifier.notifyAll(_config.getFrom(),phones,
-							   new Factory<String>() {
+		_voiceNotifier.notifyAll(_config.getFrom(),alarmMessage.getPhonesSanitized(),
+								 new Factory<String>() {
 										@Override
 										public String create() {
-											return _composeIMMessage(_velocityEngine,_config.getMsgTemplatePath(),
-															   		  alarmMessage.getOrganization(),
-															   		  alarmMessage.getDivision(),
-															   		  alarmMessage.getService(),
-															   		  alarmMessage.getLocation(),
-															   		  alarmMessage.getWorkPlace());
+											return _composeVoiceMessage(_velocityEngine,_config.getMsgTemplatePath(),
+																		alarmMessage.getOrganization(),
+																		alarmMessage.getDivision(),
+																		alarmMessage.getService(),
+																		alarmMessage.getLocation(),
+																		alarmMessage.getWorkPlace());
 										}
-							   });
+								 });
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	PRIVATE METHODS
+//
 /////////////////////////////////////////////////////////////////////////////////////////
-	private static String _composeIMMessage(final VelocityEngine velocityEngine,final Path alertMsgTemplatePath,
-											final X47BAlarmMessageAbstractForOrganization org,
-											final X47BAlarmMessageAbstractForDivision div,
-											final X47BAlarmMessageAbstractForService srvc,
-									 		final X47BAlarmMessageAbstractForLocation loc,
-									 		final X47BAlarmMessageAbstractForWorkPlace workPlace) {
+	private static String _composeVoiceMessage(final VelocityEngine velocityEngine,final Path alertMsgTemplatePath,
+											   final X47BAlarmMessageAbstractForOrganization org,
+											   final X47BAlarmMessageAbstractForDivision div,
+											   final X47BAlarmMessageAbstractForService srvc,
+									 		   final X47BAlarmMessageAbstractForLocation loc,
+									 		   final X47BAlarmMessageAbstractForWorkPlace workPlace) {
 	    // Text... using velocity
 	    Map<String,Object> model = new HashMap<String,Object>();
 	    model.put("alarmDate",_alarmDateFormated());

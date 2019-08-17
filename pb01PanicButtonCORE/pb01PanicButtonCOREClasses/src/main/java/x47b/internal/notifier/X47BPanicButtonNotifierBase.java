@@ -1,4 +1,4 @@
-package x47b.internal.services;
+package x47b.internal.notifier;
 
 import java.util.Date;
 
@@ -6,45 +6,29 @@ import org.apache.velocity.app.VelocityEngine;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import r01f.core.services.notifier.NotifierService;
+import r01f.core.notifier.NotifierBase;
 import r01f.core.services.notifier.config.NotifierConfig;
-import r01f.service.ServiceCanBeDisabled;
 import r01f.util.types.Dates;
+import x47b.model.X47BAlarmMessage;
 
 /**
  * Base notifier service
  */
 @Accessors(prefix="_")
-abstract class X47BPanicButtonNotifierServicesBase<C extends NotifierConfig>
-    implements X47BPanicButtonNotifierServices {
+abstract class X47BPanicButtonNotifierBase<C extends NotifierConfig>
+	   extends NotifierBase<C,X47BAlarmMessage>
+    implements X47BPanicButtonNotifier {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Getter protected final C _config;
 	@Getter protected final VelocityEngine _velocityEngine;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTORS
 /////////////////////////////////////////////////////////////////////////////////////////
-	X47BPanicButtonNotifierServicesBase(final C config,
-									    final VelocityEngine velocityEngine) {
-		_config = config;
+	X47BPanicButtonNotifierBase(final C config,
+								final VelocityEngine velocityEngine) {
+		super(config);
 		_velocityEngine = velocityEngine;
-	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////////////////
-	@Override
-	public boolean isEnabled() {
-		return _config != null ? _config.isEnabled()
-							   : false;
-	}
-	public boolean isEnabledConsidering(final NotifierService<?,?,?> notifierService) {
-		boolean isEnabled = this.isEnabled();
-		if (notifierService instanceof ServiceCanBeDisabled) {
-			ServiceCanBeDisabled serviceCanBeDisabled = (ServiceCanBeDisabled)notifierService;
-			if (serviceCanBeDisabled.isDisabled()) isEnabled = false;
-		}
-		return isEnabled;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS

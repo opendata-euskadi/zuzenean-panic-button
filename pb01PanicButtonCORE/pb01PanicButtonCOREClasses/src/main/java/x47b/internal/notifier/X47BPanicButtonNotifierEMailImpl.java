@@ -1,4 +1,4 @@
-package x47b.internal.services;
+package x47b.internal.notifier;
 
 import java.io.StringWriter;
 import java.util.Collection;
@@ -31,7 +31,7 @@ import r01f.types.Path;
 import r01f.types.contact.EMail;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
-import x47b.internal.services.config.X47BNotifierConfigForEMail;
+import x47b.internal.notifier.config.X47BNotifierConfigForEMail;
 import x47b.model.X47BAlarmMessage;
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForDivision;
 import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForLocation;
@@ -44,8 +44,8 @@ import x47b.model.X47BAlarmMessageEntityAbstracts.X47BAlarmMessageAbstractForWor
  */
 @Slf4j
 @Singleton
-public class X47BPanicButtonNotifierServicesEMailImpl
-     extends X47BPanicButtonNotifierServicesBase<X47BNotifierConfigForEMail> {
+public class X47BPanicButtonNotifierEMailImpl
+     extends X47BPanicButtonNotifierBase<X47BNotifierConfigForEMail> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -54,8 +54,8 @@ public class X47BPanicButtonNotifierServicesEMailImpl
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public X47BPanicButtonNotifierServicesEMailImpl(final NotifierConfigForEMail notifierConfig,final NotifierServiceForEMail notifier,
-												    final VelocityEngine velocityEngine) {
+	public X47BPanicButtonNotifierEMailImpl(final NotifierConfigForEMail notifierConfig,final NotifierServiceForEMail notifier,
+											final VelocityEngine velocityEngine) {
 		super((X47BNotifierConfigForEMail)notifierConfig,
 			  velocityEngine);
 		_mailNotifier = notifier;

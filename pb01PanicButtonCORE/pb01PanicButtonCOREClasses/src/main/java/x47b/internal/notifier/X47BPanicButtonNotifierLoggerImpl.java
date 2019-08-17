@@ -1,9 +1,7 @@
-package x47b.internal.services;
+package x47b.internal.notifier;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import org.apache.velocity.app.VelocityEngine;
 
 import lombok.extern.slf4j.Slf4j;
 import r01f.core.services.notifier.config.NotifierConfigForLog;
@@ -14,16 +12,15 @@ import x47b.model.X47BAlarmMessage;
  */
 @Singleton
 @Slf4j
-public class X47BPanicButtonNotifierServicesLoggerImpl
-     extends X47BPanicButtonNotifierServicesBase<NotifierConfigForLog> {
+public class X47BPanicButtonNotifierLoggerImpl
+     extends X47BPanicButtonNotifierBase<NotifierConfigForLog> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTORS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public X47BPanicButtonNotifierServicesLoggerImpl(final NotifierConfigForLog config,
-												     final VelocityEngine velocityEngine) {
+	public X47BPanicButtonNotifierLoggerImpl(final NotifierConfigForLog config) {
 		super(config,
-			  velocityEngine);
+			  null);	// no velocity engine needed for logging
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
