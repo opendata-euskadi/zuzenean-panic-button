@@ -1,4 +1,29 @@
 # panic_button
+
+
+UPDATE FROM GIT
+============================================================================
+If any change is published at the [github] remote repo, it has to be _pulled_ to the local GIT, to do so:
+
+    {develop}\projects\fabric-r01f>git pull
+    {develop}\projects\fabric-r01fBusinessServices>git pull
+    {develop}\projects\fabric-r01fCOREServices>git pull
+    {develop}\projects\fabric-r01fUI>git pull
+    {develop}\projects\zuzenean-panic-button>git-pull
+
+... now just compile
+
+    {develop}\projects\fabric-r01f>mvn clean install
+    {develop}\projects\fabric-r01fBusinessServices> mvn clean install
+    {develop}\projects\fabric-r01fCOREServices> mvn clean install
+    {develop}\projects\fabric-r01fUI> mvn clean install
+    {develop}\projects\zuzenean-panic-button> mvn clean install
+
+
+
+====== SETUP THE ENVIRONMENT =====
+============================================================================
+
 [PRE]
 ============================================================================
 [1] - Create a DEVELOP folder ie: c:\develop  (now on this folder is refered to as {develop}
@@ -269,42 +294,51 @@ In a NEW cmd window
 	c:\>cd {develop}\projects\fabric-r01fCOREServices
 	{develop}\projects\fabric-r01fCOREServices>mvn clean install -Dmaven.test.skip=true
 
+NOTE: Running this last command will FAIL because the code depends upon EJIE-private artifacts
+		  ... an EJE-deps free version should be used instead:
+
+	{develop}\projects\fabric-r01fCOREServices>git checkout no_ejie_deps
+	{develop}\projects\fabric-r01fCOREServices>mvn clean install -Dmaven.test.skip=true
+
+
 	c:\>cd {develop}\projects\fabric-r01fUI
 	{develop}\projects\fabric-r01fUI>mvn clean install -Dmaven.test.skip=true
 
 	c:\>cd {develop}\projects\zuzenean-panic-button
 	{develop}\projects\zuzenean-panic-button>mvn clean install -Dmaven.test.skip=true
 
-	NOTE: Running the latest command outside EJIE will FAIL because the code depends upon EJIE-private artifacts
-		  ... an EJE-deps free version should be used instead:
-		  {develop}\projects\zuzenean-panic-button>git checkout feature/no_ejie_deps
-		  {develop}\projects\zuzenean-panic-button>mvn clean install -Dmaven.test.skip=true
 
 [I] - DEPLOY TO TOMCAT
 ==================================================================================
 The generated WAR artifact named [pb01PanicButtonUIWar.war] should be at:
+
 	{develop}\projects\zuzenean-panic-button\pb01PanicButtonUI\pb01PanicButtonUIWar\target
 
 ... just:
-		a) copy it to {develop}\app-server\apache-tomcat-9.0.22\webapps
+		a) copy it to `{develop}\app-server\apache-tomcat-9.0.22\webapps`
 		b) start tomcat
 
+If the tomcat server is started, the app **will NOT deploy correctly** since [Tomcat] needs two additional libraries, the [DB driver] and the [AspectJ weaver] for run-time aspect weaving
 
-UPDATE FROM GIT
-===================================================================================
-If any change is published at the [git server], it has to be _pulled_ to the local GIT, to do so:
+**The DB driver**
 
-    {develop}\projects\fabric-r01f>git pull
-    {develop}\projects\fabric-r01fBusinessServices>git pull
-    {develop}\projects\fabric-r01fCOREServices>git pull
-    {develop}\projects\fabric-r01fUI>git pull
-    {develop}\projects\zuzenean-panic-button>git-pull
+1) download the **[platform independent] ZIP** version from https://dev.mysql.com/downloads/connector/j/
 
-    {develop}\projects\fabric-r01f>mvn clean install
-    {develop}\projects\fabric-r01fBusinessServices> mvn clean install
-    {develop}\projects\fabric-r01fCOREServices> mvn clean install
-    {develop}\projects\fabric-r01fUI> mvn clean install
-    {develop}\projects\zuzenean-panic-button> mvn clean install
+2) extract the **[mysql-connector-java-xxx.jar]** file to `{develop}\app-server\apache-tomcat-9.0.22\lib`
+
+**The AspectJ weaver**
+
+1) download the **aspectj-1.9.4.jar** from http://www.eclipse.org/downloads/download.php?file=/tools/aspectj/aspectj-1.9.4.jar
+
+2) using winzip or 7z open the jar file and navigate to `files\lib\` where there should exists 3 files: `aspectjrt.jar`, `aspectjtools.jar` and `aspectjweaver.jar`
+
+3) extract these jar files to  `{develop}\app-server\apache-tomcat-9.0.22\lib`
+
+4) Modify the [tomcat] environment config command file `{develop}\app-server\tomcat9-env.cmd` to add the following line:
+
+    set "JAVA_OPTS=%JAVA_OPTS% -javaagent:%CATALINA_HOME%/lib/aspectjweaver.jar -Daj.weaving.verbose=true
+
+
 
 
 
