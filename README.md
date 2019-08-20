@@ -339,7 +339,63 @@ If the tomcat server is started, the app **will NOT deploy correctly** since [To
     set "JAVA_OPTS=%JAVA_OPTS% -javaagent:%CATALINA_HOME%/lib/aspectjweaver.jar -Daj.weaving.verbose=true
 
 
+[J] - CONFIGURATION
+==================================================================================
 
+If the tomcat server is started, the app **will NOT deploy correctly** since some config is needed bu the application
+
+1) create a folder `{develop}\config\panic-button\default\x47b`
+
+2) At `{develop}\app-server\apache-tomcat-9.0.22\bin` create a file named `setenv.bat` (**beware! it's .bat not .cmd**) with the following content
+
+    set CLASSPATH=%DEVELOP_HOME%\config\panic-button
+
+3) Create a file `{develop}\config\panic-button\default\x47b\x47b.notifier.properties.xml` with the following content:
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<notifier>
+		<!-- ============================================= -->
+		<!-- EMAIL NOTIFIER                                -->
+		<!-- ============================================= -->
+		<email>
+			<smtp>
+				<host>__the SMTP server host__</host>
+			</smtp>
+			<aws>
+				<!-- simple email service -->
+				<ses>
+					<accessKey>__access key__</accessKey>
+					<accessSecret>__access secret__</accessSecret>
+				</ses>
+			</aws>
+		</email>
+
+		<!-- ============================================= -->
+		<!-- SMS NOTIFIER                                -->
+		<!-- ============================================= -->
+		<sms>
+			<!-- AWS SNS (simple notification service) -->
+			<aws>
+				<!-- simple email service -->
+				<sns>
+					<accessKey>__sns access key__</accessKey>
+					<accessSecret>__sns access secret__</accessSecret>
+				</sns>
+			</aws>
+		</sms>
+
+		<!-- ============================================= -->
+		<!-- VOICE NOTIFIER                                -->
+		<!-- ============================================= -->
+		<voice>
+			<!-- Twilio notifier -->
+			<twilio>
+				<accountSID>__accountSID__</accountSID>
+				<authToken>__auth token__</authToken>
+				<voicePhoneNumber>__phone__</voicePhoneNumber>
+			</twilio>
+		</voice>
+	</notifier>
 
 
 
