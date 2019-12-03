@@ -85,6 +85,8 @@
 <!-- BUILD                                                                  -->
 <!-- ====================================================================== -->
 	<build>
+		<finalName>pb01CORERestServicesWars</finalName>
+		
 		<pluginManagement>
 			<plugins>
 				<!--
@@ -184,5 +186,23 @@
 			</dependencies>
 		</profile>
 	</profiles>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT DISTRIBUTION                                                  -->
+<!-- ====================================================================== -->
+	<distributionManagement>
+		<repository>
+			<id>maven-releases</id>
+			<name>maven-releases</name>
+			<layout>default</layout>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>maven-snapshots</id>
+			<name>maven-snapshots</name>
+			<layout>default</layout>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>

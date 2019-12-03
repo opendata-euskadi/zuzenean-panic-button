@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>pb01.config</groupId>
 		<artifactId>pb01Config</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
