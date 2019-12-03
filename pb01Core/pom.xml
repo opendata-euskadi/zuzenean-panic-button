@@ -26,6 +26,6 @@
 	<modules>
 		<module>pb01COREClasses</module>
 		<module>pb01CORERestServicesClasses</module>
-                <module>pb01CORERestServicesWar</module>
+		<module>pb01CORERestServicesWar</module>
 	</modules>
 </project>
