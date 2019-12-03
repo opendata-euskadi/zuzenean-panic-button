@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>pb01.test</groupId>
+		<artifactId>pb01Test</artifactId>
+		<version>${revision}</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>pb01TestClasses</name>
+	<artifactId>pb01TestClasses</artifactId>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- TEST                                      -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- pb01 Client APIs                          -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>pb01.api</groupId>
+			<artifactId>pb01APIClasses</artifactId>
+			<version>${revision}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- pb01 COREs                                -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>pb01.core</groupId>
+			<artifactId>pb01COREClasses</artifactId>
+			<version>${revision}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- pb01 Configs                              -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>pb01.config.core</groupId>
+			<artifactId>pb01cConfig</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>pb01.config.api</groupId>
+			<artifactId>pb01aConfig</artifactId>
+			<version>${revision}</version>
+		</dependency>
+
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: CONFIG                               -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.config</groupId>
+			<artifactId>r01fConfig</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: TEST                                 -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices</groupId>
+			<artifactId>r01fBusinessServicesTestClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+	</dependencies>
+
+<!-- ====================================================================== -->
+<!-- PROFILES : ENVIROMENT PROFILE											-->
+<!-- ====================================================================== -->
+<!--
+	The application config has TWO levels:
+	- public:                      anyone can see it 					> Project (artifact) name: [{appCode}Config]
+	- private by EJIE environment: only authorized people can access it > Project (artifact) name: [{appCode}ConfigByEnv]
+
+	The aim of the existence of TWO separate projects for configs is that anyone at the outside (not from EJIE) do NOT have the need of
+	private EJIE-dependent projects like `[{appCode}ConfigByEnv]` so just cloning the 'public' part of the code & config is
+	usually enough to run the app
+	... at the same time, inside EJIE, a `[{appCode}ConfigByEnv]` is used to store the environment-dependent or 'secret' config
+
+	At runtime, while loading the config:
+	- if an R01_ENV system property is set, config from the 'public' project (artifact) [{appCode}Config]
+	  is MIXED with config from the 'private' project (artifcat)  [{appCode}ConfigByEnv]
+
+	- if NO R01_ENV system property is set only config from the 'public' project (artifact) [{appCode}Config] is used
+
+	A Maven PROFILE is used so the 'private' project `[{appCode}ConfigByEnv]` is only required if `PROFILE=env_profile`
+	If a Maven PROFILE is **NOT** set (the default _'public'_ case), the `[{appCode}ConfigByEnv]` dependency is NOT required
+
+	This way, the EJIE private config is 'secret' while anyone from the 'outside' (public) still can build the app without the EJIE private config artifact dependency
+-->
+	<profiles>
+		<profile>
+			<!--  By Default:	No dependency, just common inherited Public Config.
+								When this profile will be applied? When no profile is indicated, neither into maven settings neither maven command with -P parameter -->
+			<id>default_profile</id>
+			<dependencies>
+
+			</dependencies>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<!--  Env Profile :	XXXConfigByEnv modules are specified as dependencies.
+								When this profile will be applied?   Must be specified into maven settings or -P command parameter  -->
+			<id>env_profile</id>
+			<dependencies>
+				<dependency>
+					<groupId>pb01.config.core</groupId>
+					<artifactId>pb01cConfigByEnv</artifactId>
+					<version>${revision}</version>
+				</dependency>
+				<dependency>
+					<groupId>pb01.config.api</groupId>
+					<artifactId>pb01aConfigByEnv</artifactId>
+					<version>${revision}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
+<!-- ====================================================================== -->
+<!-- BUILD                                                                  -->
+<!-- ====================================================================== -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!--
+				ECLIPSE (see main pom.xml for further info) ===================
+				This plugin has NO effects in maven build:
+					m2e ONLY runs some 'standard' goals of the maven pom.xml since the aim of m2e is NOT to be a complete CI tool
+					... in order to include 'non-standard' goals in m2e execution and avoid [plugin execution not covered by the eclipse m2e plugin project build lifecycle mapping]
+						the 'non-standard' plugin MUST be explicitly included in m2e execution
+				-->
+				<plugin>
+				  	<groupId>org.eclipse.m2e</groupId>
+				  	<artifactId>lifecycle-mapping</artifactId>
+				  	<version>1.0.0</version>
+				  	<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<!-- flatten plugin -->
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>flatten-maven-plugin</artifactId>
+										<versionRange>[1.1.0,)</versionRange>
+										<goals>
+											<goal>flatten</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

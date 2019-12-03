@@ -1,0 +1,15 @@
+<html>
+    <body>
+    	<img src='cid:logo' />
+        <p>An <span style='font-weight: bold'>ALARM</span> has been raised at ${alarmDate}</p>
+		<ul>
+			<li>[${orgId}]: ${org}</li>
+		#if($loc) 
+			<li>[${locId}]: ${loc}</li>
+		#end
+		#if($workPlace) 
+			<li>[${workPlaceId}]: ${workPlace}</li>
+		#end
+		</ul>
+    </body>
+</html>
