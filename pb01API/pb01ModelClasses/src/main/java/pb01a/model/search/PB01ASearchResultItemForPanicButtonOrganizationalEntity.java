@@ -279,7 +279,7 @@ public class PB01ASearchResultItemForPanicButtonOrganizationalEntity
     }
     public Collection<EMail> getEffectiveEMails() {
     	Collection<EMail> orgEMails = this.getOrganization() != null ? this.getOrganization().getEmails() : null;
-    	Collection<EMail> orgDivEMails = this.getOrganization() != null ? this.getOrgDivision().getEmails() : null;
+    	Collection<EMail> orgDivEMails = this.getOrgDivision() != null ? this.getOrgDivision().getEmails() : null;
     	Collection<EMail> orgDivSrvcEMails = this.getOrgDivisionService() != null ? this.getOrgDivisionService().getEmails() : null;
     	Collection<EMail> orgDivSrvcLocEMails = this.getOrgDivisionServiceLocation() != null ? this.getOrgDivisionServiceLocation().getEmails() : null;
     	Collection<EMail> workPlaceEMails = this.getWorkPlace() != null ? this.getWorkPlace().getEmails() : null;
