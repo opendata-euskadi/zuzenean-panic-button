@@ -5,18 +5,18 @@ import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
+import pb01a.model.PB01AAlarmMessage;
 import r01f.ui.vaadin.serverpush.VaadinServerPushedMessage;
 import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcastListener;
 import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcaster;
 import r01f.util.types.Strings;
-import x47b.model.X47BAlarmMessage;
 
 /**
  * 	Server push mechanism:
  *		a) Someone pushes the panic button which makes an HTTP call to a REST-endpoint
  *
  *		b) the CORE upon persisting the raised alarm posts a message to the {@link EventBus} (guava)
- *		   (see X47BCRUDOKEventListenersForAlarmEvents)
+ *		   (see PB01CCRUDOKEventListenersForAlarmEvents)
  *
  *      c) the UI is subscribed to that type of messages at the {@link EventBus}
  *		   (see PB01AlarmMessageEventListener and PB01UIServletContextListener)
@@ -35,7 +35,7 @@ public class PB01ServerPushedMessageForAlarmRaised
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Getter private final X47BAlarmMessage _message;
+	@Getter private final PB01AAlarmMessage _message;
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////

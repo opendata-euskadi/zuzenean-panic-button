@@ -4,14 +4,14 @@ import com.google.common.eventbus.EventBus;
 
 import lombok.extern.slf4j.Slf4j;
 import pb01.ui.vaadin.view.events.PB01OrgObjectChangedEvent;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgObjectOID;
+import pb01a.model.org.PB01AOrganizationalPersistableObject;
 import r01f.patterns.FactoryFrom;
 import r01f.ui.presenter.UIObjectDetailPresenter;
 import r01f.ui.presenter.UIPresenterSubscriber;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
-import x47b.model.org.X47BOrganizationalPersistableObject;
 
 @Slf4j
-public abstract class PB01PresenterForOrgObjectDetailBase<O extends X47BOrgObjectOID,M extends X47BOrganizationalPersistableObject<O,?>,
+public abstract class PB01PresenterForOrgObjectDetailBase<O extends PB01AOrgObjectOID,M extends PB01AOrganizationalPersistableObject<O,?>,
 											  			  V extends PB01ViewObjForOrganizationalEntityBase<O,?,M>,
 											  			  C extends PB01COREMediatorForOrganizationalEntityBase<O,M>>
   		   implements UIObjectDetailPresenter<O,V> {
@@ -64,7 +64,7 @@ public abstract class PB01PresenterForOrgObjectDetailBase<O extends X47BOrgObjec
 							   			// 		 that an object has been changed
 							   			// 		 (see PB01PresenterForRaisedAlarmsListView
 							   			//		  which has a cache of the org object types)
-										X47BOrgObjectOID changedOrgObjOid = result.getOid();
+										PB01AOrgObjectOID changedOrgObjOid = result.getOid();
 										_eventBus.post(new PB01OrgObjectChangedEvent(changedOrgObjOid));
 
 							   			// [2] . Convert the model object into a view obj

@@ -1,12 +1,12 @@
 package pb01.ui.vaadin.orgentity.orgdivision;
 
 import pb01.ui.vaadin.orgentity.PB01DetailViewForOrgObjectBase;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionOID;
+import pb01a.model.org.PB01AOrgDivision;
 import r01f.ui.i18n.UII18NService;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
-import x47b.model.org.X47BOrgDivision;
 
 public class PB01DetailViewForOrgDivision
-	 extends PB01DetailViewForOrgObjectBase<X47BOrgDivisionOID,X47BOrgDivision,
+	 extends PB01DetailViewForOrgObjectBase<PB01AOrgDivisionOID,PB01AOrgDivision,
 	 										PB01ViewObjForOrgDivision> {
 
 	private static final long serialVersionUID = 1763832401233570646L;

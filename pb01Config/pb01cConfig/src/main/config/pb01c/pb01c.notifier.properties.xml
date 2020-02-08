@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notifier>
+	<!-- BEWARE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+	<!-- The notifier services (smtp mail / aws ses / aws sns / latinia / twilio...) -->
+	<!-- properties at the config by env module                                      -->
+
+	<!-- Notifiers config -->
+	<notifiers>
+		<log enabled="false"/>
+		<email enabled="true" impl="aws">	<!-- impls: smtp | aws | google/api | google/smtp -->
+			<from mail="me@futuretelematics.net">Zuzenean</from>
+			<msgTemplate>pb01c/notifier/pb01cEMAILMessageTemplate.vm</msgTemplate>
+			<msgHeaderImage>pb01c/notifier/pb01cLogo.gif</msgHeaderImage>
+		</email>
+		<sms enabled="true" impl="aws">	<!-- impls: latinia | aws -->
+			<from phone="012">Zuzenean</from>
+			<smsTemplate>pb01c/notifier/pb01cSMSMessageTemplate.vm</smsTemplate>
+		</sms>
+		<voice enabled="false" impl="twilio">	<!-- impls: twilio -->
+			<from phone="012">Zuzenean</from>
+			<twmlUrl>https://dl.dropboxusercontent.com/u/1264561/testTwilioTWML.xml</twmlUrl>	<!-- ie: http://demo.twilio.com/docs/voice.xml -->
+			<msgTemplate>pb01c/notifier/pb01cVOICEMessageTemplate.vm</msgTemplate>
+		</voice>
+	</notifiers>
+</notifier>

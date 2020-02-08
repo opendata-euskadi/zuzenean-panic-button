@@ -6,12 +6,12 @@ import com.vaadin.ui.Window;
 
 import lombok.extern.slf4j.Slf4j;
 import pb01.ui.vaadin.view.components.PB01AcceptCancelDeleteButtonsLayout;
+import pb01a.model.oids.PB01AIDs.PB01APersistableObjectID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgObjectOID;
+import pb01a.model.org.PB01AOrganizationalPersistableObject;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import r01f.ui.vaadin.view.VaadinViewFactories.VaadinViewFactory;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
-import x47b.model.org.X47BOrganizationalPersistableObject;
 
 /**
  * Detail window (pop up)
@@ -33,8 +33,8 @@ import x47b.model.org.X47BOrganizationalPersistableObject;
  * </pre>
  */
 @Slf4j
-public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends X47BOrgObjectOID,M extends X47BOrganizationalPersistableObject<O,? extends X47BPersistableObjectID<?>>,
-														   		  V extends PB01ViewObjForOrganizationalEntityBase<O,? extends X47BPersistableObjectID<?>,M>,
+public abstract class PB01DetailWindowForOrganizationalEntityBase<O extends PB01AOrgObjectOID,M extends PB01AOrganizationalPersistableObject<O,? extends PB01APersistableObjectID<?>>,
+														   		  V extends PB01ViewObjForOrganizationalEntityBase<O,? extends PB01APersistableObjectID<?>,M>,
 														   		  C extends PB01COREMediatorForOrganizationalEntityBase<O,M>,	// detail CORE mediator
 														   		  P extends PB01PresenterForOrgObjectDetailBase<O,M,V,C>,		// detail view presenter
 														   		  D extends PB01DetailViewForOrgObjectBase<O,M,V>> 				// detail view

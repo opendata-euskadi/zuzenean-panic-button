@@ -1,13 +1,13 @@
 package pb01.ui.vaadin.orgentity;
 
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgObjectID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgObjectOID;
+import pb01a.model.org.PB01AOrgObjectRef;
+import pb01a.model.org.PB01AOrganizationalPersistableObject;
 import r01f.locale.Language;
 import r01f.ui.viewobject.UIViewObjectBase;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
-import x47b.model.org.X47BOrgObjectRef;
-import x47b.model.org.X47BOrganizationalPersistableObject;
 
-public abstract class PB01ViewObjForOrganizationalEntityBase<O extends X47BOrgObjectOID,ID extends X47BOrgObjectID<O>,M extends X47BOrganizationalPersistableObject<O,ID>>
+public abstract class PB01ViewObjForOrganizationalEntityBase<O extends PB01AOrgObjectOID,ID extends PB01AOrgObjectID<O>,M extends PB01AOrganizationalPersistableObject<O,ID>>
 	          extends UIViewObjectBase<M> {
 	private static final long serialVersionUID = -3003439851622231243L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -79,7 +79,7 @@ public abstract class PB01ViewObjForOrganizationalEntityBase<O extends X47BOrgOb
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public X47BOrgObjectRef<O,ID> getRef() {
-		return new X47BOrgObjectRef<>(_wrappedModelObject.getOid(),_wrappedModelObject.getId());
+	public PB01AOrgObjectRef<O,ID> getRef() {
+		return new PB01AOrgObjectRef<>(_wrappedModelObject.getOid(),_wrappedModelObject.getId());
 	}
 }

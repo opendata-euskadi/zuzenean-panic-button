@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<client>
+	<!-- REST end points from the client view -->
+	<!--
+	This config ONLY is used if the client cannot access the CORE services directly
+	(the CORE bean services jar -pb01cServicesClasses.jar- is NOT available in the client's classpath)
+
+	For example, if the client is an UI (that's the case of pb01cPanicButtonWar):
+		- If the UI War is deployed in a Weblogic's EAR alonside other app components, it usually has the core services available at the classpath
+		  (the core services jar -pb01cServicesClasses.jar- is usually at APP-INF/lib) so the UI War WILL NOT use the REST services (pb01cServicesWar)
+		  ... so the below restEndPoints config will not be used since REST services will not be used
+
+		- If the UI War is deployed independently, usually, it'll NOT have the core services available in the classpath
+		  (pb01cPanicButtonWar do not have a dependency on pb01cServicesClasses.jar) so it'll try to use REST services
+		  and to reach them the below restEndPoints config is used
+	-->
+	<restEndPoints>
+		<host>http://localhost:8080/</host>				<!-- http://svc.intra.integracion.sb.jakina.ejiedes.net:8080/ -->
+
+		<!-- Panic button -->
+		<panicButtonEndPointBasePath>pb01cPanicButtonRESTServicesWar</panicButtonEndPointBasePath>	<!-- pb01cRESTServicesWar for apache exposed url or ctxapp/pb01cRESTEndpoint for service-bus exposed -->
+
+	</restEndPoints>
+</client>

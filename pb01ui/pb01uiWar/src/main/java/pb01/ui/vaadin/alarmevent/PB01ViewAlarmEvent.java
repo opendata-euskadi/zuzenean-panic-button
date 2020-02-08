@@ -5,35 +5,35 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import pb01a.model.PB01AAlarmEvent;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionServiceID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionServiceLocationID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrganizationID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AWorkPlaceID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceLocationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrganizationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AWorkPlaceOID;
+import pb01a.model.oids.PB01APanicButtonOIDs.PB01AAlarmEventOID;
 import r01f.ui.viewobject.UIViewObjectBase;
-import x47b.model.X47BAlarmEvent;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
-import x47b.model.oids.X47BPanicButtonOIDs.X47BAlarmEventOID;
 
 @Accessors(prefix="_")
 public class PB01ViewAlarmEvent
-     extends UIViewObjectBase<X47BAlarmEvent> {
+     extends UIViewObjectBase<PB01AAlarmEvent> {
 
     private static final long serialVersionUID = 4731351923113134775L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-    public PB01ViewAlarmEvent(final X47BAlarmEvent obj) {
+    public PB01ViewAlarmEvent(final PB01AAlarmEvent obj) {
         super(obj);
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BAlarmEventOID getOid() {
+    public PB01AAlarmEventOID getOid() {
         return _wrappedModelObject.getOid();
     }
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -45,11 +45,11 @@ public class PB01ViewAlarmEvent
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ORG
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BOrganizationOID getOrganizationOid() {
+    public PB01AOrganizationOID getOrganizationOid() {
         return _wrappedModelObject.getOrganization() != null ? _wrappedModelObject.getOrganization().getOid()
                                                              : null;
     }
-    public X47BOrganizationID getOrganizationId() {
+    public PB01AOrganizationID getOrganizationId() {
         return _wrappedModelObject.getOrganization() != null ? _wrappedModelObject.getOrganization().getId()
                                                              : null;
     }
@@ -57,11 +57,11 @@ public class PB01ViewAlarmEvent
 /////////////////////////////////////////////////////////////////////////////////////////
 //	DIVISION
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BOrgDivisionOID getDivisionOid() {
+    public PB01AOrgDivisionOID getDivisionOid() {
         return _wrappedModelObject.getDivision() != null ? _wrappedModelObject.getDivision().getOid()
                                                          : null;
     }
-    public X47BOrgDivisionID getDivisionId() {
+    public PB01AOrgDivisionID getDivisionId() {
         return _wrappedModelObject.getDivision() != null ? _wrappedModelObject.getDivision().getId()
                                                          : null;
     }
@@ -69,11 +69,11 @@ public class PB01ViewAlarmEvent
 /////////////////////////////////////////////////////////////////////////////////////////
 //	SERVICE
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BOrgDivisionServiceOID getServiceOid() {
+    public PB01AOrgDivisionServiceOID getServiceOid() {
         return _wrappedModelObject.getService() != null ? _wrappedModelObject.getService().getOid()
                                                         : null;
     }
-    public X47BOrgDivisionServiceID getServiceId() {
+    public PB01AOrgDivisionServiceID getServiceId() {
         return _wrappedModelObject.getService() != null ? _wrappedModelObject.getService().getId()
                                                         : null;
     }
@@ -81,11 +81,11 @@ public class PB01ViewAlarmEvent
 /////////////////////////////////////////////////////////////////////////////////////////
 //	LOCATION
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BOrgDivisionServiceLocationOID getLocationOid() {
+    public PB01AOrgDivisionServiceLocationOID getLocationOid() {
         return _wrappedModelObject.getLocation() != null ? _wrappedModelObject.getLocation().getOid()
                                                          : null;
     }
-    public X47BOrgDivisionServiceLocationID getLocationId() {
+    public PB01AOrgDivisionServiceLocationID getLocationId() {
         return _wrappedModelObject.getLocation() != null ? _wrappedModelObject.getLocation().getId()
                                                          : null;
     }
@@ -93,11 +93,11 @@ public class PB01ViewAlarmEvent
 /////////////////////////////////////////////////////////////////////////////////////////
 //	WORKPLACE
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BWorkPlaceOID getWorkPlaceOid() {
+    public PB01AWorkPlaceOID getWorkPlaceOid() {
         return _wrappedModelObject.getWorkPlace() != null ? _wrappedModelObject.getWorkPlace().getOid()
                                                           : null;
     }
-    public X47BWorkPlaceID getWorkPlaceId() {
+    public PB01AWorkPlaceID getWorkPlaceId() {
         return _wrappedModelObject.getWorkPlace() != null ? _wrappedModelObject.getWorkPlace().getId()
                                                           : null;
     }

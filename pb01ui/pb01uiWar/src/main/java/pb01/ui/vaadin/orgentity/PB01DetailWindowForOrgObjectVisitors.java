@@ -15,18 +15,18 @@ import pb01.ui.vaadin.orgentity.orgdivisionservicelocation.PB01DetailWindowForOr
 import pb01.ui.vaadin.orgentity.orgdivisionservicelocation.PB01ViewObjForOrgDivisionServiceLocation;
 import pb01.ui.vaadin.orgentity.workplace.PB01DetailWindowForWorkPlace;
 import pb01.ui.vaadin.orgentity.workplace.PB01ViewObjForWorkPlace;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionServiceID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionServiceLocationID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrganizationID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AWorkPlaceID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceLocationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrganizationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AWorkPlaceOID;
+import pb01a.model.org.PB01AOrgObjectRef;
 import r01f.ui.presenter.UIPresenterSubscriber;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
-import x47b.model.org.X47BOrgObjectRef;
 
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
 public abstract class PB01DetailWindowForOrgObjectVisitors {
@@ -35,41 +35,41 @@ public abstract class PB01DetailWindowForOrgObjectVisitors {
 /////////////////////////////////////////////////////////////////////////////////////////
 	@RequiredArgsConstructor
 	public static class PB01OrgObjectDetailWinForEditVisitor {
-		private final X47BOrgObjectRef<?,?> _orgEntityRef;
+		private final PB01AOrgObjectRef<?,?> _orgEntityRef;
 		private final UIPresenterSubscriber<?> _saveSubscriber;
 		private final UIPresenterSubscriber<?> _deleteSubscriber;
 
 		@SuppressWarnings("unchecked")
 		public void forEditingExistentOn(final PB01DetailWindowForOrganization orgWin) {
-			final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef = (X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID>)_orgEntityRef;
+			final PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID> orgRef = (PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID>)_orgEntityRef;
 			orgWin.forEditing(orgRef.getOid(),
 							  (UIPresenterSubscriber<PB01ViewObjForOrganization>)_saveSubscriber,
 							  (UIPresenterSubscriber<PB01ViewObjForOrganization>)_deleteSubscriber);
 		}
 		@SuppressWarnings("unchecked")
 		public void forEditingExistentOn(final PB01DetailWindowForOrgDivision orgDivWin) {
-			final X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef = (X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>)_orgEntityRef;
+			final PB01AOrgObjectRef<PB01AOrgDivisionOID,PB01AOrgDivisionID> orgDivRef = (PB01AOrgObjectRef<PB01AOrgDivisionOID,PB01AOrgDivisionID>)_orgEntityRef;
 			orgDivWin.forEditing(orgDivRef.getOid(),
 								 (UIPresenterSubscriber<PB01ViewObjForOrgDivision>)_saveSubscriber,
 								 (UIPresenterSubscriber<PB01ViewObjForOrgDivision>)_deleteSubscriber);
 		}
 		@SuppressWarnings("unchecked")
 		public void forEditingExistentOn(final PB01DetailWindowForOrgDivisionService orgDivSrvcWin) {
-			final X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef = (X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID>)_orgEntityRef;
+			final PB01AOrgObjectRef<PB01AOrgDivisionServiceOID,PB01AOrgDivisionServiceID> orgDivSrvcRef = (PB01AOrgObjectRef<PB01AOrgDivisionServiceOID,PB01AOrgDivisionServiceID>)_orgEntityRef;
 			orgDivSrvcWin.forEditing(orgDivSrvcRef.getOid(),
 								     (UIPresenterSubscriber<PB01ViewObjForOrgDivisionService>)_saveSubscriber,
 								     (UIPresenterSubscriber<PB01ViewObjForOrgDivisionService>)_deleteSubscriber);
 		}
 		@SuppressWarnings("unchecked")
 		public void forEditingExistentOn(final PB01DetailWindowForOrgDivisionServiceLocation orgDivSrvcLocWin) {
-			final X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocRef = (X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID>)_orgEntityRef;
+			final PB01AOrgObjectRef<PB01AOrgDivisionServiceLocationOID,PB01AOrgDivisionServiceLocationID> orgDivSrvcLocRef = (PB01AOrgObjectRef<PB01AOrgDivisionServiceLocationOID,PB01AOrgDivisionServiceLocationID>)_orgEntityRef;
 			orgDivSrvcLocWin.forEditing(orgDivSrvcLocRef.getOid(),
 								        (UIPresenterSubscriber<PB01ViewObjForOrgDivisionServiceLocation>)_saveSubscriber,
 								        (UIPresenterSubscriber<PB01ViewObjForOrgDivisionServiceLocation>)_deleteSubscriber);
 		}
 		@SuppressWarnings("unchecked")
 		public void forEditingExistentOn(final PB01DetailWindowForWorkPlace workPlaceWin) {
-			final X47BOrgObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceRef = (X47BOrgObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID>)_orgEntityRef;
+			final PB01AOrgObjectRef<PB01AWorkPlaceOID,PB01AWorkPlaceID> workPlaceRef = (PB01AOrgObjectRef<PB01AWorkPlaceOID,PB01AWorkPlaceID>)_orgEntityRef;
 			workPlaceWin.forEditing(workPlaceRef.getOid(),
 								    (UIPresenterSubscriber<PB01ViewObjForWorkPlace>)_saveSubscriber,
 								    (UIPresenterSubscriber<PB01ViewObjForWorkPlace>)_deleteSubscriber);
@@ -92,7 +92,7 @@ public abstract class PB01DetailWindowForOrgObjectVisitors {
 	 */
 	@RequiredArgsConstructor
 	public static class PB01OrgObjectDetailWinForCreateVisitor {
-		private final List<X47BOrgObjectRef<?,?>> _orgEntityRefChain;
+		private final List<PB01AOrgObjectRef<?,?>> _orgEntityRefChain;
 		private final UIPresenterSubscriber<?> _saveSubscriber;
 
 		@SuppressWarnings("unchecked")
@@ -103,7 +103,7 @@ public abstract class PB01DetailWindowForOrgObjectVisitors {
 		public void forCreatingNewOn(final PB01DetailWindowForOrgDivision orgDivWin) {
 			if (_orgEntityRefChain.size() != 1) throw new IllegalStateException("chain size is " + _orgEntityRefChain.size() + "; expected 1");
 
-			final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef = (X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID>)_orgEntityRefChain.get(0);
+			final PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID> orgRef = (PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID>)_orgEntityRefChain.get(0);
 			orgDivWin.forCreating(orgRef,
 								  (UIPresenterSubscriber<PB01ViewObjForOrgDivision>)_saveSubscriber);
 		}
@@ -111,8 +111,8 @@ public abstract class PB01DetailWindowForOrgObjectVisitors {
 		public void forCreatingNewOn(final PB01DetailWindowForOrgDivisionService orgDivSrvcWin) {
 			if (_orgEntityRefChain.size() != 2) throw new IllegalStateException("chain size is " + _orgEntityRefChain.size() + "; expected 2");
 
-			final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef = (X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID>)_orgEntityRefChain.get(1);
-			final X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef = (X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>)_orgEntityRefChain.get(0);
+			final PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID> orgRef = (PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID>)_orgEntityRefChain.get(1);
+			final PB01AOrgObjectRef<PB01AOrgDivisionOID,PB01AOrgDivisionID> orgDivRef = (PB01AOrgObjectRef<PB01AOrgDivisionOID,PB01AOrgDivisionID>)_orgEntityRefChain.get(0);
 			orgDivSrvcWin.forCreating(orgRef,orgDivRef,
 								      (UIPresenterSubscriber<PB01ViewObjForOrgDivisionService>)_saveSubscriber);
 		}
@@ -120,9 +120,9 @@ public abstract class PB01DetailWindowForOrgObjectVisitors {
 		public void forCreatingNewOn(final PB01DetailWindowForOrgDivisionServiceLocation orgDivSrvcLocWin) {
 			if (_orgEntityRefChain.size() != 3) throw new IllegalStateException("chain size is " + _orgEntityRefChain.size() + "; expected 3");
 
-			final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef = (X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID>)_orgEntityRefChain.get(2);
-			final X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef = (X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>)_orgEntityRefChain.get(1);
-			final X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef = (X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID>)_orgEntityRefChain.get(0);
+			final PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID> orgRef = (PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID>)_orgEntityRefChain.get(2);
+			final PB01AOrgObjectRef<PB01AOrgDivisionOID,PB01AOrgDivisionID> orgDivRef = (PB01AOrgObjectRef<PB01AOrgDivisionOID,PB01AOrgDivisionID>)_orgEntityRefChain.get(1);
+			final PB01AOrgObjectRef<PB01AOrgDivisionServiceOID,PB01AOrgDivisionServiceID> orgDivSrvcRef = (PB01AOrgObjectRef<PB01AOrgDivisionServiceOID,PB01AOrgDivisionServiceID>)_orgEntityRefChain.get(0);
 			orgDivSrvcLocWin.forCreating(orgRef,orgDivRef,orgDivSrvcRef,
 								         (UIPresenterSubscriber<PB01ViewObjForOrgDivisionServiceLocation>)_saveSubscriber);
 		}
@@ -130,10 +130,10 @@ public abstract class PB01DetailWindowForOrgObjectVisitors {
 		public void forCreatingNewOn(final PB01DetailWindowForWorkPlace workPlaceWin) {
 			if (_orgEntityRefChain.size() != 4) throw new IllegalStateException("chain size is " + _orgEntityRefChain.size() + "; expected 4");
 
-			final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef = (X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID>)_orgEntityRefChain.get(3);
-			final X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef = (X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID>)_orgEntityRefChain.get(2);
-			final X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef = (X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID>)_orgEntityRefChain.get(1);
-			final X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> workPlaceRef = (X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID>)_orgEntityRefChain.get(0);
+			final PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID> orgRef = (PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID>)_orgEntityRefChain.get(3);
+			final PB01AOrgObjectRef<PB01AOrgDivisionOID,PB01AOrgDivisionID> orgDivRef = (PB01AOrgObjectRef<PB01AOrgDivisionOID,PB01AOrgDivisionID>)_orgEntityRefChain.get(2);
+			final PB01AOrgObjectRef<PB01AOrgDivisionServiceOID,PB01AOrgDivisionServiceID> orgDivSrvcRef = (PB01AOrgObjectRef<PB01AOrgDivisionServiceOID,PB01AOrgDivisionServiceID>)_orgEntityRefChain.get(1);
+			final PB01AOrgObjectRef<PB01AOrgDivisionServiceLocationOID,PB01AOrgDivisionServiceLocationID> workPlaceRef = (PB01AOrgObjectRef<PB01AOrgDivisionServiceLocationOID,PB01AOrgDivisionServiceLocationID>)_orgEntityRefChain.get(0);
 			workPlaceWin.forCreating(orgRef,orgDivRef,orgDivSrvcRef,workPlaceRef,
 								     (UIPresenterSubscriber<PB01ViewObjForWorkPlace>)_saveSubscriber);
 		}

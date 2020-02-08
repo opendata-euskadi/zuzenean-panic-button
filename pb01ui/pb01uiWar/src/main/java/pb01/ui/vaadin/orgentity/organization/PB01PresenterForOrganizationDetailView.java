@@ -6,13 +6,13 @@ import javax.inject.Singleton;
 import com.google.common.eventbus.EventBus;
 
 import pb01.ui.vaadin.orgentity.PB01PresenterForOrgObjectDetailBase;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrganizationOID;
+import pb01a.model.org.PB01AOrganization;
 import r01f.inject.annotations.EventBusSingleton;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.org.X47BOrganization;
 
 @Singleton
 public class PB01PresenterForOrganizationDetailView
-	 extends PB01PresenterForOrgObjectDetailBase<X47BOrganizationOID,X47BOrganization,
+	 extends PB01PresenterForOrgObjectDetailBase<PB01AOrganizationOID,PB01AOrganization,
 	 											 PB01ViewObjForOrganization,
 	 											 PB01COREMediatorForOrganization> {
 

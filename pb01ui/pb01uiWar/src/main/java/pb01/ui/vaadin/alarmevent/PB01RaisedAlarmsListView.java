@@ -13,15 +13,15 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import lombok.extern.slf4j.Slf4j;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionServiceID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionServiceLocationID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrganizationID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AWorkPlaceID;
 import r01f.types.TimeLapse;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import r01f.util.types.collections.CollectionUtils;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
 
 @Slf4j
 public class PB01RaisedAlarmsListView
@@ -71,27 +71,27 @@ public class PB01RaisedAlarmsListView
 /////////////////////////////////////////////////////////////////////////////////////////
 //	PUBLIC ENTRY POINT
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void listAlarmEventsFor(final X47BOrganizationID orgId,final TimeLapse timeLapse) {
+	public void listAlarmEventsFor(final PB01AOrganizationID orgId,final TimeLapse timeLapse) {
 		_presenter.onRaisedAlarmsListDataNeeded(orgId,timeLapse,
 												_i18n.getCurrentLanguage(),
 												_presenterSubscriber);
 	}
-	public void listAlarmEventsFor(final X47BOrgDivisionID orgDivId,final TimeLapse timeLapse) {
+	public void listAlarmEventsFor(final PB01AOrgDivisionID orgDivId,final TimeLapse timeLapse) {
 		_presenter.onRaisedAlarmsListDataNeeded(orgDivId,timeLapse,
 												_i18n.getCurrentLanguage(),
 												_presenterSubscriber);
 	}
-	public void listAlarmEventsFor(final X47BOrgDivisionServiceID orgDivSrvcId,final TimeLapse timeLapse) {
+	public void listAlarmEventsFor(final PB01AOrgDivisionServiceID orgDivSrvcId,final TimeLapse timeLapse) {
 		_presenter.onRaisedAlarmsListDataNeeded(orgDivSrvcId,timeLapse,
 												_i18n.getCurrentLanguage(),
 												_presenterSubscriber);
 	}
-	public void listAlarmEventsFor(final X47BOrgDivisionServiceLocationID orgDivSrvcLocId,final TimeLapse timeLapse) {
+	public void listAlarmEventsFor(final PB01AOrgDivisionServiceLocationID orgDivSrvcLocId,final TimeLapse timeLapse) {
 		_presenter.onRaisedAlarmsListDataNeeded(orgDivSrvcLocId,timeLapse,
 												_i18n.getCurrentLanguage(),
 												_presenterSubscriber);
 	}
-	public void listAlarmEventsFor(final X47BWorkPlaceID wpId,final TimeLapse timeLapse) {
+	public void listAlarmEventsFor(final PB01AWorkPlaceID wpId,final TimeLapse timeLapse) {
 		_presenter.onRaisedAlarmsListDataNeeded(wpId,timeLapse,
 												_i18n.getCurrentLanguage(),
 												_presenterSubscriber);

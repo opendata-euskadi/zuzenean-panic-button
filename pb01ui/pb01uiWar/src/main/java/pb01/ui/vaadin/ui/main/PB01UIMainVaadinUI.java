@@ -18,6 +18,8 @@ import com.vaadin.ui.UI;
 import lombok.extern.slf4j.Slf4j;
 import pb01.ui.vaadin.serverpush.PB01ServerPushedMessageForAlarmRaised;
 import pb01.ui.vaadin.view.PB01ViewContainer;
+import pb01a.common.internal.P01AAppCodes;
+import r01f.internal.R01FAppCodes;
 import r01f.locale.Language;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.i18n.UIMessageBundle;
@@ -25,7 +27,6 @@ import r01f.ui.vaadin.serverpush.VaadinServerPushedMessage;
 import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcastListener;
 import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcaster;
 import r01f.util.types.locale.Languages;
-import x47b.common.internal.X47BAppCodes;
 
 @Theme("panicButtonStyles")	// see [WebContent]/VAADIN/themes/demoStyles
 							// check the styles.scss and ensure it's like:
@@ -34,7 +35,9 @@ import x47b.common.internal.X47BAppCodes;
   							//			@include demoStyles;
 							//		}
 @Push(PushMode.MANUAL)	// server-pushed messages (used to show a notification when an alarm is raised)
-@UIMessageBundle(basename={X47BAppCodes.UI_APPCODE_STR})		// loads i18n resource bundles from x47b.i18n
+@UIMessageBundle(basename={ R01FAppCodes.R01_UI_APP_CODE_STR,	// loads i18n resource bundles from r01f.i18n
+							P01AAppCodes.UI_APPCODE_STR })		// loads i18n resource bundles from pb01ui.i18n
+
 @Slf4j
 public class PB01UIMainVaadinUI
 	 extends UI
@@ -102,7 +105,7 @@ public class PB01UIMainVaadinUI
 //		a) Someone pushes the panic button which makes an HTTP call to a REST-endpoint
 //
 //		b) the CORE upon persisting the raised alarm posts a message to the {@link EventBus} (guava)
-//		   (see X47BCRUDOKEventListenersForAlarmEvents)
+//		   (see PB01CCRUDOKEventListenersForAlarmEvents)
 //
 //      c) the UI is subscribed to that type of messages at the {@link EventBus}
 //		   (see PB01AlarmMessageEventListener and PB01UIServletContextListener)

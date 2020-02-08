@@ -15,11 +15,12 @@ import com.vaadin.ui.UI;
 
 import lombok.extern.slf4j.Slf4j;
 import pb01.ui.vaadin.PB01UIVaadinViews;
+import pb01a.common.internal.P01AAppCodes;
+import r01f.internal.R01FAppCodes;
 import r01f.locale.Language;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.i18n.UIMessageBundle;
 import r01f.util.types.locale.Languages;
-import x47b.common.internal.X47BAppCodes;
 
 @Theme("panicButtonStyles")	// see [WebContent]/VAADIN/themes/demoStyles
 							// check the styles.scss and ensure it's like:
@@ -27,7 +28,8 @@ import x47b.common.internal.X47BAppCodes;
 							// 			@include addons;
   							//			@include demoStyles;
 							//		}
-@UIMessageBundle(basename={X47BAppCodes.UI_APPCODE_STR})		// loads i18n resource bundles from x47b.i18n
+@UIMessageBundle(basename={ R01FAppCodes.R01_UI_APP_CODE_STR,	// loads i18n resource bundles from r01f.i18n
+							P01AAppCodes.UI_APPCODE_STR })		// loads i18n resource bundles from pb01ui.i18n
 @Slf4j
 public class PB01UILoginVaadinUI
 	 extends UI {

@@ -24,6 +24,10 @@ import pb01.ui.vaadin.orgentity.PB01ViewObjForOrganizationalEntityBase;
 import pb01.ui.vaadin.view.PB01CascadedComboEvents.PB01ComboValueChangedEvent;
 import pb01.ui.vaadin.view.PB01CascadedComboEvents.PB01ComboValueChangedEventListener;
 import pb01.ui.vaadin.view.components.PB01VaadinComboItem;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgObjectID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgObjectOID;
+import pb01a.model.org.PB01AOrgObjectRef;
+import pb01a.model.org.PB01AOrgObjectType;
 import r01f.locale.Language;
 import r01f.patterns.FactoryFrom;
 import r01f.patterns.OnErrorSubscriber;
@@ -31,10 +35,6 @@ import r01f.patterns.OnSuccessSubscriber;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import r01f.util.types.collections.CollectionUtils;
 import r01f.util.types.collections.Lists;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
-import x47b.model.org.X47BOrgObjectRef;
-import x47b.model.org.X47BOrgObjectType;
 
 /**
  * A combo with a [create] & [edit] buttons:
@@ -49,7 +49,7 @@ import x47b.model.org.X47BOrgObjectType;
  */
 @Slf4j
 @Accessors(prefix="_")
-abstract class PB01CascadedCombo<O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
+abstract class PB01CascadedCombo<O extends PB01AOrgObjectOID,I extends PB01AOrgObjectID<O>>
 	   extends HorizontalLayout {
 
 	private static final long serialVersionUID = -8987361238414099521L;
@@ -58,7 +58,7 @@ abstract class PB01CascadedCombo<O extends X47BOrgObjectOID,I extends X47BOrgObj
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final transient PB01MainViewPresenter _presenter;
 
-	private final X47BOrgObjectType _orgObjectType;
+	private final PB01AOrgObjectType _orgObjectType;
 	private final Language _lang;
 
 	// the prop up window where the [org entity] details are edited
@@ -75,7 +75,7 @@ abstract class PB01CascadedCombo<O extends X47BOrgObjectOID,I extends X47BOrgObj
 	private final Button _editButton;
 
 	// The combo-selected item
-	private X47BOrgObjectRef<O,I> _selectedOrgObjectRef;
+	private PB01AOrgObjectRef<O,I> _selectedOrgObjectRef;
 
 	// The parent & child combo (can be null)
 	private PB01CascadedCombo<?,?> _parentCombo;
@@ -93,15 +93,15 @@ abstract class PB01CascadedCombo<O extends X47BOrgObjectOID,I extends X47BOrgObj
 		_presenter = presenter;
 
 		// type & lang
-		_orgObjectType = X47BOrgObjectType.ofOIDType(oidType);
+		_orgObjectType = PB01AOrgObjectType.ofOIDType(oidType);
 		_lang = lang;
 
 		// the detail edit popup ref
 		_detailPopUp = popupWin;
 
 		// oid & id factories
-		_oidFactory = X47BOrgObjectType.factoryForOIDType(oidType);
-		_idFactory = X47BOrgObjectType.factoryForIDType(idType);
+		_oidFactory = PB01AOrgObjectType.factoryForOIDType(oidType);
+		_idFactory = PB01AOrgObjectType.factoryForIDType(idType);
 
 		// Create the layout
 		//    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -134,7 +134,7 @@ abstract class PB01CascadedCombo<O extends X47BOrgObjectOID,I extends X47BOrgObj
 /////////////////////////////////////////////////////////////////////////////////////////
 //	GET & SET
 /////////////////////////////////////////////////////////////////////////////////////////
-	public X47BOrgObjectRef<O,I> getSelectedOrgObjectRef() {
+	public PB01AOrgObjectRef<O,I> getSelectedOrgObjectRef() {
 		return _selectedOrgObjectRef;
 	}
 	public void clearSelected() {
@@ -200,7 +200,7 @@ abstract class PB01CascadedCombo<O extends X47BOrgObjectOID,I extends X47BOrgObj
 			_presenter.onOrgsComboDataNeeded(_lang,
 											 this::_setComboItems);
 		} else {
-			final X47BOrgObjectRef<?,?> parentOrgObjectRef = _parentCombo.getSelectedOrgObjectRef();
+			final PB01AOrgObjectRef<?,?> parentOrgObjectRef = _parentCombo.getSelectedOrgObjectRef();
 			if (parentOrgObjectRef == null) {
 				// if the parent combo does NOT have a selected item, the combo must be empty
 				_combo.setDataProvider(DataProvider.ofCollection(Lists.newArrayList()));
@@ -227,7 +227,7 @@ abstract class PB01CascadedCombo<O extends X47BOrgObjectOID,I extends X47BOrgObj
 /////////////////////////////////////////////////////////////////////////////////////////
 	private void _onComboValueChanged(final ValueChangeEvent<PB01VaadinComboItem> event) {
 		// prev selected org entity ref
-		X47BOrgObjectRef<O,I> prevSelectedOrgObjectRef = _selectedOrgObjectRef;
+		PB01AOrgObjectRef<O,I> prevSelectedOrgObjectRef = _selectedOrgObjectRef;
 
 		// store the selected org entity ref
 		_selectedOrgObjectRef = _combo.getValue() != null
@@ -273,7 +273,7 @@ abstract class PB01CascadedCombo<O extends X47BOrgObjectOID,I extends X47BOrgObj
 	private void _showOrgObjectDetailViewForEditingExistingRecord() {
 		_showOrgObjectDetailViewForEditingExistingRecord(_selectedOrgObjectRef);
 	}
-	private void _showOrgObjectDetailViewForEditingExistingRecord(final X47BOrgObjectRef<O,I> orgEntityRef) {
+	private void _showOrgObjectDetailViewForEditingExistingRecord(final PB01AOrgObjectRef<O,I> orgEntityRef) {
 		if (orgEntityRef == null) throw new IllegalStateException("NO org entity ref of the object to be edited!");
 
 		// after save or delete at the detail view the action to be done is the same: refresh the list & close the detail view
@@ -347,16 +347,16 @@ abstract class PB01CascadedCombo<O extends X47BOrgObjectOID,I extends X47BOrgObj
 	 * 		[org division service location] -> [org division service] -> [org division] -> [org]
 	 * @return
 	 */
-	private List<X47BOrgObjectRef<?,?>> _orgEntityRefChain() {
-		final List<X47BOrgObjectRef<?,?>> chain = Lists.newArrayList();
+	private List<PB01AOrgObjectRef<?,?>> _orgEntityRefChain() {
+		final List<PB01AOrgObjectRef<?,?>> chain = Lists.newArrayList();
 		_recurseOrgObjectRefChain(chain,
 								  this);
 		return chain;
 	}
-	private void _recurseOrgObjectRefChain(final List<X47BOrgObjectRef<?,?>> chain,
+	private void _recurseOrgObjectRefChain(final List<PB01AOrgObjectRef<?,?>> chain,
 										   final PB01CascadedCombo<?,?> currCombo) {
 		if (currCombo == null) return;
-		final X47BOrgObjectRef<?,?> parentRef = currCombo.getParentCombo() != null ? currCombo.getParentCombo().getSelectedOrgObjectRef()
+		final PB01AOrgObjectRef<?,?> parentRef = currCombo.getParentCombo() != null ? currCombo.getParentCombo().getSelectedOrgObjectRef()
 																						 	  : null;
 		if (parentRef != null) {
 			chain.add(parentRef);

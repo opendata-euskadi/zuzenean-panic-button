@@ -27,6 +27,20 @@ import lombok.extern.slf4j.Slf4j;
 import pb01.ui.vaadin.alarmevent.PB01ContactsListView;
 import pb01.ui.vaadin.alarmevent.PB01PresenterForRaisedAlarmsListView;
 import pb01.ui.vaadin.alarmevent.PB01RaisedAlarmsListView;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionServiceID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionServiceLocationID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgObjectID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrganizationID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AWorkPlaceID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceLocationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgObjectOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrganizationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AWorkPlaceOID;
+import pb01a.model.org.PB01AOrgObjectRef;
+import pb01a.model.org.PB01AOrgObjectType;
 import r01f.patterns.Provider;
 import r01f.types.TimeLapse;
 import r01f.types.contact.EMail;
@@ -35,20 +49,6 @@ import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import r01f.ui.vaadin.view.VaadinView;
 import r01f.util.types.collections.CollectionUtils;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
-import x47b.model.org.X47BOrgObjectRef;
-import x47b.model.org.X47BOrgObjectType;
 
 @Slf4j
 public class PB01MainGridView
@@ -69,7 +69,7 @@ public class PB01MainGridView
 
 	// A pop up where all the raised alarms are shown
 	private final PB01RaisedAlarmsListView _raisedAlarmsPopUp;
-	
+
 	// A pop up where all phones for organization object are shown
 	private final PB01ContactsListView _contactsPopUp;
 
@@ -83,11 +83,11 @@ public class PB01MainGridView
 							// presenter for the alarm list view
 							final PB01PresenterForRaisedAlarmsListView alarmListViewPresenter,
 							// what happens when the user clicks on an organizational entity
-							final PB01OrgObjectClickEventListener<X47BOrganizationOID,X47BOrganizationID> orgClickEventListener,
-						    final PB01OrgObjectClickEventListener<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivClickEventListener,
-						    final PB01OrgObjectClickEventListener<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcClickEventListener,
-						    final PB01OrgObjectClickEventListener<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocClickEventListener,
-						    final PB01OrgObjectClickEventListener<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceClickEventListener) {
+							final PB01OrgObjectClickEventListener<PB01AOrganizationOID,PB01AOrganizationID> orgClickEventListener,
+						    final PB01OrgObjectClickEventListener<PB01AOrgDivisionOID,PB01AOrgDivisionID> orgDivClickEventListener,
+						    final PB01OrgObjectClickEventListener<PB01AOrgDivisionServiceOID,PB01AOrgDivisionServiceID> orgDivSrvcClickEventListener,
+						    final PB01OrgObjectClickEventListener<PB01AOrgDivisionServiceLocationOID,PB01AOrgDivisionServiceLocationID> orgDivSrvcLocClickEventListener,
+						    final PB01OrgObjectClickEventListener<PB01AWorkPlaceOID,PB01AWorkPlaceID> workPlaceClickEventListener) {
 		_i18n = i18n;
 		_presenter = presenter;
 
@@ -115,31 +115,31 @@ public class PB01MainGridView
         _raisedAlarmsPopUp.setWindowMode(WindowMode.NORMAL);
         _raisedAlarmsPopUp.setWidth("80%");
         _raisedAlarmsPopUp.center();
-        
+
       // the popup shown when the number of alarms is clicked
-        _contactsPopUp = new PB01ContactsListView(i18n);        
+        _contactsPopUp = new PB01ContactsListView(i18n);
         _contactsPopUp.setModal(true);
         _contactsPopUp.setClosable(true);
         _contactsPopUp.setDraggable(true);
         _contactsPopUp.setResizable(false);
         _contactsPopUp.setWindowMode(WindowMode.NORMAL);
         _contactsPopUp.setWidth("80%");
-        _contactsPopUp.center();        
+        _contactsPopUp.center();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void refresh(final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef,
-						final X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef,
-						final X47BOrgObjectRef<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcRef,
-						final X47BOrgObjectRef<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocRef,
-						final X47BOrgObjectRef<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceRef) {
+	public void refresh(final PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID> orgRef,
+						final PB01AOrgObjectRef<PB01AOrgDivisionOID,PB01AOrgDivisionID> orgDivRef,
+						final PB01AOrgObjectRef<PB01AOrgDivisionServiceOID,PB01AOrgDivisionServiceID> orgDivSrvcRef,
+						final PB01AOrgObjectRef<PB01AOrgDivisionServiceLocationOID,PB01AOrgDivisionServiceLocationID> orgDivSrvcLocRef,
+						final PB01AOrgObjectRef<PB01AWorkPlaceOID,PB01AWorkPlaceID> workPlaceRef) {
 		log.info( "[Grid] Refresh..." );
-		final X47BOrganizationOID orgOid = orgRef != null ? orgRef.getOid() : null;
-		final X47BOrgDivisionOID orgDivOid = orgDivRef != null ? orgDivRef.getOid() : null;
-		final X47BOrgDivisionServiceOID orgDivSrcvOid = orgDivSrvcRef != null ? orgDivSrvcRef.getOid() : null;
-		final X47BOrgDivisionServiceLocationOID orgDivSrvcLocOid = orgDivSrvcLocRef != null ? orgDivSrvcLocRef.getOid() : null;
-		final X47BWorkPlaceOID wrkPlcOid = workPlaceRef != null ? workPlaceRef.getOid() : null;
+		final PB01AOrganizationOID orgOid = orgRef != null ? orgRef.getOid() : null;
+		final PB01AOrgDivisionOID orgDivOid = orgDivRef != null ? orgDivRef.getOid() : null;
+		final PB01AOrgDivisionServiceOID orgDivSrcvOid = orgDivSrvcRef != null ? orgDivSrvcRef.getOid() : null;
+		final PB01AOrgDivisionServiceLocationOID orgDivSrvcLocOid = orgDivSrvcLocRef != null ? orgDivSrvcLocRef.getOid() : null;
+		final PB01AWorkPlaceOID wrkPlcOid = workPlaceRef != null ? workPlaceRef.getOid() : null;
 		_presenter.onGridDataNeeded(orgOid,orgDivOid,orgDivSrcvOid,orgDivSrvcLocOid,wrkPlcOid,
 									0,10,
 									UIPresenterSubscriber.from(
@@ -162,13 +162,13 @@ public class PB01MainGridView
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	private void _buildGridColumns(final PB01OrgObjectClickEventListener<X47BOrganizationOID,X47BOrganizationID> orgClickEventListener,
-								   final PB01OrgObjectClickEventListener<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivClickEventListener,
-								   final PB01OrgObjectClickEventListener<X47BOrgDivisionServiceOID,X47BOrgDivisionServiceID> orgDivSrvcClickEventListener,
-								   final PB01OrgObjectClickEventListener<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocationID> orgDivSrvcLocClickEventListener,
-								   final PB01OrgObjectClickEventListener<X47BWorkPlaceOID,X47BWorkPlaceID> workPlaceClickEventListener) {
-		
-        // OBJECT TYPE				
+	private void _buildGridColumns(final PB01OrgObjectClickEventListener<PB01AOrganizationOID,PB01AOrganizationID> orgClickEventListener,
+								   final PB01OrgObjectClickEventListener<PB01AOrgDivisionOID,PB01AOrgDivisionID> orgDivClickEventListener,
+								   final PB01OrgObjectClickEventListener<PB01AOrgDivisionServiceOID,PB01AOrgDivisionServiceID> orgDivSrvcClickEventListener,
+								   final PB01OrgObjectClickEventListener<PB01AOrgDivisionServiceLocationOID,PB01AOrgDivisionServiceLocationID> orgDivSrvcLocClickEventListener,
+								   final PB01OrgObjectClickEventListener<PB01AWorkPlaceOID,PB01AWorkPlaceID> workPlaceClickEventListener) {
+
+        // OBJECT TYPE
 		_grid.addColumn( item -> _createOrgObjectTypeIconFor(item), new HtmlRenderer())
 		 		.setCaption( _i18n.getMessage("pb01.org.objectType") )
 		 		.setResizable(false)
@@ -230,30 +230,30 @@ public class PB01MainGridView
 //				 .setDescriptionGenerator( item -> _i18n.getMessage("pb01.org.phones.hint") )
 //				 .setResizable(true)
 //				 .setId( "phones" );
-		
-		_grid.addComponentColumn( item -> _createContactsButtonFor(item, item.getEffectivePhoneCount(), "pb01.org.phones"))	
+
+		_grid.addComponentColumn( item -> _createContactsButtonFor(item, item.getEffectivePhoneCount(), "pb01.org.phones"))
 				 .setCaption( _i18n.getMessage("pb01.org.phones") )
 				 .setDescriptionGenerator( item -> _i18n.getMessage("pb01.org.phones.hint") )
 				 .setResizable(true)
 				 .setId( "phones" );
-		
+
         // EMAILS
 //		_grid.addColumn( PB01ViewObjForSearchResultItem::getEffectiveEmailCount )
 //				 .setCaption( _i18n.getMessage("pb01.org.emails") )
 //				 .setDescriptionGenerator( item -> _i18n.getMessage("pb01.org.emails.hint") )
 //				 .setResizable(true)
 //				 .setId( "emails" );
-		
-		_grid.addComponentColumn( item -> _createContactsButtonFor(item, item.getEffectiveEmailCount(), "pb01.org.emails"))	
+
+		_grid.addComponentColumn( item -> _createContactsButtonFor(item, item.getEffectiveEmailCount(), "pb01.org.emails"))
 				 .setCaption( _i18n.getMessage("pb01.org.emails") )
 				 .setDescriptionGenerator( item -> _i18n.getMessage("pb01.org.emails.hint") )
 				 .setResizable(true)
-				 .setId( "emails" );		
-		
+				 .setId( "emails" );
+
 		// RAISE AN ALARM
 		_grid.addComponentColumn( item -> {
 											// Get the workplade oid
-											X47BWorkPlaceOID workPlaceOid = item.getWorkPlaceOid();
+											PB01AWorkPlaceOID workPlaceOid = item.getWorkPlaceOid();
 
 											// create the button
 											Button btn = new Button();
@@ -272,28 +272,28 @@ public class PB01MainGridView
 																																				   item.getWorkPlaceId(),
 																																				   item.getOrgHierarchyExplained()));
 																											 }));
-											btn.setVisible(item.getOrgObjectType() == X47BOrgObjectType.WORKPLACE);	// only visible for workplaces
+											btn.setVisible(item.getOrgObjectType() == PB01AOrgObjectType.WORKPLACE);	// only visible for workplaces
 											return btn;
 										  } )
 				 .setResizable(false)
 				 .setId( "raiseAlarm" );
 	}
-	
-	private String _createOrgObjectTypeIconFor(PB01ViewObjForSearchResultItem item) {		
-		if (item.getOrgObjectType() == X47BOrgObjectType.ORG_DIVISION) {
+
+	private String _createOrgObjectTypeIconFor(PB01ViewObjForSearchResultItem item) {
+		if (item.getOrgObjectType() == PB01AOrgObjectType.ORG_DIVISION) {
 			return VaadinIcons.OFFICE.getHtml();
-		} else if (item.getOrgObjectType() == X47BOrgObjectType.ORG_DIVISION_SERVICE) {	
+		} else if (item.getOrgObjectType() == PB01AOrgObjectType.ORG_DIVISION_SERVICE) {
 			return VaadinIcons.AREA_SELECT.getHtml();
-		} else if (item.getOrgObjectType() == X47BOrgObjectType.ORG_DIVISION_SERVICE_LOCATION) {	
+		} else if (item.getOrgObjectType() == PB01AOrgObjectType.ORG_DIVISION_SERVICE_LOCATION) {
 			return VaadinIcons.WORKPLACE.getHtml();
-		} else if (item.getOrgObjectType() == X47BOrgObjectType.WORKPLACE) {		
+		} else if (item.getOrgObjectType() == PB01AOrgObjectType.WORKPLACE) {
 			return VaadinIcons.DESKTOP.getHtml();
 		}
-			
+
 		return item.getOrgObjectType().name();
 	}
-	
-	
+
+
 	private Button _createRaisedAlarmsButtonFor(final PB01ViewObjForSearchResultItem item) {
 		// show a link that opens a popup that shows the list of raised alarms
 		final Button btn = new Button(Long.toString(item.getAlarmRaiseCount()));
@@ -306,7 +306,7 @@ public class PB01MainGridView
 		btn.addStyleName(ValoTheme.BUTTON_LINK);
 		return btn;
 	}
-	private <O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
+	private <O extends PB01AOrgObjectOID,I extends PB01AOrgObjectID<O>>
 			Button _createOrgObjectButtonFor(final PB01ViewObjForSearchResultItem item,
 										  	 final PB01OrgObjectClickEventListener<O,I> clickEventListener,
 										  	 final Provider<String> buttonCaption,
@@ -321,78 +321,78 @@ public class PB01MainGridView
 																	   });
 		return btn;
 	}
-		
+
 	private Button _createContactsButtonFor(final PB01ViewObjForSearchResultItem item, int effectiveContactCount,  String contactCaptionKey) {
 		// show a link that opens a popup that shows the list of raised alarms
 		final Button btn = new Button(Integer.toString(item.getEffectiveEmailCount()));
-		
+
 //		log.info("------------EFFECTIVE PHONES-----------------------------");
 //		log.info(item.getOrgHierarchyExplained());
-//		for (Phone p: item.getEffectivePhones()) {		
+//		for (Phone p: item.getEffectivePhones()) {
 //			log.info(p.asString());
-//		}	
-//				
-//		log.info("------------EFFECTIVE PHONES BY ORG ---------------------");		
-//		for (X47BOrgObjectType orgType: item.getEffectivePhonesByOrgEntityType().keySet()) {
+//		}
+//
+//		log.info("------------EFFECTIVE PHONES BY ORG ---------------------");
+//		for (PB01AOrgObjectType orgType: item.getEffectivePhonesByOrgEntityType().keySet()) {
 //			log.info(orgType.name());
-//			for (Phone p: item.getEffectivePhonesByOrgEntityType().get(orgType)) {		
+//			for (Phone p: item.getEffectivePhonesByOrgEntityType().get(orgType)) {
 //				log.info(p.asString());
 //			}
-//		}				
+//		}
 //		log.info("-----------------------------------------");
-//		
-		btn.addClickListener(event -> {	
+//
+		btn.addClickListener(event -> {
 											_contactsPopUp.setCaption(item.getOrgHierarchyExplained());
 											//_contactsPopUp.setCaption(_i18n.getMessage(captionKey));
 											log.info("-----------------------------------------");
 											log.info(item.getOrgHierarchyExplained());
-											
+
 											if ("pb01.org.phones".equals(contactCaptionKey)) {
 												_contactsPopUp.paintGridPhoneItems(item.getEffectivePhonesByOrgEntityType(), contactCaptionKey);
 											} else if ("pb01.org.emails".equals(contactCaptionKey)) {
 												_contactsPopUp.paintGridEmailItems(item.getEffectiveEmailsByOrgEntityType(), contactCaptionKey);
-											}	
+											}
 											UI.getCurrent()
 											  .addWindow(_contactsPopUp);
 									  });
 		btn.addStyleName(ValoTheme.BUTTON_LINK);
 		return btn;
 	}
-	
-	
-	
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //	EVENTS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
-	public class PB01OrgObjectClickedEvent<O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
+	public class PB01OrgObjectClickedEvent<O extends PB01AOrgObjectOID,I extends PB01AOrgObjectID<O>>
 	     extends Component.Event {
 		private static final long serialVersionUID = 6771268655053782852L;
 
-		@Getter private final X47BOrgObjectRef<O,I> _objRef;
+		@Getter private final PB01AOrgObjectRef<O,I> _objRef;
 
 		public PB01OrgObjectClickedEvent(final Component source,
 								  		 final O oid,final I id) {
 			super(source);
-			_objRef = new X47BOrgObjectRef<>(oid,id);
+			_objRef = new PB01AOrgObjectRef<>(oid,id);
 		}
 	}
-	public interface PB01OrgObjectClickEventListener<O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
+	public interface PB01OrgObjectClickEventListener<O extends PB01AOrgObjectOID,I extends PB01AOrgObjectID<O>>
 	         extends Serializable {
 		void entityClicked(PB01OrgObjectClickedEvent<O,I> event);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	private class PB01OrgEntityContactMean<T> 
+	private class PB01OrgEntityContactMean<T>
 	   implements Serializable {
 		private static final long serialVersionUID = 9053980519186063674L;
-		@Getter private final X47BOrgObjectType _type;
+		@Getter private final PB01AOrgObjectType _type;
 		@Getter private final Collection<T> _mean;
 	}
-	private ListDataProvider<PB01OrgEntityContactMean<EMail>> _createOrgEntityEffectiveEmailsGridDataProvider(final Map<X47BOrgObjectType,Collection<EMail>> orgEntityEmails) {
+	private ListDataProvider<PB01OrgEntityContactMean<EMail>> _createOrgEntityEffectiveEmailsGridDataProvider(final Map<PB01AOrgObjectType,Collection<EMail>> orgEntityEmails) {
 		if (CollectionUtils.isNullOrEmpty(orgEntityEmails)) return DataProvider.ofCollection(Lists.newArrayList());
 		Collection<PB01OrgEntityContactMean<EMail>> items = FluentIterable.from(orgEntityEmails.entrySet())
 																		  .transform(entry -> new PB01OrgEntityContactMean<EMail>(entry.getKey(),
@@ -400,7 +400,7 @@ public class PB01MainGridView
 																		  .toList();
 		return DataProvider.ofCollection(items);
 	}
-	private ListDataProvider<PB01OrgEntityContactMean<Phone>> _createOrgEntityEffectivePhonesGridDataProvider(final Map<X47BOrgObjectType,Collection<Phone>> orgEntityPhones) {
+	private ListDataProvider<PB01OrgEntityContactMean<Phone>> _createOrgEntityEffectivePhonesGridDataProvider(final Map<PB01AOrgObjectType,Collection<Phone>> orgEntityPhones) {
 		if (CollectionUtils.isNullOrEmpty(orgEntityPhones)) return DataProvider.ofCollection(Lists.newArrayList());
 		Collection<PB01OrgEntityContactMean<Phone>> items = FluentIterable.from(orgEntityPhones.entrySet())
 																		  .transform(entry -> new PB01OrgEntityContactMean<Phone>(entry.getKey(),

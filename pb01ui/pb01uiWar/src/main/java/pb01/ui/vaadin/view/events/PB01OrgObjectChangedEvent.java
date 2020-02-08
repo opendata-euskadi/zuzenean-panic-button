@@ -3,8 +3,8 @@ package pb01.ui.vaadin.view.events;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
-import x47b.model.org.X47BOrgObjectType;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgObjectOID;
+import pb01a.model.org.PB01AOrgObjectType;
 
 @RequiredArgsConstructor
 @Accessors(prefix="_")
@@ -12,11 +12,11 @@ public class PB01OrgObjectChangedEvent {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Getter private final X47BOrgObjectOID _oid;
+	@Getter private final PB01AOrgObjectOID _oid;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
-	public X47BOrgObjectType getObjType() {
-		return X47BOrgObjectType.ofOIDType(_oid.getClass());
+	public PB01AOrgObjectType getObjType() {
+		return PB01AOrgObjectType.ofOIDType(_oid.getClass());
 	}
 }

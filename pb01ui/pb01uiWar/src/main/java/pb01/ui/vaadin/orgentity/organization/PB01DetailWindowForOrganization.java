@@ -4,14 +4,14 @@ import javax.inject.Inject;
 
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgObjectVisitors.PB01OrgObjectDetailWinForCreateVisitor;
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgObjectVisitors.PB01OrgObjectDetailWinForEditVisitor;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrganizationOID;
+import pb01a.model.org.PB01AOrganization;
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrganizationalEntityBase;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.org.X47BOrganization;
 
 public class PB01DetailWindowForOrganization
-	 extends PB01DetailWindowForOrganizationalEntityBase<X47BOrganizationOID,X47BOrganization,
+	 extends PB01DetailWindowForOrganizationalEntityBase<PB01AOrganizationOID,PB01AOrganization,
 	 													 PB01ViewObjForOrganization,
 	 													 PB01COREMediatorForOrganization,
 	 													 PB01PresenterForOrganizationDetailView,
@@ -46,8 +46,8 @@ public class PB01DetailWindowForOrganization
 		_deleteSubscriber = null;		// cannot delete from a create window
 
 		// create a new org
-		X47BOrganization obj = new X47BOrganization();
-		obj.setOid(X47BOrganizationOID.supply());
+		PB01AOrganization obj = new PB01AOrganization();
+		obj.setOid(PB01AOrganizationOID.supply());
 
 		// create the view object
 		_viewObj = PB01ViewObjForOrganization.from(obj);

@@ -66,6 +66,20 @@
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
+		<!-- pb01 Config by env                        -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>pb01.config.core</groupId>
+			<artifactId>pb01cConfigByEnv</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>pb01.config.api</groupId>
+			<artifactId>pb01aConfigByEnv</artifactId>
+			<version>${revision}</version>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
 		<!-- R01F: BusinessServices                    -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>

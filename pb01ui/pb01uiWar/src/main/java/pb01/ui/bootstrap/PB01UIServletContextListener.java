@@ -6,6 +6,11 @@ import javax.servlet.annotation.WebListener;
 import com.google.common.eventbus.EventBus;
 
 import pb01.ui.vaadin.serverpush.PB01AlarmMessageEventListener;
+import pb01a.api.context.PB01ASecurityContextProviderFromThreadLocalStorage;
+import pb01a.bootstrap.client.panicbutton.PB01APanicButtonClientBootstrapConfigBuilder;
+import pb01a.bootstrap.common.panicbutton.PB01ACommonBootstrapGuiceModule;
+import pb01a.common.internal.P01AAppCodes;
+import pb01c.bootstrap.core.panicbutton.PB01CPanicButtonCOREServicesBootstrapConfigBuilder;
 import r01f.bootstrap.ServletContextListenerBase;
 import r01f.bootstrap.services.config.ServicesBootstrapConfig;
 import r01f.bootstrap.services.config.ServicesBootstrapConfigBuilder;
@@ -16,11 +21,6 @@ import r01f.services.ids.ServiceIDs.CoreModule;
 import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcaster;
 import r01f.xmlproperties.XMLPropertiesBuilder;
 import r01f.xmlproperties.XMLPropertiesForApp;
-import x47b.api.context.X47BSecurityContextProviderFromThreadLocalStorage;
-import x47b.bootstrap.client.panicbutton.X47BPanicButtonClientBootstrapConfigBuilder;
-import x47b.bootstrap.common.panicbutton.X47BCommonBootstrapGuiceModule;
-import x47b.bootstrap.core.panicbutton.X47BPanicButtonCOREServicesBootstrapConfigBuilder;
-import x47b.common.internal.X47BAppCodes;
 
 @WebListener
 public class PB01UIServletContextListener
@@ -36,23 +36,23 @@ public class PB01UIServletContextListener
 		super(// client & core bootstrap
 			  _buildServicesBootstrapConfig(),
 			  // the client & core common guice module using a [security context] provider
-			  new X47BCommonBootstrapGuiceModule(new X47BSecurityContextProviderFromThreadLocalStorage()));
+			  new PB01ACommonBootstrapGuiceModule(new PB01ASecurityContextProviderFromThreadLocalStorage()));
 
 	}
 	private static ServicesBootstrapConfig _buildServicesBootstrapConfig() {
 		// client bootstrap cfg
-		ServicesClientBootstrapConfig clientBootstrapCfg = X47BPanicButtonClientBootstrapConfigBuilder.buildClientBootstrapConfig();
+		ServicesClientBootstrapConfig clientBootstrapCfg = PB01APanicButtonClientBootstrapConfigBuilder.buildClientBootstrapConfig();
 
 		// persistence core bootstrap cfg
-		XMLPropertiesForApp coreProps = XMLPropertiesBuilder.createForApp(X47BAppCodes.CORE_APPCODE)
+		XMLPropertiesForApp coreProps = XMLPropertiesBuilder.createForApp(P01AAppCodes.CORE_APPCODE)
 														    .notUsingCache();
-		ServicesCoreBootstrapConfig persistenceCoreBootstrapCfg = X47BPanicButtonCOREServicesBootstrapConfigBuilder.buildCoreBootstrapConfig(coreProps);
+		ServicesCoreBootstrapConfig persistenceCoreBootstrapCfg = PB01CPanicButtonCOREServicesBootstrapConfigBuilder.buildCoreBootstrapConfig(coreProps);
 
 		// ui
 		ServicesCoreBootstrapConfig uiBootstrapCfg = PB01UIServletServicesBootstrapConfigBuilder.buildUIBootstrapConfig();
 
 		// build all
-		ServicesCoreModuleEventsConfig coreEventsCfg = ServicesCoreModuleEventsConfig.from(coreProps.forComponent(CoreModule.compose(X47BAppCodes.PANICBUTTON_MOD,
+		ServicesCoreModuleEventsConfig coreEventsCfg = ServicesCoreModuleEventsConfig.from(coreProps.forComponent(CoreModule.compose(P01AAppCodes.PANICBUTTON_MOD,
 																																	 CoreModule.SERVICES)));
 		ServicesBootstrapConfig outBootstrapCfg = ServicesBootstrapConfigBuilder
 														.forClient(clientBootstrapCfg)
@@ -75,7 +75,7 @@ public class PB01UIServletContextListener
 			// any task to be done when the server starts
 		}
 
-		// Subcribe the UI to the X47BAlarmMessage posts at the event bus from the CORE
+		// Subcribe the UI to the PB01AAlarmMessage posts at the event bus from the CORE
 		// so that a [server-push] can be initiated to show a notification at the UI
 		final VaadinServerPushedMessagesBroadcaster serverPushedMessagesBroadcaster = _injector.getInstance(VaadinServerPushedMessagesBroadcaster.class);
 		EventBus eventBus = _injector.getInstance(EventBus.class);

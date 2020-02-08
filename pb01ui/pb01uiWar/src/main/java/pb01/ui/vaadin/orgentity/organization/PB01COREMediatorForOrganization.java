@@ -7,41 +7,41 @@ import javax.inject.Singleton;
 
 import lombok.extern.slf4j.Slf4j;
 import pb01.ui.vaadin.orgentity.PB01COREMediatorForOrganizationalEntityBase;
+import pb01a.client.api.PB01APanicButtonClientAPI;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrganizationOID;
+import pb01a.model.org.PB01AOrganization;
+import pb01a.model.org.summaries.PB01ASummarizedOrganization;
 import r01f.locale.Language;
 import r01f.ui.coremediator.UICOREMediatorSubscriber;
-import x47b.client.api.X47BPanicButtonClientAPI;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.org.X47BOrganization;
-import x47b.model.org.summaries.X47BSummarizedOrganization;
 
 @Slf4j
 @Singleton
 public class PB01COREMediatorForOrganization
-	 extends PB01COREMediatorForOrganizationalEntityBase<X47BOrganizationOID,X47BOrganization> {
+	 extends PB01COREMediatorForOrganizationalEntityBase<PB01AOrganizationOID,PB01AOrganization> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public PB01COREMediatorForOrganization(final X47BPanicButtonClientAPI api) {
+	public PB01COREMediatorForOrganization(final PB01APanicButtonClientAPI api) {
 		super(api);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public X47BOrganization load(final X47BOrganizationOID oid) {
+	public PB01AOrganization load(final PB01AOrganizationOID oid) {
 		return _api.organizationsAPI()
 				   .getForCRUD()
 				   .load(oid);
 	}
 	@Override
-	public X47BOrganization save(final X47BOrganization obj) {
+	public PB01AOrganization save(final PB01AOrganization obj) {
 		return _api.organizationsAPI()
 				   .getForCRUD()
 				   .save(obj);
 	}
 	@Override
-	public X47BOrganization delete(final X47BOrganizationOID oid) {
+	public PB01AOrganization delete(final PB01AOrganizationOID oid) {
 		return _api.organizationsAPI()
 				   .getForCRUD()
 				   .delete(oid);
@@ -50,8 +50,8 @@ public class PB01COREMediatorForOrganization
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	public void loadAllOrgs(final Language lang,
-							final UICOREMediatorSubscriber<Collection<X47BSummarizedOrganization>> subscriber) {
-		Collection<X47BSummarizedOrganization> orgs = _api.organizationsAPI()
+							final UICOREMediatorSubscriber<Collection<PB01ASummarizedOrganization>> subscriber) {
+		Collection<PB01ASummarizedOrganization> orgs = _api.organizationsAPI()
 															.getForFind()
 															.findSummaries(lang);
 		log.debug("...{} organizations loaded",

@@ -13,6 +13,10 @@ import pb01.ui.vaadin.orgentity.orgdivision.PB01ViewObjForOrgDivision;
 import pb01.ui.vaadin.orgentity.orgdivisionservice.PB01ViewObjForOrgDivisionService;
 import pb01.ui.vaadin.orgentity.orgdivisionservicelocation.PB01ViewObjForOrgDivisionServiceLocation;
 import pb01.ui.vaadin.orgentity.workplace.PB01ViewObjForWorkPlace;
+import pb01a.model.PB01AObjectsValidators;
+import pb01a.model.oids.PB01AIDs.PB01APersistableObjectID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgObjectOID;
+import pb01a.model.org.PB01AOrganizationalPersistableObject;
 import r01f.types.dirtytrack.DirtyTrackAdapter;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.vaadin.annotations.VaadinViewComponentLabels;
@@ -21,13 +25,9 @@ import r01f.ui.vaadin.view.VaadinDetailView;
 import r01f.ui.vaadin.view.VaadinViewHasVaadinViewObjectBinder;
 import r01f.ui.vaadin.view.VaadinViews;
 import r01f.util.types.Strings;
-import x47b.model.X47BObjectsValidators;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
-import x47b.model.org.X47BOrganizationalPersistableObject;
 
-public class PB01DetailViewForOrgObjectBase<O extends X47BOrgObjectOID,M extends X47BOrganizationalPersistableObject<O,? extends X47BPersistableObjectID<?>>,
-											V extends PB01ViewObjForOrganizationalEntityBase<O,? extends X47BPersistableObjectID<?>,M>>
+public class PB01DetailViewForOrgObjectBase<O extends PB01AOrgObjectOID,M extends PB01AOrganizationalPersistableObject<O,? extends PB01APersistableObjectID<?>>,
+											V extends PB01ViewObjForOrganizationalEntityBase<O,? extends PB01APersistableObjectID<?>,M>>
 	 extends VerticalLayout
   implements VaadinDetailView<V>,
   			 VaadinViewHasVaadinViewObjectBinder<V> {
@@ -193,7 +193,7 @@ public class PB01DetailViewForOrgObjectBase<O extends X47BOrgObjectOID,M extends
 			if (Strings.isNullOrEmpty(value)) return ValidationResult.ok();
 
 			// beware!! this is called for every keystroke on the text field
-			return X47BObjectsValidators.isValidPhones(value) ? ValidationResult.ok()
+			return PB01AObjectsValidators.isValidPhones(value) ? ValidationResult.ok()
 															  : ValidationResult.error(_i18n.getMessage("pb01.org.field.validation.phones"));
 		}
 	}
@@ -211,7 +211,7 @@ public class PB01DetailViewForOrgObjectBase<O extends X47BOrgObjectOID,M extends
 			if (Strings.isNullOrEmpty(value)) return ValidationResult.ok();
 
 			// beware!! this is called for every keystroke on the text field
-			return X47BObjectsValidators.isValidEmails(value) ? ValidationResult.ok()
+			return PB01AObjectsValidators.isValidEmails(value) ? ValidationResult.ok()
 															  : ValidationResult.error(_i18n.getMessage("pb01.org.field.validation.emails"));
 		}
 	}

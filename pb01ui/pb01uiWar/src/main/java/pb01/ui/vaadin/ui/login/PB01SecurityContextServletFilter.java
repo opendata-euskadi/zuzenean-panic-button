@@ -8,14 +8,14 @@ import javax.inject.Singleton;
 import com.google.common.collect.Lists;
 
 import pb01.PB01UI;
+import pb01a.api.context.PB01ASecurityContextProviderFromThreadLocalStorage;
 import r01f.securitycontext.SecurityContext;
 import r01f.servlet.SecurityContextServletFilterBase;
 import r01f.util.types.Strings;
-import x47b.api.context.X47BSecurityContextProviderFromThreadLocalStorage;
 
 /**
  * This filter does TWO things:
- * a) stores a {@link SecurityContext} at a {@link ThreadLocal} storage used by {@link X47BSecurityContextProviderFromThreadLocalStorage}
+ * a) stores a {@link SecurityContext} at a {@link ThreadLocal} storage used by {@link PB01ASecurityContextProviderFromThreadLocalStorage}
  *    to get the security context
  *
  * b) creates a cookie with a value that hints any other part that the user was authenticated

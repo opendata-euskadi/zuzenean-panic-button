@@ -1,17 +1,17 @@
 package pb01.ui.vaadin.view.components;
 
 import pb01.ui.vaadin.orgentity.PB01ViewObjForOrganizationalEntityBase;
+import pb01a.model.oids.PB01AIDs.PB01APersistableObjectID;
+import pb01a.model.oids.PB01AOIDs.PB01APersistableObjectOID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgObjectID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgObjectOID;
+import pb01a.model.org.PB01AOrgObjectRef;
+import pb01a.model.org.PB01AOrganizationalPersistableObject;
+import pb01a.model.org.summaries.PB01ASummarizedOrganizationalObject;
 import r01f.locale.Language;
 import r01f.patterns.FactoryFrom;
 import r01f.ui.vaadin.view.VaadinViewMultiValueItem;
 import r01f.util.types.Strings;
-import x47b.model.oids.X47BIDs.X47BPersistableObjectID;
-import x47b.model.oids.X47BOIDs.X47BPersistableObjectOID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
-import x47b.model.org.X47BOrgObjectRef;
-import x47b.model.org.X47BOrganizationalPersistableObject;
-import x47b.model.org.summaries.X47BSummarizedOrganizationalObject;
 
 public class PB01VaadinComboItem
 	 extends VaadinViewMultiValueItem {
@@ -23,23 +23,23 @@ public class PB01VaadinComboItem
 	public PB01VaadinComboItem(final String id,final String name) {
 		super(id,name);
 	}
-	public PB01VaadinComboItem(final X47BPersistableObjectOID oid,final X47BPersistableObjectID<?> id,
+	public PB01VaadinComboItem(final PB01APersistableObjectOID oid,final PB01APersistableObjectID<?> id,
 				   			   final String name) {
 		this(Strings.customized("{}#{}",
    							    oid,id),
 			 name);
 	}
-	public PB01VaadinComboItem(final X47BOrgObjectRef<?,?> objRef,
+	public PB01VaadinComboItem(final PB01AOrgObjectRef<?,?> objRef,
 							   final String name) {
 		this(objRef.getOid(),objRef.getId(),
 			 name);
 	}
-	public PB01VaadinComboItem(final X47BOrganizationalPersistableObject<?,?> obj,
+	public PB01VaadinComboItem(final PB01AOrganizationalPersistableObject<?,?> obj,
 							   final Language lang) {
 		this(obj.getOid(),obj.getId(),
 			 obj.getName().getIn(lang).or("no name in " + lang));
 	}
-	public PB01VaadinComboItem(final X47BSummarizedOrganizationalObject<?,?,?> objSum) {
+	public PB01VaadinComboItem(final PB01ASummarizedOrganizationalObject<?,?,?> objSum) {
 		this(objSum.getOid(),objSum.getId(),
 			 objSum.getName());
 	}
@@ -52,17 +52,17 @@ public class PB01VaadinComboItem
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public <O extends X47BOrgObjectOID> O getOidUsing(final FactoryFrom<String,O> factory) {
+	public <O extends PB01AOrgObjectOID> O getOidUsing(final FactoryFrom<String,O> factory) {
 		return factory.from(_id.split("#")[0]);
 	}
-	public <I extends X47BPersistableObjectID<?>> I getIdUsing(final FactoryFrom<String,I> factory) {
+	public <I extends PB01APersistableObjectID<?>> I getIdUsing(final FactoryFrom<String,I> factory) {
 		return factory.from(_id.split("#")[1]);
 	}
-	public <O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>> X47BOrgObjectRef<O,I> getOrgObjectRefUsing(final FactoryFrom<String,O> oidFactory,
+	public <O extends PB01AOrgObjectOID,I extends PB01AOrgObjectID<O>> PB01AOrgObjectRef<O,I> getOrgObjectRefUsing(final FactoryFrom<String,O> oidFactory,
 																												final FactoryFrom<String,I> idFactory) {
 		O oid = this.getOidUsing(oidFactory);
 		I id = this.getIdUsing(idFactory);
-		return new X47BOrgObjectRef<O,I>(oid,id);
+		return new PB01AOrgObjectRef<O,I>(oid,id);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	TRANSFORMS AN ORGANIZATIONAL ENTITY SUMMARY INTO A Vaadin COMBO ITEM
@@ -78,17 +78,17 @@ public class PB01VaadinComboItem
 
 	@FunctionalInterface
 	public interface PB01VaadinComboItemFromObjFactory {
-	    PB01VaadinComboItem apply(final X47BOrganizationalPersistableObject<?,?> obj,
+	    PB01VaadinComboItem apply(final PB01AOrganizationalPersistableObject<?,?> obj,
 	    						  final Language lang);
 	}
 	@FunctionalInterface
 	public interface PB01VaadinComboItemFromObjRefFactory {
-	    PB01VaadinComboItem apply(final X47BOrgObjectRef<?,?> objRef,
+	    PB01VaadinComboItem apply(final PB01AOrgObjectRef<?,?> objRef,
 							   	  final String name);
 	}
 	@FunctionalInterface
 	public interface PB01VaadinComboItemFromObjSummaryFactory {
-	    PB01VaadinComboItem apply(final X47BSummarizedOrganizationalObject<?,?,?> objSum);
+	    PB01VaadinComboItem apply(final PB01ASummarizedOrganizationalObject<?,?,?> objSum);
 	}
 	@FunctionalInterface
 	public interface PB01VaadinComboItemFromViewObjFactory {

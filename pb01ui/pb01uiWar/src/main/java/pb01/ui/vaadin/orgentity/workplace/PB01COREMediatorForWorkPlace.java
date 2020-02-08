@@ -7,42 +7,42 @@ import javax.inject.Singleton;
 
 import lombok.extern.slf4j.Slf4j;
 import pb01.ui.vaadin.orgentity.PB01COREMediatorForOrganizationalEntityBase;
+import pb01a.client.api.PB01APanicButtonClientAPI;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceLocationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AWorkPlaceOID;
+import pb01a.model.org.PB01AWorkPlace;
+import pb01a.model.org.summaries.PB01ASummarizedWorkPlace;
 import r01f.locale.Language;
 import r01f.ui.coremediator.UICOREMediatorSubscriber;
-import x47b.client.api.X47BPanicButtonClientAPI;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
-import x47b.model.org.X47BWorkPlace;
-import x47b.model.org.summaries.X47BSummarizedWorkPlace;
 
 @Slf4j
 @Singleton
 public class PB01COREMediatorForWorkPlace
-	 extends PB01COREMediatorForOrganizationalEntityBase<X47BWorkPlaceOID,X47BWorkPlace> {
+	 extends PB01COREMediatorForOrganizationalEntityBase<PB01AWorkPlaceOID,PB01AWorkPlace> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public PB01COREMediatorForWorkPlace(final X47BPanicButtonClientAPI api) {
+	public PB01COREMediatorForWorkPlace(final PB01APanicButtonClientAPI api) {
 		super(api);	// factory
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public X47BWorkPlace load(final X47BWorkPlaceOID oid) {
+	public PB01AWorkPlace load(final PB01AWorkPlaceOID oid) {
 		return _api.workPlacesAPI()
 				   .getForCRUD()
 				   .load(oid);
 	}
 	@Override
-	public X47BWorkPlace save(final X47BWorkPlace obj) {
+	public PB01AWorkPlace save(final PB01AWorkPlace obj) {
 		return _api.workPlacesAPI()
 				   .getForCRUD()
 				   .save(obj);
 	}
 	@Override
-	public X47BWorkPlace delete(final X47BWorkPlaceOID oid) {
+	public PB01AWorkPlace delete(final PB01AWorkPlaceOID oid) {
 		return _api.workPlacesAPI()
 				   .getForCRUD()
 				   .delete(oid);
@@ -50,10 +50,10 @@ public class PB01COREMediatorForWorkPlace
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void loadWorkPlaces(final X47BOrgDivisionServiceLocationOID locOid,
+	public void loadWorkPlaces(final PB01AOrgDivisionServiceLocationOID locOid,
 							   final Language lang,
-							   final UICOREMediatorSubscriber<Collection<X47BSummarizedWorkPlace>> subscriber) {
-		final Collection<X47BSummarizedWorkPlace> locs = _api.workPlacesAPI()
+							   final UICOREMediatorSubscriber<Collection<PB01ASummarizedWorkPlace>> subscriber) {
+		final Collection<PB01ASummarizedWorkPlace> locs = _api.workPlacesAPI()
 																	.getForFind()
 																	.findSummariesByOrgDivisionServiceLocation(locOid,
 																											   lang);

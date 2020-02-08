@@ -28,11 +28,11 @@ import pb01.ui.vaadin.view.PB01CascadedCombos.PB01CascadedComboForOrgDivisionSer
 import pb01.ui.vaadin.view.PB01CascadedCombos.PB01CascadedComboForOrganization;
 import pb01.ui.vaadin.view.PB01CascadedCombos.PB01CascadedComboForWorkPlace;
 import pb01.ui.vaadin.view.components.PB01VaadinComboItem;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgObjectID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgObjectOID;
+import pb01a.model.org.PB01AOrgObjectRef;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgObjectID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
-import x47b.model.org.X47BOrgObjectRef;
 
 @Slf4j
 public class PB01MainView
@@ -191,7 +191,7 @@ public class PB01MainView
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	private <O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
+	private <O extends PB01AOrgObjectOID,I extends PB01AOrgObjectID<O>>
 		    void _handleComboValueChangeEvent(final PB01ComboValueChangedEvent<O,I> event) {
 		_refreshGridUsingComboValues();
 	}
@@ -208,8 +208,8 @@ public class PB01MainView
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	private <O extends X47BOrgObjectOID,I extends X47BOrgObjectID<O>>
-			void _showDetailViewForEditingExistingRecord(final X47BOrgObjectRef<O,I> objRef,
+	private <O extends PB01AOrgObjectOID,I extends PB01AOrgObjectID<O>>
+			void _showDetailViewForEditingExistingRecord(final PB01AOrgObjectRef<O,I> objRef,
 														 final PB01DetailWindowForOrganizationalEntityBase<O,?,?,?,?,?> popUp,
 														 final PB01CascadedCombo<?,?> cmbToUpdateAfterSave) {
 		

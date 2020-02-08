@@ -22,14 +22,14 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import lombok.experimental.Accessors;
 import pb01.PB01UI;
+import pb01a.api.context.PB01ASecurityContext;
+import pb01a.api.context.PB01ASecurityContextUserData;
 import r01f.guids.CommonOIDs.Password;
 import r01f.guids.CommonOIDs.UserCode;
 import r01f.servlet.SecurityContextServletFilterBase;
 import r01f.ui.i18n.UII18NService;
 import r01f.util.types.Strings;
 import r01f.util.types.locale.Languages;
-import x47b.api.context.X47BSecurityContext;
-import x47b.api.context.X47BSecurityContextUserData;
 
 @Accessors(prefix = "_")
 public class PB01UILoginView
@@ -114,16 +114,16 @@ public class PB01UILoginView
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	private void _logIn() {
-		X47BSecurityContextUserData userData = _presenter.userPasswordLogIn(UserCode.forId(_txtUsr.getValue()),
+		PB01ASecurityContextUserData userData = _presenter.userPasswordLogIn(UserCode.forId(_txtUsr.getValue()),
 											   	  	  			   			Password.forId(_txtPasswd.getValue()));
 		if (userData != null) {
 			// set the [security context] at the vaadin session
-			X47BSecurityContext securityContext = X47BSecurityContext.userLoginToSecurityContext(userData);
+			PB01ASecurityContext securityContext = PB01ASecurityContext.userLoginToSecurityContext(userData);
 			securityContext.setLoginUrl(PB01UI.LOGIN_PAGE_URL);	// do not forget to set the login url
 
 		  	VaadinService.getCurrentRequest()
 		  				 .getWrappedSession()
-			 			 .setAttribute(SecurityContextServletFilterBase.AUTH_CONTEXT_SESSION_PARAM_NAME,
+			 			 .setAttribute(PB01SecurityContextServletFilter.SECURITY_CONTEXT_WEBSESSION_PARAM_NAME,
 			 						   securityContext);	// create a security context
 		  	VaadinService.getCurrentRequest()
 						 .getWrappedSession()

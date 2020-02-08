@@ -3,10 +3,10 @@ package pb01.ui.vaadin.ui.login;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import pb01a.api.context.PB01ASecurityContextUserData;
 import r01f.guids.CommonOIDs.Password;
 import r01f.guids.CommonOIDs.UserCode;
 import r01f.ui.coremediator.UICOREMediator;
-import x47b.api.context.X47BSecurityContextUserData;
 
 @Singleton
 public class PB01UILoginCOREMediator
@@ -46,9 +46,9 @@ public class PB01UILoginCOREMediator
 	 * @param password
 	 * @return
 	 */
-	public X47BSecurityContextUserData userPasswordLogIn(final UserCode user,final Password password) {
+	public PB01ASecurityContextUserData userPasswordLogIn(final UserCode user,final Password password) {
 		// TODO use any security system to log the user in
-		return new X47BSecurityContextUserData(user,null,
+		return new PB01ASecurityContextUserData(user,null,
 											   user.asString(),(String)null);
 	}
 }

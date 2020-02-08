@@ -1,12 +1,12 @@
 package pb01.ui.vaadin.orgentity.orgdivisionservicelocation;
 
 import pb01.ui.vaadin.orgentity.PB01DetailViewForOrgObjectBase;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceLocationOID;
+import pb01a.model.org.PB01AOrgDivisionServiceLocation;
 import r01f.ui.i18n.UII18NService;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
-import x47b.model.org.X47BOrgDivisionServiceLocation;
 
 public class PB01DetailViewForOrgDivisionServiceLocation
-	 extends PB01DetailViewForOrgObjectBase<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocation,
+	 extends PB01DetailViewForOrgObjectBase<PB01AOrgDivisionServiceLocationOID,PB01AOrgDivisionServiceLocation,
 	 										PB01ViewObjForOrgDivisionServiceLocation> {
 
 	private static final long serialVersionUID = 1763832401233570646L;

@@ -20,12 +20,12 @@ import com.vaadin.ui.Window;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import pb01a.model.org.PB01AOrgObjectType;
 import r01f.types.contact.EMail;
 import r01f.types.contact.Phone;
 import r01f.types.contact.ValidatedContactMean;
 import r01f.ui.i18n.UII18NService;
 import r01f.util.types.collections.CollectionUtils;
-import x47b.model.org.X47BOrgObjectType;
 
 @Slf4j
 public class PB01ContactsListView
@@ -64,12 +64,12 @@ public class PB01ContactsListView
 /////////////////////////////////////////////////////////////////////////////////////////
 //	PUBLIC ENTRY POINT
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void paintGridPhoneItems(final Map<X47BOrgObjectType,Collection<Phone>> items, String captionKey) {		
+	public void paintGridPhoneItems(final Map<PB01AOrgObjectType,Collection<Phone>> items, String captionKey) {		
 		_grid.getColumn("orgContacts").setCaption(_i18n.getMessage(captionKey));		
 		List<PB01EffectiveContactByOrg> phoneOrgTypeItems = Lists.newArrayList(Iterables.transform(items.keySet(),
-	        new Function <X47BOrgObjectType, PB01EffectiveContactByOrg>() {
+	        new Function <PB01AOrgObjectType, PB01EffectiveContactByOrg>() {
 	            @Override
-	            public PB01EffectiveContactByOrg apply(X47BOrgObjectType orgType) {
+	            public PB01EffectiveContactByOrg apply(PB01AOrgObjectType orgType) {
 	                return new PB01EffectiveContactByOrg(orgType.name(), 
 	                									Joiner.on(",").join(Lists.newArrayList(Iterables.transform(items.get(orgType), 
 	                											new Function<ValidatedContactMean, String>(){
@@ -90,12 +90,12 @@ public class PB01ContactsListView
 		this.setVisible(CollectionUtils.hasData(items));
 	}
 	
-	public void paintGridEmailItems(final Map<X47BOrgObjectType,Collection<EMail>> items, String captionKey) {		
+	public void paintGridEmailItems(final Map<PB01AOrgObjectType,Collection<EMail>> items, String captionKey) {		
 		_grid.getColumn("orgContacts").setCaption(_i18n.getMessage(captionKey));		
 		List<PB01EffectiveContactByOrg> contactOrgTypeItems = Lists.newArrayList(Iterables.transform(items.keySet(),
-	        new Function <X47BOrgObjectType, PB01EffectiveContactByOrg>() {
+	        new Function <PB01AOrgObjectType, PB01EffectiveContactByOrg>() {
 	            @Override
-	            public PB01EffectiveContactByOrg apply(X47BOrgObjectType orgType) {
+	            public PB01EffectiveContactByOrg apply(PB01AOrgObjectType orgType) {
 	                return new PB01EffectiveContactByOrg(orgType.name(), 
 	                									Joiner.on(",").join(Lists.newArrayList(Iterables.transform(items.get(orgType), 
 	                											new Function<ValidatedContactMean, String>(){
@@ -142,15 +142,15 @@ public class PB01ContactsListView
 		
 		public String getOrgTypeCaption() {								
 			String i18nKey = "pb01.org";
-			if (X47BOrgObjectType.valueOf(orgType) ==   X47BOrgObjectType.ORGANIZATION) {
+			if (PB01AOrgObjectType.valueOf(orgType) ==   PB01AOrgObjectType.ORGANIZATION) {
 				i18nKey = "pb01.org";
-			} else if (X47BOrgObjectType.valueOf(orgType) ==   X47BOrgObjectType.ORG_DIVISION) {
+			} else if (PB01AOrgObjectType.valueOf(orgType) ==   PB01AOrgObjectType.ORG_DIVISION) {
 				i18nKey = "pb01.org.division";
-			} else if (X47BOrgObjectType.valueOf(orgType) ==   X47BOrgObjectType.ORG_DIVISION_SERVICE) {
+			} else if (PB01AOrgObjectType.valueOf(orgType) ==   PB01AOrgObjectType.ORG_DIVISION_SERVICE) {
 				i18nKey = "pb01.org.service";
-			} else if (X47BOrgObjectType.valueOf(orgType) ==   X47BOrgObjectType.ORG_DIVISION_SERVICE_LOCATION) {
+			} else if (PB01AOrgObjectType.valueOf(orgType) ==   PB01AOrgObjectType.ORG_DIVISION_SERVICE_LOCATION) {
 				i18nKey = "pb01.org.location";
-			} else if (X47BOrgObjectType.valueOf(orgType) ==   X47BOrgObjectType.WORKPLACE) {
+			} else if (PB01AOrgObjectType.valueOf(orgType) ==   PB01AOrgObjectType.WORKPLACE) {
 				i18nKey = "pb01.org.workPlace";
 			} 
 			return _i18n.getMessage(i18nKey);

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
+						   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+						   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<persistence-unit name="persistenceUnit.pb01c.panicbutton" transaction-type="RESOURCE_LOCAL">	<!-- JTA/RESOURCE_LOCAL -->
+       	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+		<!-- ENTITIES -->
+		<class>pb01c.db.entities.PB01CDBEntityForOrganizationalEntityBase</class>
+		<class>pb01c.db.entities.PB01CDBEntityForOrganization</class>
+		<class>pb01c.db.entities.PB01CDBEntityForOrgDivision</class>
+		<class>pb01c.db.entities.PB01CDBEntityForOrgDivisionService</class>
+		<class>pb01c.db.entities.PB01CDBEntityForOrgDivisionServiceLocation</class>
+		<class>pb01c.db.entities.PB01CDBEntityForWorkPlace</class>
+
+		<class>pb01c.db.entities.PB01CDBEntityForAlarmEvent</class>
+
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<!-- BBDD CONNECTION -->
+		<!-- see appCode.persistence.xml -->
+
+		<!-- Put any aditional property at pb01c.panicbutton.dbpersistence.properties.xml  -->
+	</persistence-unit>
+</persistence>

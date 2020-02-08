@@ -4,19 +4,19 @@ import javax.inject.Inject;
 
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgObjectVisitors.PB01OrgObjectDetailWinForCreateVisitor;
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgObjectVisitors.PB01OrgObjectDetailWinForEditVisitor;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrganizationID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrganizationOID;
+import pb01a.model.org.PB01AOrgDivisionService;
+import pb01a.model.org.PB01AOrgObjectRef;
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrganizationalEntityBase;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.org.X47BOrgDivisionService;
-import x47b.model.org.X47BOrgObjectRef;
 
 public class PB01DetailWindowForOrgDivisionService
-	 extends PB01DetailWindowForOrganizationalEntityBase<X47BOrgDivisionServiceOID,X47BOrgDivisionService,
+	 extends PB01DetailWindowForOrganizationalEntityBase<PB01AOrgDivisionServiceOID,PB01AOrgDivisionService,
 	 													 PB01ViewObjForOrgDivisionService,
 	 													 PB01COREMediatorForOrgDivisionService,
 	 													 PB01PresenterForOrgDivisionServiceDetailView,
@@ -46,15 +46,15 @@ public class PB01DetailWindowForOrgDivisionService
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CREATING
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void forCreating(final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef,
-							final X47BOrgObjectRef<X47BOrgDivisionOID,X47BOrgDivisionID> orgDivRef,
+	public void forCreating(final PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID> orgRef,
+							final PB01AOrgObjectRef<PB01AOrgDivisionOID,PB01AOrgDivisionID> orgDivRef,
 							final UIPresenterSubscriber<PB01ViewObjForOrgDivisionService> saveSubscriber) {			// what to do after saving
 		_saveSubscriber = saveSubscriber;
 		_deleteSubscriber = null;		// cannot delete from a create window
 
 		// create a new org division
-		X47BOrgDivisionService obj = new X47BOrgDivisionService();
-		obj.setOid(X47BOrgDivisionServiceOID.supply());
+		PB01AOrgDivisionService obj = new PB01AOrgDivisionService();
+		obj.setOid(PB01AOrgDivisionServiceOID.supply());
 		obj.setOrgRef(orgRef);
 		obj.setOrgDivisionRef(orgDivRef);
 

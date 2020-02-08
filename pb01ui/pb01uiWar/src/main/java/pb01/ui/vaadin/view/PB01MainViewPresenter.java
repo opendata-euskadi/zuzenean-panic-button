@@ -15,22 +15,22 @@ import pb01.ui.vaadin.orgentity.orgdivisionservice.PB01COREMediatorForOrgDivisio
 import pb01.ui.vaadin.orgentity.orgdivisionservicelocation.PB01COREMediatorForOrgDivisionServiceLocation;
 import pb01.ui.vaadin.orgentity.workplace.PB01COREMediatorForWorkPlace;
 import pb01.ui.vaadin.view.components.PB01VaadinComboItem;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceLocationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgObjectOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrganizationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AWorkPlaceOID;
+import pb01a.model.org.PB01AOrgObjectRef;
+import pb01a.model.org.PB01AOrgObjectType;
+import pb01a.model.org.summaries.PB01ASummarizedOrganizationalObject;
+import pb01a.model.search.PB01ASearchFilterForPanicButtonOrganizationalEntity;
 import r01f.locale.Language;
 import r01f.ui.presenter.UIPresenter;
 import r01f.ui.presenter.UIPresenterSubscriber;
 import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcaster;
 import r01f.util.types.collections.CollectionUtils;
 import r01f.util.types.collections.Lists;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgObjectOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
-import x47b.model.org.X47BOrgObjectRef;
-import x47b.model.org.X47BOrgObjectType;
-import x47b.model.org.summaries.X47BSummarizedOrganizationalObject;
-import x47b.model.search.X47BSearchFilterForPanicButtonOrganizationalEntity;
 
 @Slf4j
 @Singleton
@@ -81,15 +81,15 @@ public class PB01MainViewPresenter
 /////////////////////////////////////////////////////////////////////////////////////////
 //	GRID
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void onGridDataNeeded(final X47BOrganizationOID orgOid,
-								 final X47BOrgDivisionOID orgDivOid,
-								 final X47BOrgDivisionServiceOID orgDivSrvcOid,
-								 final X47BOrgDivisionServiceLocationOID orgDivSrvcLocOid,
-								 final X47BWorkPlaceOID workPlaceOid,
+	public void onGridDataNeeded(final PB01AOrganizationOID orgOid,
+								 final PB01AOrgDivisionOID orgDivOid,
+								 final PB01AOrgDivisionServiceOID orgDivSrvcOid,
+								 final PB01AOrgDivisionServiceLocationOID orgDivSrvcLocOid,
+								 final PB01AWorkPlaceOID workPlaceOid,
 								 final int firstItemNum,final int numberOfItems,
 								 final UIPresenterSubscriber<Collection<PB01ViewObjForSearchResultItem>> presenterSubscriber) {
 		// [1] - Create the filter
-		final X47BSearchFilterForPanicButtonOrganizationalEntity filter = new X47BSearchFilterForPanicButtonOrganizationalEntity();
+		final PB01ASearchFilterForPanicButtonOrganizationalEntity filter = new PB01ASearchFilterForPanicButtonOrganizationalEntity();
 		filter.setUILanguage(Language.SPANISH);
 		if (orgOid != null) 			filter.belongingTo(orgOid);
 		if (orgDivOid != null)			filter.belongingTo(orgDivOid);
@@ -122,7 +122,7 @@ public class PB01MainViewPresenter
 													}
 							 				  });
 	}
-	public void raiseAlarm(final X47BWorkPlaceOID workPlaceOid,
+	public void raiseAlarm(final PB01AWorkPlaceOID workPlaceOid,
 						   final UIPresenterSubscriber<PB01ViewAlarmEvent> subscriber) {
 		_coreMediator.raiseAlarm(workPlaceOid,
 								 alarmEvent -> subscriber.onSuccess(new PB01ViewAlarmEvent(alarmEvent)));	// Tell the subscriber (the view) that the event was sent
@@ -130,32 +130,32 @@ public class PB01MainViewPresenter
 /////////////////////////////////////////////////////////////////////////////////////////
 //	COMBOS
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void onOrgObjectComboDataNeeded(final X47BOrgObjectRef<?,?> parentOrgObjectRef,
+	public void onOrgObjectComboDataNeeded(final PB01AOrgObjectRef<?,?> parentOrgObjectRef,
 										   final Language lang,
 										   final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
 		// use the parent combo oid to guess the object type
-		X47BOrgObjectOID parentObjOid = parentOrgObjectRef.getOid();
-		final X47BOrgObjectType parentObjType = X47BOrgObjectType.ofOIDType(parentObjOid.getClass());
+		PB01AOrgObjectOID parentObjOid = parentOrgObjectRef.getOid();
+		final PB01AOrgObjectType parentObjType = PB01AOrgObjectType.ofOIDType(parentObjOid.getClass());
 
 		// call the correct presenter method depending on the object type
 		switch(parentObjType) {
 		case ORGANIZATION:
-			this.onOrgDivisionsComboDataNeeded((X47BOrganizationOID)parentObjOid,
+			this.onOrgDivisionsComboDataNeeded((PB01AOrganizationOID)parentObjOid,
 											   lang,
 											   presenterSubscriber);			// when loaded the combo data, just refresh the combo
 			break;
 		case ORG_DIVISION:
-			this.onOrgDivisionServicesComboDataNeeded((X47BOrgDivisionOID)parentObjOid,
+			this.onOrgDivisionServicesComboDataNeeded((PB01AOrgDivisionOID)parentObjOid,
 											 		  lang,
 											 		  presenterSubscriber);	// when loaded the combo data, just refresh the combo
 			break;
 		case ORG_DIVISION_SERVICE:
-			this.onOrgDivisionServiceLocationsComboDataNeeded((X47BOrgDivisionServiceOID)parentObjOid,
+			this.onOrgDivisionServiceLocationsComboDataNeeded((PB01AOrgDivisionServiceOID)parentObjOid,
 											 		 		  lang,
 											 		 		  presenterSubscriber);	// when loaded the combo data, just refresh the combo
 			break;
 		case ORG_DIVISION_SERVICE_LOCATION:
-			this.onWorkPlacesComboDataNeeded((X47BOrgDivisionServiceLocationOID)parentObjOid,
+			this.onWorkPlacesComboDataNeeded((PB01AOrgDivisionServiceLocationOID)parentObjOid,
 											 lang,
 											 presenterSubscriber);	// when loaded the combo data, just refresh the combo
 			break;
@@ -171,7 +171,7 @@ public class PB01MainViewPresenter
     							  		// just transform the Collection<M> into a Collection<PB01VaadinComboItem>
 	    							    orgs -> _onSuccessLoadingOrgObjectSumms(orgs,presenterSubscriber));
     }
-    public void onOrgDivisionsComboDataNeeded(final X47BOrganizationOID orgOid,
+    public void onOrgDivisionsComboDataNeeded(final PB01AOrganizationOID orgOid,
     										  final Language lang,
                                       		  final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
     	_coreMediatorForOrgDiv.loadOrgDivisions(orgOid,
@@ -179,7 +179,7 @@ public class PB01MainViewPresenter
     											// just transform the Collection<M> into a Collection<PB01VaadinComboItem>
     											divs -> _onSuccessLoadingOrgObjectSumms(divs,presenterSubscriber));
     }
-    public void onOrgDivisionServicesComboDataNeeded(final X47BOrgDivisionOID orgDivOid,
+    public void onOrgDivisionServicesComboDataNeeded(final PB01AOrgDivisionOID orgDivOid,
     										  		 final Language lang,
     										  		 final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
     	_coreMediatorForOrgDivSrvc.loadOrgDivisonServices(orgDivOid,
@@ -187,7 +187,7 @@ public class PB01MainViewPresenter
 		    											  // just transform the Collection<M> into a Collection<PB01VaadinComboItem>
 		    											  srvcs -> _onSuccessLoadingOrgObjectSumms(srvcs,presenterSubscriber));
     }
-    public void onOrgDivisionServiceLocationsComboDataNeeded(final X47BOrgDivisionServiceOID orgDivSrvcOid,
+    public void onOrgDivisionServiceLocationsComboDataNeeded(final PB01AOrgDivisionServiceOID orgDivSrvcOid,
     										  		 		 final Language lang,
     										  		 		 final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
     	_coreMediatorForOrgDivSrvcLoc.loadOrgDivisionServiceLocations(orgDivSrvcOid,
@@ -195,7 +195,7 @@ public class PB01MainViewPresenter
 					    											  // just transform the Collection<M> into a Collection<PB01VaadinComboItem>
 					    											  locs -> _onSuccessLoadingOrgObjectSumms(locs,presenterSubscriber));
     }
-    public void onWorkPlacesComboDataNeeded(final X47BOrgDivisionServiceLocationOID orgDivSrvcLocOid,
+    public void onWorkPlacesComboDataNeeded(final PB01AOrgDivisionServiceLocationOID orgDivSrvcLocOid,
     										final Language lang,
     										final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
     	_coreMediatorForWorkPlace.loadWorkPlaces(orgDivSrvcLocOid,
@@ -206,7 +206,7 @@ public class PB01MainViewPresenter
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-    private <S extends X47BSummarizedOrganizationalObject<?,?,?>> void _onSuccessLoadingOrgObjectSumms(final Collection<S> sums,
+    private <S extends PB01ASummarizedOrganizationalObject<?,?,?>> void _onSuccessLoadingOrgObjectSumms(final Collection<S> sums,
     																								   final UIPresenterSubscriber<Collection<PB01VaadinComboItem>> presenterSubscriber) {
 		final Collection<PB01VaadinComboItem> cmbItems = FluentIterable.from(sums)
 														.transform(srvc -> PB01VaadinComboItem.FROM_OBJ_SUMMARY.apply(srvc))

@@ -4,17 +4,17 @@ import javax.inject.Inject;
 
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgObjectVisitors.PB01OrgObjectDetailWinForCreateVisitor;
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrgObjectVisitors.PB01OrgObjectDetailWinForEditVisitor;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrganizationID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrganizationOID;
+import pb01a.model.org.PB01AOrgDivision;
+import pb01a.model.org.PB01AOrgObjectRef;
 import pb01.ui.vaadin.orgentity.PB01DetailWindowForOrganizationalEntityBase;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.presenter.UIPresenterSubscriber;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.org.X47BOrgDivision;
-import x47b.model.org.X47BOrgObjectRef;
 
 public class PB01DetailWindowForOrgDivision
-	 extends PB01DetailWindowForOrganizationalEntityBase<X47BOrgDivisionOID,X47BOrgDivision,
+	 extends PB01DetailWindowForOrganizationalEntityBase<PB01AOrgDivisionOID,PB01AOrgDivision,
 	 													 PB01ViewObjForOrgDivision,
 	 													 PB01COREMediatorForOrgDivision,
 	 													 PB01PresenterForOrgDivisionDetailView,
@@ -44,14 +44,14 @@ public class PB01DetailWindowForOrgDivision
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CREATING
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void forCreating(final X47BOrgObjectRef<X47BOrganizationOID,X47BOrganizationID> orgRef,
+	public void forCreating(final PB01AOrgObjectRef<PB01AOrganizationOID,PB01AOrganizationID> orgRef,
 							final UIPresenterSubscriber<PB01ViewObjForOrgDivision> saveSubscriber) {			// what to do after saving
 		_saveSubscriber = saveSubscriber;
 		_deleteSubscriber = null;		// cannot delete from a create window
 
 		// create a new org division
-		final X47BOrgDivision obj = new X47BOrgDivision();
-		obj.setOid(X47BOrgDivisionOID.supply());
+		final PB01AOrgDivision obj = new PB01AOrgDivision();
+		obj.setOid(PB01AOrgDivisionOID.supply());
 		obj.setOrgRef(orgRef);
 
 		// create the view object

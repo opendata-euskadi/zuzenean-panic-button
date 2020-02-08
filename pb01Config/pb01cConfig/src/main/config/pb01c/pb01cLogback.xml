@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+================================================================================
+	 pb01 LOGBACK CONFIGURATION
+================================================================================
+-->
+<included>
+	<logger name="pb01" level="debug">
+		<appender-ref ref="app_log" />
+	</logger>
+</included>
+

@@ -115,13 +115,13 @@ If the tomcat server is started, the app **will NOT deploy correctly** since [To
 
 If the tomcat server is started, the app **will NOT deploy correctly** since some config is needed but the application
 
-1) create a folder `{develop}\config\panic-button\default\x47b`
+1) create a folder `{develop}\config\panic-button\default\pb01`
 
 2) At `{develop}\app-server\apache-tomcat-9.0.22\bin` create a file named `setenv.bat` (**beware! it's .bat not .cmd**) with the following content
 
     set CLASSPATH=%DEVELOP_HOME%\config\panic-button
 
-3) Create a file `{develop}\config\panic-button\default\x47b\x47b.notifier.properties.xml` with the following content:
+3) Create a file `{develop}\config\panic-button\default\pb01c\pb01c.notifier.properties.xml` with the following content:
 
 ```xml
 <notifier>

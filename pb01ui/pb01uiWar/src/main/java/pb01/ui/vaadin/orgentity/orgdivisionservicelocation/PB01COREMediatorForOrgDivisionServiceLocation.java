@@ -7,42 +7,42 @@ import javax.inject.Singleton;
 
 import lombok.extern.slf4j.Slf4j;
 import pb01.ui.vaadin.orgentity.PB01COREMediatorForOrganizationalEntityBase;
+import pb01a.client.api.PB01APanicButtonClientAPI;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceLocationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceOID;
+import pb01a.model.org.PB01AOrgDivisionServiceLocation;
+import pb01a.model.org.summaries.PB01ASummarizedOrgDivisionServiceLocation;
 import r01f.locale.Language;
 import r01f.ui.coremediator.UICOREMediatorSubscriber;
-import x47b.client.api.X47BPanicButtonClientAPI;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
-import x47b.model.org.X47BOrgDivisionServiceLocation;
-import x47b.model.org.summaries.X47BSummarizedOrgDivisionServiceLocation;
 
 @Slf4j
 @Singleton
 public class PB01COREMediatorForOrgDivisionServiceLocation
-	 extends PB01COREMediatorForOrganizationalEntityBase<X47BOrgDivisionServiceLocationOID,X47BOrgDivisionServiceLocation> {
+	 extends PB01COREMediatorForOrganizationalEntityBase<PB01AOrgDivisionServiceLocationOID,PB01AOrgDivisionServiceLocation> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Inject
-	public PB01COREMediatorForOrgDivisionServiceLocation(final X47BPanicButtonClientAPI api) {
+	public PB01COREMediatorForOrgDivisionServiceLocation(final PB01APanicButtonClientAPI api) {
 		super(api);	// factory
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public X47BOrgDivisionServiceLocation load(final X47BOrgDivisionServiceLocationOID oid) {
+	public PB01AOrgDivisionServiceLocation load(final PB01AOrgDivisionServiceLocationOID oid) {
 		return _api.orgDivisionServiceLocationsAPI()
 				   .getForCRUD()
 				   .load(oid);
 	}
 	@Override
-	public X47BOrgDivisionServiceLocation save(final X47BOrgDivisionServiceLocation obj) {
+	public PB01AOrgDivisionServiceLocation save(final PB01AOrgDivisionServiceLocation obj) {
 		return _api.orgDivisionServiceLocationsAPI()
 				   .getForCRUD()
 				   .save(obj);
 	}
 	@Override
-	public X47BOrgDivisionServiceLocation delete(final X47BOrgDivisionServiceLocationOID oid) {
+	public PB01AOrgDivisionServiceLocation delete(final PB01AOrgDivisionServiceLocationOID oid) {
 		return _api.orgDivisionServiceLocationsAPI()
 				   .getForCRUD()
 				   .delete(oid);
@@ -50,10 +50,10 @@ public class PB01COREMediatorForOrgDivisionServiceLocation
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void loadOrgDivisionServiceLocations(final X47BOrgDivisionServiceOID srvcOid,
+	public void loadOrgDivisionServiceLocations(final PB01AOrgDivisionServiceOID srvcOid,
 												final Language lang,
-												final UICOREMediatorSubscriber<Collection<X47BSummarizedOrgDivisionServiceLocation>> subscriber) {
-		Collection<X47BSummarizedOrgDivisionServiceLocation> locs = _api.orgDivisionServiceLocationsAPI()
+												final UICOREMediatorSubscriber<Collection<PB01ASummarizedOrgDivisionServiceLocation>> subscriber) {
+		Collection<PB01ASummarizedOrgDivisionServiceLocation> locs = _api.orgDivisionServiceLocationsAPI()
 																		.getForFind()
 																		.findSummariesByOrgDivisionService(srvcOid,
 																										   lang);

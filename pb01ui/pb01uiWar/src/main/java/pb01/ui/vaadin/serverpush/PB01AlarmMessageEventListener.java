@@ -5,17 +5,17 @@ import com.google.common.eventbus.Subscribe;
 
 import lombok.RequiredArgsConstructor;
 import pb01.ui.bootstrap.PB01UIServletContextListener;
+import pb01a.model.PB01AAlarmMessage;
 import r01f.events.COREEventBusEventListener;
 import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcastListener;
 import r01f.ui.vaadin.serverpush.VaadinServerPushedMessagesBroadcaster;
-import x47b.model.X47BAlarmMessage;
 
 /**
  * 	Server push mechanism:
  *		a) Someone pushes the panic button which makes an HTTP call to a REST-endpoint
  *
  *		b) the CORE upon persisting the raised alarm posts a message to the {@link EventBus} (guava)
- *		   (see X47BCRUDOKEventListenersForAlarmEvents)
+ *		   (see PB01CCRUDOKEventListenersForAlarmEvents)
  *
  *      c) the UI is subscribed to that type of messages at the {@link EventBus}
  *		   (see PB01AlarmMessageEventListener and PB01UIServletContextListener)
@@ -42,7 +42,7 @@ public class PB01AlarmMessageEventListener
 //	POSTED MESSAGE HANDLER METHOD
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Subscribe
-	public void onAlarmMessage(final X47BAlarmMessage msg) {
+	public void onAlarmMessage(final PB01AAlarmMessage msg) {
 		// Send a server-pushed event to show a popup in every UIs
 		PB01ServerPushedMessageForAlarmRaised broadcastedMsg = new PB01ServerPushedMessageForAlarmRaised(msg);
 		_serverPushedMessagesBroadcaster.broadcast(broadcastedMsg);

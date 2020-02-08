@@ -55,6 +55,13 @@
 			<artifactId>r01fBaseClasses</artifactId>
 			<version>${r01f.version}</version>
 		</dependency>
+
+		<!-- r01f config -->
+		<dependency>
+			<groupId>r01.r01f.config</groupId>
+			<artifactId>r01fConfig</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
 	</dependencies>
 
 <!-- ====================================================================== -->

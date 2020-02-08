@@ -4,59 +4,59 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionServiceID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrgDivisionServiceLocationID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AOrganizationID;
+import pb01a.model.oids.PB01AOrganizationalIDs.PB01AWorkPlaceID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceLocationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrgDivisionServiceOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AOrganizationOID;
+import pb01a.model.oids.PB01AOrganizationalOIDs.PB01AWorkPlaceOID;
+import pb01a.model.org.PB01AOrgObjectType;
+import pb01a.model.org.summaries.PB01ASummarizedOrgDivision;
+import pb01a.model.org.summaries.PB01ASummarizedOrgDivisionService;
+import pb01a.model.org.summaries.PB01ASummarizedOrgDivisionServiceLocation;
+import pb01a.model.org.summaries.PB01ASummarizedOrganization;
+import pb01a.model.org.summaries.PB01ASummarizedWorkPlace;
+import pb01a.model.search.PB01ASearchResultItemForPanicButtonOrganizationalEntity;
 import r01f.types.Path;
 import r01f.types.contact.EMail;
 import r01f.types.contact.Phone;
 import r01f.ui.i18n.UII18NService;
 import r01f.ui.viewobject.UIViewObjectBase;
 import r01f.util.types.collections.CollectionUtils;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrgDivisionServiceLocationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BOrganizationID;
-import x47b.model.oids.X47BOrganizationalIDs.X47BWorkPlaceID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceLocationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrgDivisionServiceOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BOrganizationOID;
-import x47b.model.oids.X47BOrganizationalOIDs.X47BWorkPlaceOID;
-import x47b.model.org.X47BOrgObjectType;
-import x47b.model.org.summaries.X47BSummarizedOrgDivision;
-import x47b.model.org.summaries.X47BSummarizedOrgDivisionService;
-import x47b.model.org.summaries.X47BSummarizedOrgDivisionServiceLocation;
-import x47b.model.org.summaries.X47BSummarizedOrganization;
-import x47b.model.org.summaries.X47BSummarizedWorkPlace;
-import x47b.model.search.X47BSearchResultItemForPanicButtonOrganizationalEntity;
 
 public class PB01ViewObjForSearchResultItem
-     extends UIViewObjectBase<X47BSearchResultItemForPanicButtonOrganizationalEntity> {
+     extends UIViewObjectBase<PB01ASearchResultItemForPanicButtonOrganizationalEntity> {
 
     private static final long serialVersionUID = 7691762961362543966L;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-    public PB01ViewObjForSearchResultItem(final X47BSearchResultItemForPanicButtonOrganizationalEntity wrappedModelObject) {
+    public PB01ViewObjForSearchResultItem(final PB01ASearchResultItemForPanicButtonOrganizationalEntity wrappedModelObject) {
         super(wrappedModelObject);
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	OBJECT TYPE
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BOrgObjectType getOrgObjectType() {
+    public PB01AOrgObjectType getOrgObjectType() {
         return this.getWrappedModelObject()
                    .getOrgObjectType();
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ORGANIZATION
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BSummarizedOrganization getOrganization() {
+    public PB01ASummarizedOrganization getOrganization() {
     	return this.getWrappedModelObject()
                    .getOrganization();
     }
-    public X47BOrganizationOID getOrganizationOid() {
+    public PB01AOrganizationOID getOrganizationOid() {
         return this.getOrganization() != null ? this.getOrganization().getOid() : null;
     }
-    public X47BOrganizationID getOrganizationId() {
+    public PB01AOrganizationID getOrganizationId() {
         return this.getOrganization() != null ? this.getOrganization().getId() : null;
     }
     public String getOrganizationName() {
@@ -68,14 +68,14 @@ public class PB01ViewObjForSearchResultItem
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ORG DIVISION
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BSummarizedOrgDivision getOrgDivision() {
+    public PB01ASummarizedOrgDivision getOrgDivision() {
         return this.getWrappedModelObject()
                    .getOrgDivision();
     }
-    public X47BOrgDivisionOID getOrgDivisionOid() {
+    public PB01AOrgDivisionOID getOrgDivisionOid() {
         return this.getOrgDivision() != null ? this.getOrgDivision().getOid() : null;
     }
-    public X47BOrgDivisionID getOrgDivisionId() {
+    public PB01AOrgDivisionID getOrgDivisionId() {
         return this.getOrgDivision() != null ? this.getOrgDivision().getId() : null;
     }
     public String getOrgDivisionName() {
@@ -87,14 +87,14 @@ public class PB01ViewObjForSearchResultItem
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ORG DIVISION SERVICE
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BSummarizedOrgDivisionService getOrgDivisionService() {
+    public PB01ASummarizedOrgDivisionService getOrgDivisionService() {
         return this.getWrappedModelObject()
                    .getOrgDivisionService();
     }
-    public X47BOrgDivisionServiceOID getOrgDivisionServiceOid() {
+    public PB01AOrgDivisionServiceOID getOrgDivisionServiceOid() {
         return this.getOrgDivisionService() != null ? this.getOrgDivisionService().getOid() : null;
     }
-    public X47BOrgDivisionServiceID getOrgDivisionServiceId() {
+    public PB01AOrgDivisionServiceID getOrgDivisionServiceId() {
         return this.getOrgDivisionService() != null ? this.getOrgDivisionService().getId() : null;
     }
     public String getOrgDivisionServiceName() {
@@ -106,14 +106,14 @@ public class PB01ViewObjForSearchResultItem
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ORG DIVISION SERVICE LOCATION
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BSummarizedOrgDivisionServiceLocation getOrgDivisionServiceLocation() {
+    public PB01ASummarizedOrgDivisionServiceLocation getOrgDivisionServiceLocation() {
         return this.getWrappedModelObject()
                    .getOrgDivisionServiceLocation();
     }
-    public X47BOrgDivisionServiceLocationOID getOrgDivisionServiceLocationOid() {
+    public PB01AOrgDivisionServiceLocationOID getOrgDivisionServiceLocationOid() {
         return this.getOrgDivisionServiceLocation() != null ? this.getOrgDivisionServiceLocation().getOid() : null;
     }
-    public X47BOrgDivisionServiceLocationID getOrgDivisionServiceLocationId() {
+    public PB01AOrgDivisionServiceLocationID getOrgDivisionServiceLocationId() {
         return this.getOrgDivisionServiceLocation() != null ? this.getOrgDivisionServiceLocation().getId() : null;
     }
     public String getOrgDivisionServiceLocationName() {
@@ -125,14 +125,14 @@ public class PB01ViewObjForSearchResultItem
 /////////////////////////////////////////////////////////////////////////////////////////
 //	WORKPLACE
 /////////////////////////////////////////////////////////////////////////////////////////
-    public X47BSummarizedWorkPlace getWorkPlace() {
+    public PB01ASummarizedWorkPlace getWorkPlace() {
         return this.getWrappedModelObject()
                    .getWorkPlace();
     }
-    public X47BWorkPlaceOID getWorkPlaceOid() {
+    public PB01AWorkPlaceOID getWorkPlaceOid() {
         return this.getWorkPlace() != null ? this.getWorkPlace().getOid() : null;
     }
-    public X47BWorkPlaceID getWorkPlaceId() {
+    public PB01AWorkPlaceID getWorkPlaceId() {
         return this.getWorkPlace() != null ? this.getWorkPlace().getId() : null;    }
     public String getWorkPlaceName() {
         return this.getWorkPlace() != null ? this.getWorkPlace().getName() : null;
@@ -265,11 +265,11 @@ public class PB01ViewObjForSearchResultItem
     	return this.getWrappedModelObject()
     			   .getEffectiveEMailsAsString();
     }
-    public Map<X47BOrgObjectType,Collection<EMail>> getEffectiveEmailsByOrgEntityType() {
+    public Map<PB01AOrgObjectType,Collection<EMail>> getEffectiveEmailsByOrgEntityType() {
     	return this.getWrappedModelObject()
     			   .getEffectiveEmailsByOrgEntityType();
     }
-    public Map<X47BOrgObjectType,Collection<Phone>> getEffectivePhonesByOrgEntityType() {
+    public Map<PB01AOrgObjectType,Collection<Phone>> getEffectivePhonesByOrgEntityType() {
     	return this.getWrappedModelObject()
     			   .getEffectivePhonesByOrgEntityType();
     }
